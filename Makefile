@@ -6,7 +6,7 @@ LDFLAGS = -L/usr/lib -lallegro -lallegro_primitives
 INCLUDE = -I. -I/usr/include/allegro5
 LIBS = -lallegro -lm
 
-SRCS = main.c defines.h player.c hitbox.c sprite.c player.h hitbox.h sprite.h keyboard.h
+SRCS = main.c player.c hitbox.c sprite.c
 OBJS = $(SRCS:.c=.o)
 
 MAIN = game

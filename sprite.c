@@ -14,5 +14,5 @@ Sprite create_sprite(int pos_x, int pos_y, int width, int height) // TODO: dodac
 
 void draw_sprite(Sprite* sprite)
 {
-    al_draw_filled_rectangle(sprite->pos_x, sprite->pos_y, sprite->pos_x + sprite->width, sprite->pos_y + sprite->height, al_map_rgba(0, 0, 0, 255));
+    al_draw_filled_rectangle(sprite->pos_x, sprite->pos_y, sprite->pos_x + sprite->width, sprite->pos_y + sprite->height, DARK_BLUE);
 }

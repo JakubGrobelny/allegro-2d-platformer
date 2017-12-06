@@ -16,30 +16,27 @@ int main()
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
-    al_clear_to_color(al_map_rgba(255, 255, 255, 0));
+    al_clear_to_color(WHITE);
     al_start_timer(timer);
 
     bool redraw = false;
     bool key[4] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety)
 
-    Player player = create_player(230, 150, 40, 80, 5);
+    Player player = create_player(230, 150, 40, 80, 5, 15);
 
     while(true)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
 
-        // aktualizujemy stan tylko co 1/60 sekundy
+        // aktualizujemy stan tylko co 1/60 sekundy aby uzyskac stala predkosc
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             redraw = true;
             update_player(&player, key);
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-        {
-            // wylaczanie gdy nacisniety zostanie klawisz escape lub gdy okno zostanie zamkniete
-            break;
-        }
+            break; // wylaczanie gdy nacisniety zostanie klawisz escape lub gdy okno zostanie zamkniete
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             switch(event.keyboard.keycode)
@@ -82,7 +79,7 @@ int main()
             redraw = false;
             draw_player(&player);
             al_flip_display();
-            al_clear_to_color(al_map_rgba(255, 255, 255, 0));
+            al_clear_to_color(WHITE);
         }
     }
 

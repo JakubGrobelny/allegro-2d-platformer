@@ -1,5 +1,6 @@
 // do celow testowych sprite bedzie po prostu primitivem
 #include <allegro5/allegro_primitives.h>
+#include "defines.h"
 
 typedef struct
 {

@@ -1,5 +1,5 @@
-#ifndef KEYBOARD_ENUM
-#define KEYBOARD_ENUM
+#ifndef _KEYBOARD_ENUM
+#define _KEYBOARD_ENUM
 
 typedef enum
 {

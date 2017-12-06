@@ -5,7 +5,8 @@
 
 typedef struct
 {
-    int velocity;
+    int speed_vertical;
+    int speed_horizontal;
     int pos_x;
     int pos_y;
     int width;
@@ -16,6 +17,6 @@ typedef struct
 
 } Player;
 
-Player create_player(int pos_x, int pos_y, int width, int height, int velocity);
+Player create_player(int pos_x, int pos_y, int width, int height, int vel_vertical, int vel_horizontal);
 void draw_player(Player* player);
 void update_player(Player* player, bool* key);
