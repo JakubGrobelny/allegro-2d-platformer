@@ -2,7 +2,8 @@
 
 enum types
 {
-    rectangle
+    rectangle,
+    circle
 };
 
 typedef struct
