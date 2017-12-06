@@ -1,5 +1,6 @@
 #include <allegro5/allegro.h>
 #include "defines.h"
+#include "keyboard.h"
 #include "player.h"
 
 int main()
@@ -19,8 +20,9 @@ int main()
     al_start_timer(timer);
 
     bool redraw = false;
+    bool key[4] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety)
 
-    Player player = create_player(100, 100, 40, 20);
+    Player player = create_player(230, 150, 40, 80, 5);
 
     while(true)
     {
@@ -31,13 +33,50 @@ int main()
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             redraw = true;
+            update_player(&player, key);
         }
-
-        // wylaczanie gdy nacisniety zostanie klawisz escape lub gdy okno zostanie zamkniete
-        if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+        else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
         {
+            // wylaczanie gdy nacisniety zostanie klawisz escape lub gdy okno zostanie zamkniete
             break;
         }
+        else if(event.type == ALLEGRO_EVENT_KEY_DOWN)
+        {
+            switch(event.keyboard.keycode)
+            {
+                case ALLEGRO_KEY_UP:
+                    key[KEY_UP] = true;
+                    break;
+                case ALLEGRO_KEY_DOWN:
+                    key[KEY_DOWN] = true;
+                    break;
+                case ALLEGRO_KEY_LEFT:
+                    key[KEY_LEFT] = true;
+                    break;
+                case ALLEGRO_KEY_RIGHT:
+                    key[KEY_RIGHT] = true;
+                    break;
+            }
+        }
+        else if (event.type == ALLEGRO_EVENT_KEY_UP)
+        {
+            switch(event.keyboard.keycode)
+            {
+                case ALLEGRO_KEY_UP:
+                    key[KEY_UP] = false;
+                    break;
+                case ALLEGRO_KEY_DOWN:
+                    key[KEY_DOWN] = false;
+                    break;
+                case ALLEGRO_KEY_LEFT:
+                    key[KEY_LEFT] = false;
+                    break;
+                case ALLEGRO_KEY_RIGHT:
+                    key[KEY_RIGHT] = false;
+                    break;
+            }
+        }
+
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
