@@ -1,0 +1,3 @@
+#define DISPLAY_HEIGHT 480
+#define DISPLAY_WIDTH 640
+#define FPS 60
