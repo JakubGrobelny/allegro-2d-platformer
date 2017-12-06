@@ -1,10 +1,12 @@
 #include <allegro5/allegro.h>
 #include "defines.h"
+#include "player.h"
 
 int main()
 {
     // inicjalizacja allegro TODO: sprawdzanie czy udalo sie utworzyc display itd.
     al_init();
+    al_init_primitives_addon();
     al_install_keyboard();
     ALLEGRO_DISPLAY *display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
     ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
@@ -17,6 +19,8 @@ int main()
     al_start_timer(timer);
 
     bool redraw = false;
+
+    Player player = create_player(100, 100, 40, 20);
 
     while(true)
     {
@@ -34,12 +38,12 @@ int main()
         {
             break;
         }
-
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
-            al_clear_to_color(al_map_rgba(255, 255, 255, 0));
+            draw_player(&player);
             al_flip_display();
+            al_clear_to_color(al_map_rgba(255, 255, 255, 0));
         }
     }
 

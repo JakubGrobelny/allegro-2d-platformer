@@ -2,11 +2,11 @@
 #W celu kompilacji nalezy uzyc polecenia "make"
 
 CC = gcc
-LDFLAGS = -L/usr/lib -lallegro
+LDFLAGS = -L/usr/lib -lallegro -lallegro_primitives
 INCLUDE = -I. -I/usr/include/allegro5
 LIBS = -lallegro -lm
 
-SRCS = main.c defines.h
+SRCS = main.c defines.h player.c hitbox.c sprite.c player.h hitbox.h sprite.h
 OBJS = $(SRCS:.c=.o)
 
 MAIN = game
