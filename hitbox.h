@@ -17,4 +17,4 @@ typedef struct
 } Hitbox;
 
 Hitbox create_hitbox(short type, int pos_x, int pos_y, int width, int height);
-bool collide(Hitbox* first, Hitbox* second);
+bool collide(Hitbox first, Hitbox second);

@@ -14,20 +14,19 @@ Hitbox create_hitbox(short type, int pos_x, int pos_y, int width, int height)
     return new;
 }
 
-bool collide(Hitbox* first, Hitbox* second)
+bool collide(Hitbox first, Hitbox second)
 {
-    if (first->type == rectangle && second->type == rectangle)
+    if (first.type == rectangle && second.type == rectangle)
     {
-        if (first->pos_x < second->pos_x + second->width &&
-            first->pos_x + first->width > second->pos_x &&
-            first->pos_y < second->pos_y + second->height &&
-            first->pos_y + first->height > second->pos_y)
-            return true;
+        if ((first.pos_x + first.width < second.pos_x || first.pos_x > second.pos_x + second.width) ||
+            (first.pos_y + first.height < second.pos_y || first.pos_y > second.pos_y + second.height))
+            return false;
+        return true;
     }
-    if (first->type == circle && second->type == circle)
+    if (first.type == circle && second.type == circle)
     {
-        double r_sum = (double)(first->width) + (double)(second->width);
-        double distance = sqrt((double)(first->pos_x - second->pos_x)*(first->pos_x - second->pos_x)+(double)(first->pos_y - second->pos_y)*(first->pos_y - second->pos_y));
+        double r_sum = (double)(first.width) + (double)(second.width);
+        double distance = sqrt((double)(first.pos_x - second.pos_x)*(first.pos_x - second.pos_x)+(double)(first.pos_y - second.pos_y)*(first.pos_y - second.pos_y));
         if (distance <= r_sum)
             return true;
     }
@@ -41,25 +40,25 @@ bool collide(Hitbox* first, Hitbox* second)
         double rect_width;
         double rect_height;
 
-        if (first->type == rectangle)
+        if (first.type == rectangle)
         {
-            rect_x = (double)(first->pos_x);
-            rect_y = (double)(first->pos_y);
-            circle_x = (double)(second->pos_x);
-            circle_y = (double)(second->pos_y);
-            circle_r = (double)(second->width);
-            rect_width = (double)(first->width);
-            rect_height = (double)(first->height);
+            rect_x = (double)(first.pos_x);
+            rect_y = (double)(first.pos_y);
+            circle_x = (double)(second.pos_x);
+            circle_y = (double)(second.pos_y);
+            circle_r = (double)(second.width);
+            rect_width = (double)(first.width);
+            rect_height = (double)(first.height);
         }
         else
         {
-            rect_x = (double)(second->pos_x);
-            rect_y = (double)(second->pos_y);
-            circle_x = (double)(first->pos_x);
-            circle_y = (double)(first->pos_y);
-            circle_r = (double)(first->width);
-            rect_width = (double)(second->width);
-            rect_height = (double)(second->height);
+            rect_x = (double)(second.pos_x);
+            rect_y = (double)(second.pos_y);
+            circle_x = (double)(first.pos_x);
+            circle_y = (double)(first.pos_y);
+            circle_r = (double)(first.width);
+            rect_width = (double)(second.width);
+            rect_height = (double)(second.height);
         }
 
         double nearest_x;
