@@ -3,7 +3,7 @@
 #include "keyboard.h"
 #include <stdbool.h>
 
-typedef struct // TODO: zmienic Player na Object i uogolnic tego structa
+typedef struct
 {
     int speed_vertical;
     int speed_horizontal;
