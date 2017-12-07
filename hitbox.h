@@ -1,5 +1,8 @@
 #include <stdbool.h>
 
+#ifndef _HITBOX
+#define _HITBOX
+
 enum types
 {
     rectangle,
@@ -18,3 +21,4 @@ typedef struct
 
 Hitbox create_hitbox(short type, int pos_x, int pos_y, int width, int height);
 bool collide(Hitbox first, Hitbox second, int tolerance);
+#endif

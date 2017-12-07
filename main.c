@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "keyboard.h"
 #include "object.h"
+#include "list.h"
 
 int main()
 {
