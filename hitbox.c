@@ -14,12 +14,12 @@ Hitbox create_hitbox(short type, int pos_x, int pos_y, int width, int height)
     return new;
 }
 
-bool collide(Hitbox first, Hitbox second)
+bool collide(Hitbox first, Hitbox second, int tolerance)
 {
     if (first.type == rectangle && second.type == rectangle)
     {
-        if ((first.pos_x + first.width < second.pos_x || first.pos_x > second.pos_x + second.width) ||
-            (first.pos_y + first.height < second.pos_y || first.pos_y > second.pos_y + second.height))
+        if ((first.pos_x + first.width < second.pos_x - tolerance || first.pos_x - tolerance > second.pos_x + second.width) ||
+            (first.pos_y + first.height < second.pos_y - tolerance || first.pos_y - tolerance > second.pos_y + second.height))
             return false;
         return true;
     }

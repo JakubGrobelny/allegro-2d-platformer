@@ -22,21 +22,26 @@ int main()
     bool redraw = false;
     bool key[4] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety)
 
-    Object player = create_object(230, 150, 40, 80, 5, 15);
+    Object player = create_object(230, 150, 40, 40, generate_static_physics(), 1);
+    Object platform = create_object(100, 400, 200, 50, generate_static_physics(), 0);
 
     while(true)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
 
-        // aktualizujemy stan tylko co 1/60 sekundy aby uzyskac stala predkosc
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             redraw = true;
-            update_player(&player, key);
+            update_player(&player, key); // TODO: przekazywac liste objektow do update_player i sprawdzac kolizje przed przemieszczeniem
+
+            if (collide(player.hitbox, platform.hitbox, 1))
+            {
+                player.pos_y = platform.pos_y - player.height; // TEST
+            }
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
-            break; // wylaczanie gdy nacisniety zostanie klawisz escape lub gdy okno zostanie zamkniete
+            break;
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             switch(event.keyboard.keycode)
@@ -78,6 +83,7 @@ int main()
         {
             redraw = false;
             draw_object(&player);
+            draw_object(&platform);
             al_flip_display();
             al_clear_to_color(WHITE);
         }

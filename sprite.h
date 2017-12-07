@@ -13,4 +13,4 @@ typedef struct
 } Sprite;
 
 Sprite create_sprite(int pos_x, int pos_y, int width, int height); // TODO: dodac bitmape jako argument funkcji
-void draw_sprite(Sprite* sprite);
+void draw_sprite(Sprite* sprite, int type);

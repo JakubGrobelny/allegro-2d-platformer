@@ -1,5 +1,6 @@
 #include "sprite.h"
 
+
 Sprite create_sprite(int pos_x, int pos_y, int width, int height) // TODO: dodac bitmape jako argument funkcji
 {
     Sprite new;
@@ -12,7 +13,10 @@ Sprite create_sprite(int pos_x, int pos_y, int width, int height) // TODO: dodac
     // TODO: zmieniac ta funkcje wraz z pojawianiem sie kolejnych elementow struktury sprite
 }
 
-void draw_sprite(Sprite* sprite)
+void draw_sprite(Sprite* sprite, int type)
 {
-    al_draw_filled_rectangle(sprite->pos_x, sprite->pos_y, sprite->pos_x + sprite->width, sprite->pos_y + sprite->height, DARK_BLUE);
+    if (type == 1)
+        al_draw_filled_circle(sprite->pos_x, sprite->pos_y, sprite->width, DARK_GREEN);
+    else
+        al_draw_filled_rectangle(sprite->pos_x, sprite->pos_y, sprite->pos_x + sprite->width, sprite->pos_y + sprite->height, DARK_BLUE);
 }
