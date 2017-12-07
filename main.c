@@ -1,7 +1,7 @@
 #include <allegro5/allegro.h>
 #include "defines.h"
 #include "keyboard.h"
-#include "player.h"
+#include "object.h"
 
 int main()
 {
@@ -22,7 +22,7 @@ int main()
     bool redraw = false;
     bool key[4] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety)
 
-    Player player = create_player(230, 150, 40, 80, 5, 15);
+    Object player = create_object(230, 150, 40, 80, 5, 15);
 
     while(true)
     {
@@ -77,7 +77,7 @@ int main()
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
-            draw_player(&player);
+            draw_object(&player);
             al_flip_display();
             al_clear_to_color(WHITE);
         }

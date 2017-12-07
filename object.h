@@ -3,7 +3,7 @@
 #include "keyboard.h"
 #include <stdbool.h>
 
-typedef struct
+typedef struct // TODO: zmienic Player na Object i uogolnic tego structa
 {
     int speed_vertical;
     int speed_horizontal;
@@ -15,8 +15,8 @@ typedef struct
     Sprite sprite;
     // TODO: dodawac rzeczy kiedy beda potrzebne
 
-} Player;
+} Object;
 
-Player create_player(int pos_x, int pos_y, int width, int height, int vel_vertical, int vel_horizontal);
-void draw_player(Player* player);
-void update_player(Player* player, bool* key);
+Object create_object(int pos_x, int pos_y, int width, int height, int vel_vertical, int vel_horizontal);
+void draw_object(Object* object);
+void update_player(Object* player, bool* key);

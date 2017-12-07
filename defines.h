@@ -5,7 +5,7 @@
 #define DISPLAY_WIDTH 1280
 #define FPS 60
 
-// COLORS
+// KOLORY
 #define BLACK       al_map_rgba(0  , 0  , 0  , 255)
 #define WHITE       al_map_rgba(255, 255, 255, 255)
 #define RED         al_map_rgba(255, 0  , 0  , 255)

@@ -1,8 +1,8 @@
-#include "player.h"
+#include "object.h"
 
-Player create_player(int pos_x, int pos_y, int width, int height, int vel_vertical, int vel_horizontal)
+Object create_object(int pos_x, int pos_y, int width, int height, int vel_vertical, int vel_horizontal)
 {
-    Player new;
+    Object new;
     new.pos_x = pos_x;
     new.pos_y = pos_y;
     new.height = height;
@@ -15,12 +15,12 @@ Player create_player(int pos_x, int pos_y, int width, int height, int vel_vertic
     return new;
 }
 
-void draw_player(Player* player)
+void draw_object(Object* object)
 {
-    draw_sprite(&(player->sprite));
+    draw_sprite(&(object->sprite));
 }
 
-void update_player(Player* player, bool* key)
+void update_player(Object* player, bool* key)
 {
     if (key[KEY_UP])
     {
