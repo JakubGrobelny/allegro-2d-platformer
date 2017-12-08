@@ -70,6 +70,6 @@ Object pop_element_ol(ObjectsList* list, int i)
 {
     Object obj = get_element_ol(list, i);
     remove_element_ol(list, i);
-
+    list->size -= 1;
     return obj;
 }

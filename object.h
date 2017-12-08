@@ -1,11 +1,11 @@
+#ifndef _OBJECT
+#define _OBJECT
+
 #include "sprite.h"
 #include "hitbox.h"
 #include "keyboard.h"
 #include <stdbool.h>
 #include "physics.h"
-
-#ifndef _OBJECT
-#define _OBJECT
 
 typedef struct
 {
@@ -22,7 +22,6 @@ typedef struct
 } Object;
 
 Object create_object(int pos_x, int pos_y, int width, int height, Physics physics, int type);
-void draw_object(Object* object);
-void update_player(Object* player, bool* key);
+void draw_object(Object object);
 
 #endif

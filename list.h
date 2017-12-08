@@ -1,7 +1,7 @@
-#include "object.h"
-
 #ifndef _LIST
 #define _LIST
+
+#include "object.h"
 
 typedef struct
 {
@@ -12,7 +12,7 @@ typedef struct
 
 } ObjectsList;
 
-ObjectsList create_objects_list();
+ObjectsList create_objects_list(unsigned int initial_capacity);
 Object get_element_ol(ObjectsList* list, int i);
 Object pop_first_ol(ObjectsList* list);
 Object pop_last_ol(ObjectsList* list);
