@@ -6,7 +6,7 @@ LDFLAGS = -L/usr/lib -lallegro -lallegro_primitives
 INCLUDE = -I. -I/usr/include/allegro5
 LIBS = -lallegro -lm
 
-SRCS = main.c object.c hitbox.c sprite.c util.c physics.c list.c player.c
+SRCS = src/main.c src/object.c src/hitbox.c src/sprite.c src/util.c src/physics.c src/list.c src/player.c
 OBJS = $(SRCS:.c=.o)
 
 MAIN = game
@@ -19,11 +19,11 @@ $(MAIN): $(OBJS)
 .c.o:
 	$(CC) $(INCLUDE) -c $< -o $@
 clean:
-	$(RM) *.o *~ $(MAIN)
+	$(RM) src/*.o *~ $(MAIN)
 
 #ciagle myle sie i wpisuje clear wiec niech bedzie tez clear
 clear:
-	$(RM) *.o *~ $(MAIN)
+	$(RM) src/*.o *~ $(MAIN)
 
 depend: $(SRCS)
 	makedepend $(INCLUDE) $^

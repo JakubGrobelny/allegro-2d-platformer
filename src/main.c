@@ -54,14 +54,15 @@ int main()
         {
             redraw = true;
             update_player(&player, key, &obj_list); // TODO: przekazywac liste objektow do update_player i sprawdzac kolizje przed przemieszczeniem
-            if (key[KEY_ENTER] && !popped)
+
+            if (key[KEY_ENTER] && !popped) // TEST
             {
                 popped = true;
 
-                int e = obj_list.size;
+                int e = obj_list.size; // size zmienia sie w petli wiec trzeba wczesniej zapisac rozmiar do pomocniczej zmiennej
                 for (int i = 0; i < e; i++)
                 {
-                    pop_first_ol(&obj_list);
+                    pop_last_ol(&obj_list);
                 }
             }
             //if (collide(player.hitbox, platform.hitbox, 1))
