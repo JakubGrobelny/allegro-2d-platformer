@@ -38,8 +38,20 @@ int main()
     al_clear_to_color(WHITE);
     al_start_timer(timer);
 
+
+    Object player;
+    init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics());
+
+    ObjectsList obj_list;
+    obj_list = create_objects_list(1);
+
+    // BITMAPS
+    ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height);
+    bitmap = al_load_bitmap("./resources/test.png");
+    bind_bitmap(&player, bitmap);
+
     bool redraw = false;
-    bool key[5] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety)
+    bool key[5] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety) TODO: button down/up
 
     while(true)
     {
@@ -48,6 +60,7 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
+            update_player(&player, key, &obj_list);
             redraw = true;
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -98,7 +111,7 @@ int main()
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
-
+            draw_object(&player);
             al_flip_display();
             al_clear_to_color(WHITE);
         }
@@ -107,6 +120,7 @@ int main()
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
+    al_destroy_bitmap(bitmap);
     // TODO: niszczyc wyszystkie bitmapy
 
     return 0;
