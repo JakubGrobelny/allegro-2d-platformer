@@ -1,22 +1,34 @@
 #include "player.h"
 
-void update_player(Object* player, bool* key, ObjectsList* list)
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list)
 {
-    if (key[KEY_UP])
+    if (keys_active[KEY_UP])
     {
         player->pos_y -= 10; // hardcoded poki co
     }
-    if (key[KEY_DOWN])
+    if (keys_active[KEY_DOWN])
     {
         player->pos_y += 10;
     }
-    if (key[KEY_RIGHT])
+    if (keys_active[KEY_RIGHT])
     {
         player->pos_x += 10;
     }
-    if (key[KEY_LEFT])
+    if (keys_active[KEY_LEFT])
     {
         player->pos_x -= 10;
+    }
+
+    if (keys_down[KEY_ENTER])
+    {
+        if (player->animation_frame + 1 < player->frames_number)
+        {
+            player->animation_frame++;
+        }
+        else
+        {
+            player->animation_frame = 0;
+        }
     }
 
     // TODO: Ograniczyc ruch gracza do rozmiarow okna

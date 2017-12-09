@@ -7,7 +7,9 @@ typedef enum
     KEY_UP,
     KEY_LEFT,
     KEY_RIGHT,
-    KEY_ENTER
+    KEY_ENTER,
+
+    KEYS_AMOUNT
 } Keys;
 
 #endif

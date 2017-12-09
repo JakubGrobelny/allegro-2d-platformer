@@ -8,6 +8,7 @@
 #include "object.h"
 #include "list.h"
 #include "player.h"
+#include "util.h"
 
 int main()
 {
@@ -40,13 +41,13 @@ int main()
 
 
     Object player;
-    init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics(), 1);
+    init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics(), 2);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
 
     // BITMAPS
-    ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height);
+    ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
     bitmap = al_load_bitmap("./resources/test.png");
     bind_bitmap(&player, bitmap);
 
@@ -63,7 +64,9 @@ int main()
     }
 
     bool redraw = false;
-    bool key[5] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety) TODO: button down/up
+    bool keys_active[KEYS_AMOUNT] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety) TODO: button down/up
+    bool keys_down[KEYS_AMOUNT] = {false};
+    bool keys_up[KEYS_AMOUNT] = {false};
 
     while(true)
     {
@@ -72,7 +75,8 @@ int main()
 
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
-            update_player(&player, key, &obj_list);
+            update_player(&player, keys_active, keys_down, keys_up, &obj_list);
+            reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
             redraw = true;
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
@@ -82,19 +86,24 @@ int main()
             switch(event.keyboard.keycode)
             {
                 case ALLEGRO_KEY_UP:
-                    key[KEY_UP] = true;
+                    keys_active[KEY_UP] = true;
+                    keys_down[KEY_UP] = true;
                     break;
                 case ALLEGRO_KEY_DOWN:
-                    key[KEY_DOWN] = true;
+                    keys_active[KEY_DOWN] = true;
+                    keys_down[KEY_DOWN] = true;
                     break;
                 case ALLEGRO_KEY_LEFT:
-                    key[KEY_LEFT] = true;
+                    keys_active[KEY_LEFT] = true;
+                    keys_down[KEY_LEFT] = true;
                     break;
                 case ALLEGRO_KEY_RIGHT:
-                    key[KEY_RIGHT] = true;
+                    keys_active[KEY_RIGHT] = true;
+                    keys_down[KEY_RIGHT] = true;
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    key[KEY_ENTER] = true;
+                    keys_active[KEY_ENTER] = true;
+                    keys_down[KEY_ENTER] = true;
                     break;
             }
         }
@@ -103,19 +112,24 @@ int main()
             switch(event.keyboard.keycode)
             {
                 case ALLEGRO_KEY_UP:
-                    key[KEY_UP] = false;
+                    keys_active[KEY_UP] = false;
+                    keys_up[KEY_UP] = true;
                     break;
                 case ALLEGRO_KEY_DOWN:
-                    key[KEY_DOWN] = false;
+                    keys_active[KEY_DOWN] = false;
+                    keys_up[KEY_DOWN] = true;
                     break;
                 case ALLEGRO_KEY_LEFT:
-                    key[KEY_LEFT] = false;
+                    keys_active[KEY_LEFT] = false;
+                    keys_up[KEY_LEFT] = true;
                     break;
                 case ALLEGRO_KEY_RIGHT:
-                    key[KEY_RIGHT] = false;
+                    keys_active[KEY_RIGHT] = false;
+                    keys_up[KEY_RIGHT] = true;
                     break;
                 case ALLEGRO_KEY_ENTER:
-                    key[KEY_ENTER] = false;
+                    keys_active[KEY_ENTER] = false;
+                    keys_up[KEY_ENTER] = true;
                     break;
             }
         }
