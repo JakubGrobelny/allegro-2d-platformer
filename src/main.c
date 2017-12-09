@@ -8,7 +8,6 @@
 #include "object.h"
 #include "list.h"
 #include "player.h"
-#include "util.h"
 
 int main()
 {
@@ -81,58 +80,8 @@ int main()
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             break;
-        else if(event.type == ALLEGRO_EVENT_KEY_DOWN)
-        {
-            switch(event.keyboard.keycode)
-            {
-                case ALLEGRO_KEY_UP:
-                    keys_active[KEY_UP] = true;
-                    keys_down[KEY_UP] = true;
-                    break;
-                case ALLEGRO_KEY_DOWN:
-                    keys_active[KEY_DOWN] = true;
-                    keys_down[KEY_DOWN] = true;
-                    break;
-                case ALLEGRO_KEY_LEFT:
-                    keys_active[KEY_LEFT] = true;
-                    keys_down[KEY_LEFT] = true;
-                    break;
-                case ALLEGRO_KEY_RIGHT:
-                    keys_active[KEY_RIGHT] = true;
-                    keys_down[KEY_RIGHT] = true;
-                    break;
-                case ALLEGRO_KEY_ENTER:
-                    keys_active[KEY_ENTER] = true;
-                    keys_down[KEY_ENTER] = true;
-                    break;
-            }
-        }
-        else if (event.type == ALLEGRO_EVENT_KEY_UP)
-        {
-            switch(event.keyboard.keycode)
-            {
-                case ALLEGRO_KEY_UP:
-                    keys_active[KEY_UP] = false;
-                    keys_up[KEY_UP] = true;
-                    break;
-                case ALLEGRO_KEY_DOWN:
-                    keys_active[KEY_DOWN] = false;
-                    keys_up[KEY_DOWN] = true;
-                    break;
-                case ALLEGRO_KEY_LEFT:
-                    keys_active[KEY_LEFT] = false;
-                    keys_up[KEY_LEFT] = true;
-                    break;
-                case ALLEGRO_KEY_RIGHT:
-                    keys_active[KEY_RIGHT] = false;
-                    keys_up[KEY_RIGHT] = true;
-                    break;
-                case ALLEGRO_KEY_ENTER:
-                    keys_active[KEY_ENTER] = false;
-                    keys_up[KEY_ENTER] = true;
-                    break;
-            }
-        }
+
+        update_buttons(&event, keys_down, keys_up, keys_active);
 
         if (redraw && al_is_event_queue_empty(event_queue))
         {

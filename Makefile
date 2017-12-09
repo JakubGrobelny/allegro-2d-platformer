@@ -6,7 +6,7 @@ CC = gcc
 INCLUDE = -I. -I/usr/include/allegro5
 LIBS = -lallegro -lm
 
-SRCS = src/main.c src/object.c src/hitbox.c src/util.c src/physics.c src/list.c src/player.c
+SRCS = src/main.c src/object.c src/hitbox.c src/util.c src/physics.c src/list.c src/player.c src/keyboard.c
 OBJS = $(SRCS:.c=.o)
 
 MAIN = game
