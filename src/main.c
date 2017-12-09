@@ -41,10 +41,6 @@ int main()
     bool redraw = false;
     bool key[5] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety)
 
-    // TODO: init object
-    //Object player;
-    //ObjectsList obj_list = create_objects_list(1);
-
     while(true)
     {
         ALLEGRO_EVENT event;
@@ -53,8 +49,6 @@ int main()
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             redraw = true;
-            //update_player(&player, key, &obj_list); // TODO: przekazywac liste objektow do update_player i sprawdzac kolizje przed przemieszczeniem
-
         }
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             break;
@@ -113,7 +107,6 @@ int main()
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
-    //delete_list(&obj_list);
     // TODO: niszczyc wyszystkie bitmapy
 
     return 0;

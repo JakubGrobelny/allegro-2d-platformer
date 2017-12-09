@@ -78,5 +78,5 @@ Object pop_element_ol(ObjectsList* list, int i)
 
 void delete_list(ObjectsList* list)
 {
-    free(list);
+    free(list->objects);
 }
