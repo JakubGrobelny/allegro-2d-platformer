@@ -1,7 +1,8 @@
 #ifndef _OBJECT
 #define _OBJECT
 
-#include "sprite.h"
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_image.h>
 #include "hitbox.h"
 #include "keyboard.h"
 #include <stdbool.h>
@@ -11,17 +12,19 @@ typedef struct
 {
     int pos_x;
     int pos_y;
+    int type;
+
+    ALLEGRO_BITMAP* bitmap;
     int width;
     int height;
-    int type;
+
     // Komponenty:
     Hitbox hitbox;
-    Sprite sprite;
     Physics physics;
 
 } Object;
 
-Object create_object(int pos_x, int pos_y, int width, int height, Physics physics, int type);
+void init_object(Object* object, int pos_x, int pos_y, int width, int height, int hitbox_type ,Physics physics, ALLEGRO_BITMAP* bitmap);
 void draw_object(Object object);
 
 #endif

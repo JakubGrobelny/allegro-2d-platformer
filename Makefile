@@ -2,11 +2,11 @@
 #W celu kompilacji nalezy uzyc polecenia "make"
 
 CC = gcc
-LDFLAGS = -L/usr/lib -lallegro -lallegro_primitives
+	LDFLAGS = -L/usr/lib -lallegro -lallegro_image -lallegro_dialog
 INCLUDE = -I. -I/usr/include/allegro5
 LIBS = -lallegro -lm
 
-SRCS = src/main.c src/object.c src/hitbox.c src/sprite.c src/util.c src/physics.c src/list.c src/player.c
+SRCS = src/main.c src/object.c src/hitbox.c src/util.c src/physics.c src/list.c src/player.c
 OBJS = $(SRCS:.c=.o)
 
 MAIN = game
@@ -20,10 +20,12 @@ $(MAIN): $(OBJS)
 	$(CC) $(INCLUDE) -c $< -o $@
 clean:
 	$(RM) src/*.o *~ $(MAIN)
+	$(RM) log $(MAIN)
 
 #ciagle myle sie i wpisuje clear wiec niech bedzie tez clear
 clear:
 	$(RM) src/*.o *~ $(MAIN)
+	$(RM) log $(MAIN)
 
 depend: $(SRCS)
 	makedepend $(INCLUDE) $^

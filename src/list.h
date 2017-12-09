@@ -2,6 +2,7 @@
 #define _LIST
 
 #include "object.h"
+#include <stdlib.h>
 
 typedef struct
 {
@@ -20,4 +21,5 @@ Object pop_element_ol(ObjectsList* list, int i);
 void set_element_ol(ObjectsList* list, int i, Object obj);
 void push_back_ol(ObjectsList* list, Object obj);
 void remove_element_ol(ObjectsList* list, int i);
+void delete_list(ObjectsList* list);
 #endif

@@ -21,8 +21,6 @@ void update_player(Object* player, bool* key, ObjectsList* list)
 
     // TODO: Ograniczyc ruch gracza do rozmiarow okna
 
-    player->sprite.pos_y = player->pos_y;
-    player->sprite.pos_x = player->pos_x;
     player->hitbox.pos_y = player->pos_y;
     player->hitbox.pos_x = player->pos_x;
 }
