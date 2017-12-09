@@ -40,7 +40,7 @@ int main()
 
 
     Object player;
-    init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics());
+    init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics(), 1);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
@@ -49,6 +49,18 @@ int main()
     ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height);
     bitmap = al_load_bitmap("./resources/test.png");
     bind_bitmap(&player, bitmap);
+
+    ALLEGRO_BITMAP* platform = al_create_bitmap(128, 32);
+    platform = al_load_bitmap("./resources/platform.png");
+
+    Object temp_platform;
+    bind_bitmap(&temp_platform, platform);
+
+    for (int i = 0; i < 5; i++)
+    {
+        init_object(&temp_platform, 120 * (i+1), 450 + 50 * i, 128, 32, rectangle, generate_static_physics(), 1);
+        push_back_ol(&obj_list, temp_platform);
+    }
 
     bool redraw = false;
     bool key[5] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety) TODO: button down/up
@@ -111,6 +123,12 @@ int main()
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
+
+            for (int i = 0; i < 5; i++)
+            {
+                draw_object(get_element_pointer_ol(&obj_list, i));
+            }
+
             draw_object(&player);
             al_flip_display();
             al_clear_to_color(WHITE);

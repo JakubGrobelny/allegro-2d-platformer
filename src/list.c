@@ -18,6 +18,11 @@ Object get_element_ol(ObjectsList* list, int i)
     return list->objects[(list->first + i) % list->capacity];
 }
 
+Object* get_element_pointer_ol(ObjectsList* list, int i)
+{
+    return &(list->objects[(list->first + i) % list->capacity]);
+}
+
 void set_element_ol(ObjectsList* list, int i, Object obj)
 {
     list->objects[(list->first + i) % list->capacity] = obj;

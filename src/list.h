@@ -15,6 +15,7 @@ typedef struct
 
 ObjectsList create_objects_list(unsigned int initial_capacity);
 Object get_element_ol(ObjectsList* list, int i);
+Object* get_element_pointer_ol(ObjectsList* list, int i);
 Object pop_first_ol(ObjectsList* list);
 Object pop_last_ol(ObjectsList* list);
 Object pop_element_ol(ObjectsList* list, int i);

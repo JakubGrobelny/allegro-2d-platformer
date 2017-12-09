@@ -17,6 +17,8 @@ typedef struct
     ALLEGRO_BITMAP* bitmap;
     int width;
     int height;
+    short animation_frame;
+    short frames_number;
 
     // Komponenty:
     Hitbox hitbox;
@@ -24,7 +26,7 @@ typedef struct
 
 } Object;
 
-void init_object(Object* object, int pos_x, int pos_y, int width, int height, int hitbox_type ,Physics physics);
+void init_object(Object* object, int pos_x, int pos_y, int width, int height, int hitbox_type, Physics physics, short frames_number);
 void bind_bitmap(Object* object, ALLEGRO_BITMAP* bitmap);
 void draw_object(Object* object);
 
