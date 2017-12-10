@@ -38,7 +38,6 @@ int main()
     al_clear_to_color(WHITE);
     al_start_timer(timer);
 
-
     Object player;
     init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics(), 2);
 
@@ -63,9 +62,9 @@ int main()
     }
 
     bool redraw = false;
-    bool keys_active[KEYS_AMOUNT] = {false}; // tablica przechowujaca stan klawisza (true - wcisniety) TODO: button down/up
-    bool keys_down[KEYS_AMOUNT] = {false};
-    bool keys_up[KEYS_AMOUNT] = {false};
+    bool keys_active[KEYS_AMOUNT] = {false};
+    bool keys_down[KEYS_AMOUNT]   = {false};
+    bool keys_up[KEYS_AMOUNT]     = {false};
 
     while(true)
     {
@@ -102,7 +101,8 @@ int main()
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
     al_destroy_bitmap(bitmap);
-    // TODO: niszczyc wyszystkie bitmapy
+    al_destroy_bitmap(platform);
+    delete_list(&obj_list);
 
     return 0;
 }

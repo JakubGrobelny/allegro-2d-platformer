@@ -29,5 +29,7 @@ typedef struct
 void init_object(Object* object, int pos_x, int pos_y, int width, int height, int hitbox_type, Physics physics, short frames_number);
 void bind_bitmap(Object* object, ALLEGRO_BITMAP* bitmap);
 void draw_object(Object* object);
+void jump(Object* object);
+bool stands_on(Object* object, Object* platform);
 
 #endif

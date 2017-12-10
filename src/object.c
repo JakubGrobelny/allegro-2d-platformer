@@ -21,3 +21,13 @@ void draw_object(Object* object)
 {
     al_draw_bitmap_region(object->bitmap, 0, object->height * object->animation_frame, object->width, object->height, (float)object->pos_x, (float)object->pos_y, 0);
 }
+
+void jump(Object* object)
+{
+        // TODO
+}
+
+bool stands_on(Object* object, Object* platform)
+{
+        // TODO
+}
