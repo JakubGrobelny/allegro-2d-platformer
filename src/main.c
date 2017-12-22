@@ -38,8 +38,10 @@ int main()
     al_clear_to_color(WHITE);
     al_start_timer(timer);
 
+    Physics temp_physics = create_physics(0, 0, 0); // testowo
+
     Object player;
-    init_object(&player, 250, 250, 64, 64, rectangle, generate_static_physics(), 2);
+    init_object(&player, 250, 250, 64, 64, rectangle, temp_physics, 2);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
@@ -57,7 +59,7 @@ int main()
 
     for (int i = 0; i < 5; i++)
     {
-        init_object(&temp_platform, 120 * (i+1), 450 + 50 * i, 128, 32, rectangle, generate_static_physics(), 1);
+        init_object(&temp_platform, 120 * (i+1), 450 + 50 * i, 128, 32, rectangle, temp_physics, 1);
         push_back_ol(&obj_list, temp_platform);
     }
 

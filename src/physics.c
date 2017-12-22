@@ -1,26 +1,20 @@
 #include "physics.h"
 
-Physics create_physics(float velocity_x, float velocity_y, float acceleration, bool gravity, float mass)
+Physics create_physics(float speed_x, float speed_y, float mass)
 {
     Physics new;
-    new.velocity_x = velocity_x;
-    new.velocity_y = velocity_y;
-    new.acceleration = acceleration;
-    new.gravity = gravity;
+    Vector speed = create_vector(speed_x, speed_y);
+    new.speed = speed;
     new.mass = mass;
 
     return new;
 }
 
-Physics generate_static_physics()
+Vector create_vector(float x, float y)
 {
-    return create_physics(0, 0, 0, false, 0);
-}
+    Vector new;
+    new.x = x;
+    new.y = y;
 
-void apply_gravity(Physics* physics)
-{
-    if (physics->velocity_y - GRAV_CONST >= MAX_FALL_SPEED)
-        physics->velocity_y -= GRAV_CONST;
-    else
-        physics->velocity_y = MAX_FALL_SPEED;
+    return new;
 }
