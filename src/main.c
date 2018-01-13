@@ -11,15 +11,19 @@
 
 int main()
 {
+    // initializing allegro
     if (!al_init())
     {
         return -2;
         system("echo failed to init Allegro >> log");
     }
 
+    // creating the display etc.
     ALLEGRO_DISPLAY *display = al_create_display(DISPLAY_WIDTH, DISPLAY_HEIGHT);
     ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
     ALLEGRO_TIMER *timer = al_create_timer(1.0 / FPS);
+
+    // initializing the keyboard and image addon and checking if the initialization was successfull
     if (!al_install_keyboard())
     {
         al_show_native_message_box(display, "Error", "Error", "al_install_keyboard() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -31,13 +35,17 @@ int main()
         return -1;
     }
 
+    // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
+    // clearing the screen and starting the timer
     al_clear_to_color(WHITE);
     al_start_timer(timer);
 
+
+    // creating structures
     Physics temp_physics = create_physics(0, 0, 0); // testowo
 
     Object player;
@@ -46,7 +54,7 @@ int main()
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
 
-    // BITMAPS
+    // bitmaps
     ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
     bitmap = al_load_bitmap("./resources/test.png");
     bind_bitmap(&player, bitmap);
@@ -57,33 +65,42 @@ int main()
     Object temp_platform;
     bind_bitmap(&temp_platform, platform);
 
+    // test: creating a list of objects
     for (int i = 0; i < 5; i++)
     {
         init_object(&temp_platform, 120 * (i+1), 450 + 50 * i, 128, 32, rectangle, temp_physics, 1);
         push_back_ol(&obj_list, temp_platform);
     }
 
+    // variable used to determine whether the screen should be redrawed
     bool redraw = false;
+
+    // arrays containing the states of keyboard buttons
     bool keys_active[KEYS_AMOUNT] = {false};
     bool keys_down[KEYS_AMOUNT]   = {false};
     bool keys_up[KEYS_AMOUNT]     = {false};
 
+    // game's loop
     while(true)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
 
+        // if the timer has generated an event it's time to update the game's logics
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             update_player(&player, keys_active, keys_down, keys_up, &obj_list);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
             redraw = true;
         }
+        // closing the window
         else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             break;
 
+        // updating the keyboard
         update_buttons(&event, keys_down, keys_up, keys_active);
 
+        // drawing things to the screen
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
@@ -99,6 +116,7 @@ int main()
         }
     }
 
+    // cleanup
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
