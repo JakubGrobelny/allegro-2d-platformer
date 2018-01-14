@@ -47,12 +47,4 @@ void remove_element_ol(ObjectsList* list, int i);
 // free the memory taken by the list
 void delete_list(ObjectsList* list);
 
-// TODO: move these functions to a separate file:
-
-// checking if given object collides with any other object in the given direction
-bool collides_in_direction(Object* object, ObjectsList* list, int direction);
-
-// applying the vectors to an object
-void apply_vectors(Object* object, ObjectsList* list);
-
 #endif
