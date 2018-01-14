@@ -49,14 +49,14 @@ int main()
     Physics temp_physics = create_physics(0, 0, 0); // testowo
 
     Object player;
-    init_object(&player, 250, 250, 64, 64, rectangle, temp_physics, 2);
+    init_object(&player, 250, 250, 64, 64, rectangle, temp_physics, 15);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
 
     // bitmaps
     ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
-    bitmap = al_load_bitmap("./resources/test.png");
+    bitmap = al_load_bitmap("./resources/mario_small.png");
     bind_bitmap(&player, bitmap);
 
     ALLEGRO_BITMAP* platform = al_create_bitmap(128, 32);
