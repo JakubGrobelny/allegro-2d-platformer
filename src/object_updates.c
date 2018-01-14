@@ -6,8 +6,30 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
     {
         if (relative_direction(object, get_element_pointer_ol(list, i), direction))
         {
+            Hitbox temp = object->hitbox;
+            temp.pos_x += object->physics.speed.x;
+            temp.pos_y += object->physics.speed.y;
+
             if (collide(object->hitbox, get_element_pointer_ol(list, i)->hitbox))
+            {
+                switch (direction)
+                {
+                    case TOP:
+                        object->pos_y = get_element_pointer_ol(list, i)->pos_y + get_element_pointer_ol(list, i)->height;
+                        break;
+                    case BOTTOM:
+                        object->pos_y = get_element_pointer_ol(list, i)->pos_y - object->height;
+                        break;
+                    case LEFT:
+                        object->pos_x = get_element_pointer_ol(list, i)->pos_x + get_element_pointer_ol(list, i)->width;
+                        break;
+                    case RIGHT:
+                        object->pos_x = get_element_pointer_ol(list, i)->pos_x - object->width;
+                        break;
+                }
+
                 return true;
+            }
         }
     }
 
@@ -24,8 +46,6 @@ void apply_vectors(Object* object, ObjectsList* list)
 
 void apply_gravity(Object* object)
 {
-    // TODO: if not on_the_ground()
-
     object->physics.speed.y += object->physics.mass * GRAV_CONST;
 
     if (object->physics.speed.y > MAX_FALLING_SPEED)
@@ -34,5 +54,5 @@ void apply_gravity(Object* object)
 
 bool on_the_ground(Object* object, ObjectsList* list)
 {
-
+    return collides_in_direction(object, list, BOTTOM); // TODO: if object on list is platform
 }
