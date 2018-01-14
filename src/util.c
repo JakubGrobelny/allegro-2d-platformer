@@ -13,3 +13,8 @@ double minimum(double a, double b)
         return a;
     return b;
 }
+
+float abs_float(float number)
+{
+    return (number > 0 ? number : -number);
+}

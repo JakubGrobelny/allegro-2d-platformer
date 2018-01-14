@@ -8,6 +8,7 @@
 #include "object.h"
 #include "list.h"
 #include "player.h"
+#include "object_updates.h"
 
 int main()
 {
@@ -46,10 +47,11 @@ int main()
 
 
     // creating structures
-    Physics temp_physics = create_physics(0, 0, 0); // testowo
+    Physics static_physics = create_physics(0, 0, 0, 0, 0);
+    Physics player_physics = create_physics(0, 0, 1.2, 3, 10);
 
     Object player;
-    init_object(&player, 250, 250, 64, 64, rectangle, temp_physics, 15);
+    init_object(&player, 250, 250, 64, 64, rectangle, player_physics, 15);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
@@ -63,14 +65,9 @@ int main()
     platform = al_load_bitmap("./resources/platform.png");
 
     Object temp_platform;
+    init_object(&temp_platform, 260, 520, 128, 32, rectangle, static_physics, 1);
     bind_bitmap(&temp_platform, platform);
-
-    // test: creating a list of objects
-    for (int i = 0; i < 5; i++)
-    {
-        init_object(&temp_platform, 120 * (i+1), 450 + 50 * i, 128, 32, rectangle, temp_physics, 1);
-        push_back_ol(&obj_list, temp_platform);
-    }
+    push_back_ol(&obj_list, temp_platform);
 
     // variable used to determine whether the screen should be redrawed
     bool redraw = false;
@@ -91,6 +88,7 @@ int main()
         {
             update_player(&player, keys_active, keys_down, keys_up, &obj_list);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
+            apply_vectors(&player, &obj_list);
             redraw = true;
         }
         // closing the window

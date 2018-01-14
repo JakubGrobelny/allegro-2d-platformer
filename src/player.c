@@ -4,7 +4,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 {
     if (keys_active[KEY_UP])
     {
-        player->pos_y -= 10; // hardcoded poki co
+        player->pos_y -= 10;
     }
     if (keys_active[KEY_DOWN])
     {
@@ -12,11 +12,17 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_RIGHT])
     {
-        player->pos_x += 10;
+        player->physics.speed.x += player->physics.acceleration.x;
+
+        if (player->physics.speed.x > MAX_SPEED)
+            player->physics.speed.x = MAX_SPEED;
     }
     if (keys_active[KEY_LEFT])
     {
-        player->pos_x -= 10;
+        player->physics.speed.x -= player->physics.acceleration.x;
+
+        if (abs_float(player->physics.speed.x) > MAX_SPEED)
+            player->physics.speed.x = -MAX_SPEED;
     }
 
     if (keys_down[KEY_ENTER])

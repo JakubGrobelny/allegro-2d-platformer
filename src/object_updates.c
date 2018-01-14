@@ -16,8 +16,8 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
 
 void apply_vectors(Object* object, ObjectsList* list)
 {
-    if (collides_in_direction(object, list, (object->physics.speed.x > 0 ? RIGHT : LEFT)))
+    if (!collides_in_direction(object, list, (object->physics.speed.x > 0 ? RIGHT : LEFT)))
         object->pos_x += object->physics.speed.x;
-    if (collides_in_direction(object, list, (object->physics.speed.y > 0 ? TOP : BOTTOM)))
+    if (!collides_in_direction(object, list, (object->physics.speed.y > 0 ? TOP : BOTTOM)))
         object->pos_y += object->physics.speed.y;
 }
