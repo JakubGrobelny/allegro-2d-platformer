@@ -48,7 +48,7 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0, 0, 0, 0, 0);
-    Physics player_physics = create_physics(0, 0, 1.2, 3, 10);
+    Physics player_physics = create_physics(0, 0, 1.2, 10, 1);
 
     Object player;
     init_object(&player, 250, 250, 64, 64, rectangle, player_physics, 15);
@@ -88,7 +88,6 @@ int main()
         {
             update_player(&player, keys_active, keys_down, keys_up, &obj_list);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
-            apply_vectors(&player, &obj_list);
             redraw = true;
         }
         // closing the window

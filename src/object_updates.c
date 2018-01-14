@@ -21,3 +21,18 @@ void apply_vectors(Object* object, ObjectsList* list)
     if (!collides_in_direction(object, list, (object->physics.speed.y > 0 ? TOP : BOTTOM)))
         object->pos_y += object->physics.speed.y;
 }
+
+void apply_gravity(Object* object)
+{
+    // TODO: if not on_the_ground()
+
+    object->physics.speed.y += object->physics.mass * GRAV_CONST;
+
+    if (object->physics.speed.y > MAX_FALLING_SPEED)
+        object->physics.speed.y = MAX_FALLING_SPEED;
+}
+
+bool on_the_ground(Object* object, ObjectsList* list)
+{
+
+}

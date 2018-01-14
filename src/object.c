@@ -47,11 +47,6 @@ bool relative_direction(Object* observer, Object* object, int direction)
     return false;
 }
 
-void jump(Object* object)
-{
-        // TODO
-}
-
 bool stands_on(Object* object, Object* platform)
 {
         // TODO

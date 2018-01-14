@@ -54,9 +54,6 @@ void draw_object(Object* object);
 // checking whether the object is in the given direction relatively to the observer
 bool relative_direction(Object* observer, Object* object, int direction);
 
-// making the object jump
-void jump(Object* object);
-
 // checking if the object is standing on top of other object
 bool stands_on(Object* object, Object* platform);
 

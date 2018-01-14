@@ -4,11 +4,11 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 {
     if (keys_active[KEY_UP])
     {
-        player->pos_y -= 10;
+        jump(player);
     }
     if (keys_active[KEY_DOWN])
     {
-        player->pos_y += 10;
+        crouch(player);
     }
     if (keys_active[KEY_RIGHT])
     {
@@ -37,8 +37,31 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
     }
 
+    apply_gravity(player);
+    apply_vectors(player, list);
+
     // TODO: Ograniczyc ruch gracza do rozmiarow okna
 
     player->hitbox.pos_y = player->pos_y;
     player->hitbox.pos_x = player->pos_x;
+}
+
+void jump(Object* player)
+{
+    // TODO:
+    // 1. check whether the player is on the ground
+    // 2. jump
+
+    player->physics.speed.y = 0; // will be changed when on_the_ground() is implemented
+
+    player->physics.speed.y -= player->physics.acceleration.y;
+}
+
+void crouch(Object* player)
+{
+    // TODO:
+    // 1. check if mario is big
+    // 2. change height and sprite
+    // 3. ???
+    // 4. profit
 }
