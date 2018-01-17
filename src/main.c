@@ -69,8 +69,15 @@ int main()
     bind_bitmap(&temp_platform, platform);
     push_back_ol(&obj_list, temp_platform);
 
-    init_object(&temp_platform, PLATFORM, 510, 600, 128, 32, RECTANGLE, 510, 600, 128, 32, static_physics, 1);
+    init_object(&temp_platform, PLATFORM, 260+128, 520, 128, 32, RECTANGLE, 260+128, 520, 128, 32, static_physics, 1);
     push_back_ol(&obj_list, temp_platform);
+
+    init_object(&temp_platform, PLATFORM, 260+128*2, 520, 128, 32, RECTANGLE, 260+128*2, 520, 128, 32, static_physics, 1);
+    push_back_ol(&obj_list, temp_platform);
+
+    init_object(&temp_platform, PLATFORM, 260+128*3, 520, 128, 32, RECTANGLE, 260+128*3, 520, 128, 32, static_physics, 1);
+    push_back_ol(&obj_list, temp_platform);
+
 
     // variable used to determine whether the screen should be redrawed
     bool redraw = false;
@@ -81,6 +88,9 @@ int main()
     bool keys_up[KEYS_AMOUNT]     = {false};
 
     // game's loop
+
+    int frame = 0;
+
     while(true)
     {
         ALLEGRO_EVENT event;
@@ -89,7 +99,11 @@ int main()
         // if the timer has generated an event it's time to update the game's logics
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
-            update_player(&player, keys_active, keys_down, keys_up, &obj_list);
+            frame++;
+            if (frame > 60)
+                frame = 0;
+
+            update_player(&player, keys_active, keys_down, keys_up, &obj_list, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
             redraw = true;
         }
@@ -104,13 +118,14 @@ int main()
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
+            
+            draw_object(&player);
 
             for (int i = 0; i < 5; i++)
             {
                 draw_object(get_element_pointer_ol(&obj_list, i));
             }
 
-            draw_object(&player);
             al_flip_display();
             al_clear_to_color(WHITE);
         }

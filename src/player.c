@@ -1,6 +1,6 @@
 #include "player.h"
 
-void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list)
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, int frame)
 {
     if (player->pos_y > DISPLAY_HEIGHT) // just for testings
         respawn_player(player, 250, 250);
@@ -10,23 +10,35 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     else
         apply_gravity(player);
 
+    bool running = false;
+
     if (keys_active[KEY_DOWN]) // TODO: or KEY_LCTRL
     {
         crouch(player);
     }
     if (keys_active[KEY_RIGHT])
     {
-        player->physics.speed.x += player->physics.acceleration.x;
+        if (on_the_ground)
+        {
+            player->physics.speed.x += player->physics.acceleration.x;
 
-        if (player->physics.speed.x > MAX_SPEED)
+            if (player->physics.speed.x > MAX_SPEED)
             player->physics.speed.x = MAX_SPEED;
+
+            running = true;
+        }
     }
     if (keys_active[KEY_LEFT])
     {
-        player->physics.speed.x -= player->physics.acceleration.x;
+        if (on_the_ground)
+        {
+            player->physics.speed.x -= player->physics.acceleration.x;
 
-        if (abs_float(player->physics.speed.x) > MAX_SPEED)
+            if (abs_float(player->physics.speed.x) > MAX_SPEED)
             player->physics.speed.x = -MAX_SPEED;
+
+            running = true;
+        }
     }
 
     if (keys_down[KEY_UP])
@@ -34,17 +46,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         jump(player);
         player->pos_y--; // an ugly hack but it works so I am not going to change it
     }
-    if (keys_down[KEY_ENTER])
-    {
-        if (player->animation_frame + 1 < player->frames_number)
-        {
-            player->animation_frame++;
-        }
-        else
-        {
-            player->animation_frame = 0;
-        }
-    }
+
+    animate_player(player, list, running, frame);
 
     // temporary friction simulation:
     player->physics.speed.x /= 1.1f;
@@ -79,4 +82,88 @@ void respawn_player(Object* player, int x, int y)
 
     player->physics.speed.x = 0;
     player->physics.speed.x = 0;
+}
+
+void animate_player(Object* player, ObjectsList* list, bool running, int frame)
+{
+        // jumping
+        if (player->physics.speed.y < 0)
+        {
+            if (player->physics.speed.x < 0)
+            {
+                player->animation_frame = 5;
+            }
+            else
+            {
+                player->animation_frame = 12;
+            }
+        }
+        // on the ground
+        else if (on_the_ground(player, list))
+        {
+            // idle
+            if (player->physics.speed.x == 0 || !running)
+            {
+                if (player->animation_frame > 6)
+                {
+                    player->animation_frame = 7;
+                }
+                else
+                {
+                    player->animation_frame = 0;
+                }
+            }
+            // running
+            else
+            {
+                // if previously idle
+                if (player->animation_frame == 7 || player->animation_frame == 0)
+                {
+                    // start running to the left/right
+                    if (player->physics.speed.x < 0)
+                    {
+                        player->animation_frame = 1;
+                    }
+                    else
+                    {
+                        player->animation_frame = 8;
+                    }
+                }
+                // if was running
+                else if (running && !(frame % 3 * (player->physics.speed.x / MAX_SPEED) )) // frame * player->physics.speed.x / MAX_SPEED
+                {
+                    if (player->physics.speed.x < 0)
+                    {
+                        player->animation_frame++;
+
+                        if (player->animation_frame >= 4)
+                        {
+                            player->animation_frame = 1;
+                        }
+                    }
+                    else
+                    {
+                        player->animation_frame++;
+
+                        if (player->animation_frame >= 11)
+                        {
+                            player->animation_frame = 9;
+                        }
+                    }
+                }
+
+            }
+        }
+        // falling
+        else
+        {
+            if (player->physics.speed.x < 0)
+            {
+                player->animation_frame = 6;
+            }
+            else
+            {
+                player->animation_frame = 13;
+            }
+        }
 }
