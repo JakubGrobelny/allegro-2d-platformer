@@ -1,13 +1,14 @@
 #include "object.h"
 
-void init_object(Object* object, int pos_x, int pos_y, int width, int height, int hitbox_type, Physics physics, short frames_number)
+void init_object(Object* object, int type, int pos_x, int pos_y, int width, int height, int hitbox_type, int hitbox_pos_x, int hitbox_pos_y, int hitbox_width, int hitbox_height, Physics physics, short frames_number)
 {
+    object->type = type;
     object->pos_x = pos_x;
     object->pos_y = pos_y;
     object->width = width;
     object->height = height;
     object->physics = physics;
-    object->hitbox = create_hitbox(hitbox_type, pos_x, pos_y, width, height);
+    object->hitbox = create_hitbox(hitbox_type, hitbox_pos_x, hitbox_pos_y, hitbox_width, hitbox_height);
     object->animation_frame = 0;
     object->frames_number = frames_number;
 }

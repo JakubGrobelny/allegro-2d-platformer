@@ -16,14 +16,14 @@ Hitbox create_hitbox(short type, int pos_x, int pos_y, int width, int height)
 
 bool collide(Hitbox first, Hitbox second)
 {
-    if (first.type == rectangle && second.type == rectangle)
+    if (first.type == RECTANGLE && second.type == RECTANGLE)
     {
         if ((first.pos_x + first.width < second.pos_x || first.pos_x > second.pos_x + second.width) ||
             (first.pos_y + first.height < second.pos_y || first.pos_y > second.pos_y + second.height))
             return false;
         return true;
     }
-    if (first.type == circle && second.type == circle)
+    if (first.type == CIRCLE && second.type == CIRCLE)
     {
         double r_sum = (double)(first.width) + (double)(second.width);
         double distance = sqrt((double)(first.pos_x - second.pos_x)*(first.pos_x - second.pos_x)+(double)(first.pos_y - second.pos_y)*(first.pos_y - second.pos_y));
@@ -40,7 +40,7 @@ bool collide(Hitbox first, Hitbox second)
         double rect_width;
         double rect_height;
 
-        if (first.type == rectangle)
+        if (first.type == RECTANGLE)
         {
             rect_x = (double)(first.pos_x);
             rect_y = (double)(first.pos_y);

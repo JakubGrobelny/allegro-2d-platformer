@@ -51,7 +51,7 @@ int main()
     Physics player_physics = create_physics(0, 0, 1.2f, 20.0f, 1);
 
     Object player;
-    init_object(&player, 250, 250, 64, 64, rectangle, player_physics, 15);
+    init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 242, 250, 48, 64, player_physics, 15);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
@@ -65,11 +65,11 @@ int main()
     platform = al_load_bitmap("./resources/platform.png");
 
     Object temp_platform;
-    init_object(&temp_platform, 260, 520, 128, 32, rectangle, static_physics, 1);
+    init_object(&temp_platform, PLATFORM, 260, 520, 128, 32, RECTANGLE, 260, 520, 128, 32, static_physics, 1);
     bind_bitmap(&temp_platform, platform);
     push_back_ol(&obj_list, temp_platform);
 
-    init_object(&temp_platform, 510, 600, 128, 32, rectangle, static_physics, 1);
+    init_object(&temp_platform, PLATFORM, 510, 600, 128, 32, RECTANGLE, 510, 600, 128, 32, static_physics, 1);
     push_back_ol(&obj_list, temp_platform);
 
     // variable used to determine whether the screen should be redrawed

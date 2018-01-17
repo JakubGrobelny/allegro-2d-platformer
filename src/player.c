@@ -53,8 +53,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     apply_vectors(player, list);
 
-    player->hitbox.pos_y = player->pos_y;
-    player->hitbox.pos_x = player->pos_x;
+    player->hitbox.pos_y = player->pos_y + (player->height - player->hitbox.height) / 2;
+    player->hitbox.pos_x = player->pos_x + (player->width - player->hitbox.width) / 2;
 }
 
 void jump(Object* player)

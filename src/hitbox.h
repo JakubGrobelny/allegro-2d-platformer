@@ -9,8 +9,8 @@ enum types
     enum containing possible types of hitboxes
      */
 
-    rectangle,
-    circle
+    RECTANGLE,
+    CIRCLE
 };
 
 typedef struct

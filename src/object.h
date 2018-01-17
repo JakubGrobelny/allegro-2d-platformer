@@ -42,8 +42,19 @@ typedef enum
 
 } Directions;
 
+typedef enum
+{
+    /*
+    Enum of possible types of objects
+     */
+
+    PLAYER,
+    PLATFORM,
+
+} ObjectTypes;
+
 // initializes the object with given parameters
-void init_object(Object* object, int pos_x, int pos_y, int width, int height, int hitbox_type, Physics physics, short frames_number);
+void init_object(Object* object, int type, int pos_x, int pos_y, int width, int height, int hitbox_type, int hitbox_pos_x, int hitbox_pos_y, int hitbox_width, int hitbox_height, Physics physics, short frames_number);
 
 // adding the pointer to bitmap to the object
 void bind_bitmap(Object* object, ALLEGRO_BITMAP* bitmap);
