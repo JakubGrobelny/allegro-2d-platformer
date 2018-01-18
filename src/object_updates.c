@@ -7,8 +7,26 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
         if (relative_direction(object, get_element_pointer_ol(list, i), direction))
         {
             Hitbox temp = object->hitbox;
-            temp.pos_x += object->physics.speed.x; // int += float !!!
-            temp.pos_y += object->physics.speed.y;
+
+            // int += float !!!
+
+            if (direction == BOTTOM)
+            {
+                temp.pos_y += (int)(object->physics.speed.y + 0.5f);
+            }
+            else if (direction == RIGHT)
+            {
+                temp.pos_x += (int)(object->physics.speed.x + 0.5f);
+            }
+            else if (direction == TOP)
+            {
+                temp.pos_y += (int)(object->physics.speed.y - 0.5f);
+            }
+            else if (direction == LEFT)
+            {
+                temp.pos_x += (int)(object->physics.speed.x - 0.5f);
+            }
+
 
             if (collide(temp, get_element_pointer_ol(list, i)->hitbox))
             {
@@ -26,10 +44,14 @@ void apply_vectors(Object* object, ObjectsList* list)
     int pos_x = object->pos_x;
     int pos_y = object->pos_y;
 
+    if (!collides_in_direction(object, list, ((object->physics.speed.y < 0.0f) ? BOTTOM : TOP)))
+        pos_y += object->physics.speed.y;
+    else
+        object->physics.speed.y = 0;
     if (!collides_in_direction(object, list, ((object->physics.speed.x > 0.0f) ? RIGHT : LEFT)))
         pos_x += object->physics.speed.x;
-    if (!collides_in_direction(object, list, ((object->physics.speed.y < 0.0f) ? TOP : BOTTOM)))
-        pos_y += object->physics.speed.y;
+    else
+        object->physics.speed.y = 0;
 
     object->pos_x = pos_x;
     object->pos_y = pos_y;

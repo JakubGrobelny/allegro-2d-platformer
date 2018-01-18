@@ -28,17 +28,17 @@ bool relative_direction(Object* observer, Object* object, int direction)
     switch (direction)
     {
         case TOP:
-            if (observer->pos_y <= object->pos_y + object->height)
+            if (observer->pos_y >= object->pos_y + object->height)
                 return true;
             break;
         case BOTTOM:
-            if (observer->pos_y + observer->height >= object->pos_y)
+            if (observer->pos_y + observer->height <= object->pos_y)
                 return true;
             break;
         case LEFT:
             if (observer->pos_x >= object->pos_x + object->width)
                 return true;
-            break;
+            break;  
         case RIGHT:
             if (observer->pos_x + observer->width <= object->width)
                 return true;

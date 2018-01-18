@@ -26,7 +26,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
         else
         {
-            player->physics.speed.x += player->physics.acceleration.x / 1.5f;
+            player->physics.speed.x += (player->physics.acceleration.x / 1.25f);
         }
 
         if (player->physics.speed.x > MAX_SPEED)
@@ -43,7 +43,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
         else
         {
-            player->physics.speed.x -= player->physics.acceleration.x / 1.5f;
+            player->physics.speed.x -= (player->physics.acceleration.x / 1.25f);
         }
 
         if (abs_float(player->physics.speed.x) > MAX_SPEED)
@@ -58,12 +58,18 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     animate_player(player, list, running, frame);
 
+    // temporary friction simulation:
     if (on_the_ground(player, list))
     {
-        // temporary friction simulation:
         player->physics.speed.x /= 1.1f;
         if (abs_float(player->physics.speed.x) < 0.2f)
-        player->physics.speed.x = 0;
+            player->physics.speed.x = 0;
+    }
+    else
+    {
+        player->physics.speed.x /= 1.05f;
+        if (abs_float(player->physics.speed.x) < 0.2f)
+            player->physics.speed.x = 0;
     }
 
     apply_vectors(player, list);
