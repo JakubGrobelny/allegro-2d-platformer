@@ -18,27 +18,36 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_RIGHT])
     {
-        if (on_the_ground)
+        if (on_the_ground(player, list))
         {
             player->physics.speed.x += player->physics.acceleration.x;
 
-            if (player->physics.speed.x > MAX_SPEED)
-            player->physics.speed.x = MAX_SPEED;
-
             running = true;
         }
+        else
+        {
+            player->physics.speed.x += player->physics.acceleration.x / 1.5f;
+        }
+
+        if (player->physics.speed.x > MAX_SPEED)
+            player->physics.speed.x = MAX_SPEED;
+
     }
     if (keys_active[KEY_LEFT])
     {
-        if (on_the_ground)
+        if (on_the_ground(player, list))
         {
             player->physics.speed.x -= player->physics.acceleration.x;
 
-            if (abs_float(player->physics.speed.x) > MAX_SPEED)
-            player->physics.speed.x = -MAX_SPEED;
-
             running = true;
         }
+        else
+        {
+            player->physics.speed.x -= player->physics.acceleration.x / 1.5f;
+        }
+
+        if (abs_float(player->physics.speed.x) > MAX_SPEED)
+            player->physics.speed.x = -MAX_SPEED;
     }
 
     if (keys_down[KEY_UP])
@@ -49,10 +58,13 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     animate_player(player, list, running, frame);
 
-    // temporary friction simulation:
-    player->physics.speed.x /= 1.1f;
-    if (abs_float(player->physics.speed.x) < 0.2f)
+    if (on_the_ground(player, list))
+    {
+        // temporary friction simulation:
+        player->physics.speed.x /= 1.1f;
+        if (abs_float(player->physics.speed.x) < 0.2f)
         player->physics.speed.x = 0;
+    }
 
     apply_vectors(player, list);
 
@@ -130,7 +142,7 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
                     }
                 }
                 // if was running
-                else if (running && !(frame % 3 * (player->physics.speed.x / MAX_SPEED) )) // frame * player->physics.speed.x / MAX_SPEED
+                else if (running && !(frame % 4 / (player->physics.speed.x / MAX_SPEED) )) // frame * player->physics.speed.x / MAX_SPEED
                 {
                     if (player->physics.speed.x < 0)
                     {
@@ -151,7 +163,6 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
                         }
                     }
                 }
-
             }
         }
         // falling

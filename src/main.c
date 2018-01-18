@@ -78,6 +78,11 @@ int main()
     init_object(&temp_platform, PLATFORM, 260+128*3, 520, 128, 32, RECTANGLE, 260+128*3, 520, 128, 32, static_physics, 1);
     push_back_ol(&obj_list, temp_platform);
 
+    init_object(&temp_platform, PLATFORM, 460, 310, 128, 32, RECTANGLE, 460, 310, 128, 32, static_physics, 1);
+    push_back_ol(&obj_list, temp_platform);
+
+    init_object(&temp_platform, PLATFORM, 360, 460, 128, 32, RECTANGLE, 360, 460, 128, 32, static_physics, 1);
+    push_back_ol(&obj_list, temp_platform);
 
     // variable used to determine whether the screen should be redrawed
     bool redraw = false;
@@ -118,10 +123,10 @@ int main()
         if (redraw && al_is_event_queue_empty(event_queue))
         {
             redraw = false;
-            
+
             draw_object(&player);
 
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < obj_list.size; i++)
             {
                 draw_object(get_element_pointer_ol(&obj_list, i));
             }

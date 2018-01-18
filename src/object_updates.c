@@ -7,27 +7,12 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
         if (relative_direction(object, get_element_pointer_ol(list, i), direction))
         {
             Hitbox temp = object->hitbox;
-            temp.pos_x += object->physics.speed.x;
+            temp.pos_x += object->physics.speed.x; // int += float !!!
             temp.pos_y += object->physics.speed.y;
 
-            if (collide(object->hitbox, get_element_pointer_ol(list, i)->hitbox))
+            if (collide(temp, get_element_pointer_ol(list, i)->hitbox))
             {
-                switch (direction)
-                {
-                    case TOP:
-                        object->pos_y = get_element_pointer_ol(list, i)->pos_y + get_element_pointer_ol(list, i)->height;
-                        break;
-                    case BOTTOM:
-                        object->pos_y = get_element_pointer_ol(list, i)->pos_y - object->height;
-                        break;
-                    case LEFT:
-                        object->pos_x = get_element_pointer_ol(list, i)->pos_x + get_element_pointer_ol(list, i)->width;
-                        break;
-                    case RIGHT:
-                        object->pos_x = get_element_pointer_ol(list, i)->pos_x - object->width;
-                        break;
-                }
-
+                //object->animation_frame = 14; for collision testing
                 return true;
             }
         }
@@ -38,10 +23,16 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
 
 void apply_vectors(Object* object, ObjectsList* list)
 {
-    if (!collides_in_direction(object, list, (object->physics.speed.x > 0 ? RIGHT : LEFT)))
-        object->pos_x += object->physics.speed.x;
-    if (!collides_in_direction(object, list, (object->physics.speed.y > 0 ? TOP : BOTTOM)))
-        object->pos_y += object->physics.speed.y;
+    int pos_x = object->pos_x;
+    int pos_y = object->pos_y;
+
+    if (!collides_in_direction(object, list, ((object->physics.speed.x > 0.0f) ? RIGHT : LEFT)))
+        pos_x += object->physics.speed.x;
+    if (!collides_in_direction(object, list, ((object->physics.speed.y < 0.0f) ? TOP : BOTTOM)))
+        pos_y += object->physics.speed.y;
+
+    object->pos_x = pos_x;
+    object->pos_y = pos_y;
 }
 
 void apply_gravity(Object* object)
