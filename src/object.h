@@ -34,11 +34,11 @@ typedef enum
     /*
     Enum of directions used to find relative position of two objects
      */
-
-    TOP,
-    BOTTOM,
-    LEFT,
-    RIGHT
+    STATIC = -1,
+    TOP = 0,
+    BOTTOM = 1,
+    LEFT = 2,
+    RIGHT = 3
 
 } Directions;
 

@@ -1,6 +1,6 @@
 #include "util.h"
 
-Point create_point(float x, float y)
+Point create_point(int x, int y)
 {
     Point new;
     new.x = x;
@@ -24,6 +24,11 @@ double minimum(double a, double b)
 }
 
 float abs_float(float number)
+{
+    return (number > 0 ? number : -number);
+}
+
+float abs_int(int number)
 {
     return (number > 0 ? number : -number);
 }

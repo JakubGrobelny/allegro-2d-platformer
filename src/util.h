@@ -7,8 +7,8 @@ typedef struct Point
     Structure representing a (x, y) point in space
      */
 
-    float x;
-    float y;
+    int x;
+    int y;
 
 } Point;
 
@@ -21,7 +21,10 @@ double minimum(double a, double b);
 // return the absolute value of a number
 float abs_float(float number);
 
+// return the absolute value of a number
+float abs_int(int number);
+
 // create new point (x, y)
-Point create_point(float x, float y)
+Point create_point(int x, int y)
 
 #endif
