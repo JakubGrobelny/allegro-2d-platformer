@@ -1,4 +1,5 @@
 #include "list.h"
+#include <stdio.h>
 
 #ifndef _OBJECT_UPDATES
 #define _OBJECT_UPDATES
