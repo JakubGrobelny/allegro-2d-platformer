@@ -65,8 +65,14 @@ void apply_vectors(Object* object, ObjectsList* list)
     else
         direction_y = TOP;
 
-    Point origin = create_point(object->hitbox.pos_x, object->hitbox.pos_y);
+    if (direction_y == direction_x)
+    {
+        return;
+    }
+
+    Point origin = create_point(object->pos_x, object->pos_y);
     Point target = create_point(origin.x + (int)object->physics.speed.x, origin.y + (int)object->physics.speed.y);
+
     Hitbox temp = object->hitbox;
     temp.pos_x = target.x;
     temp.pos_y = target.y;
@@ -75,47 +81,107 @@ void apply_vectors(Object* object, ObjectsList* list)
     {
         Object* obstacle = get_element_pointer_ol(list, i);
 
-        if (collide(temp, obstacle->hitbox))
+        if (relative_direction(object, obstacle, direction_x) || relative_direction(object, obstacle, direction_y))
         {
-            // how much overlap there is in ox and oy axes
-            int delta_x = 0;
-            int delta_y = 0;
-
-            // calculating the overlaps and moving the target accordingly by substracting the overlap
-            if (direction_x == RIGHT)
+            if (collide(temp, obstacle->hitbox))
             {
-                delta_x = temp.pos_x + temp.width - obstacle->hitbox.pos_x;
 
-                if (delta_x < 0)
-                    delta_x = 0;
-            }
-            else if (direction_x == LEFT)
-            {
-                delta_x = temp.pos_x - (obstacle->hitbox.pos_x + obstacle->hitbox.width);
+                //test
+                printf("Collision!\n");
 
-                if (delta_x > 0)
-                    delta_x = 0;
-            }
+                // how much overlap there is in ox and oy axes
+                int delta_x = 0;
+                int delta_y = 0;
 
-            if (direction_x == TOP)
-            {
-                delta_y = temp.pos_y - (onstacle->hitbox.pos_y + obstacle->hitbox.height);
+                // calculating the overlaps and moving the target accordingly by substracting the overlap
+                if (direction_y == TOP)
+                {
+                    printf("TOP\n");
+                    delta_y = temp.pos_y - (obstacle->hitbox.pos_y + obstacle->hitbox.height);
 
-                if (delta_y > 0)
+                    if (delta_y > 0)
                     delta_y = 0;
-            }
-            else if (direction_y == BOTTOM)
-            {
-                delta_y = temp.pos_y + temp.height - obstacle->hitbox.pos_y;
+                }
+                else if (direction_y == BOTTOM)
+                {
+                    printf("BOTTOM\n");
+                    delta_y = temp.pos_y + temp.height - obstacle->hitbox.pos_y;
 
-                if (delta_y < 0)
+                    if (delta_y < 0)
                     delta_y = 0;
+                }
+
+                if (direction_x == RIGHT)
+                {
+                    printf("RIGHT\n");
+                    delta_x = temp.pos_x + temp.width - obstacle->hitbox.pos_x;
+
+                    if (delta_x < 0)
+                        delta_x = 0;
+                }
+                else if (direction_x == LEFT)
+                {
+                    printf("LEFT\n");
+                    delta_x = temp.pos_x - (obstacle->hitbox.pos_x + obstacle->hitbox.width);
+
+                    if (delta_x > 0)
+                        delta_x = 0;
+                }
+
+                if (delta_y = 0 && delta_x == 0)
+                    break;
+                else if (delta_y == 0)
+                {
+                    target.x -= delta_x;
+                    object->physics.speed.x = 0.0f;
+                    object->physics.speed.y = 0.0f;
+                    break;
+                }
+                else if (delta_x == 0)
+                {
+                    target.y -= delta_y;
+                    object->physics.speed.y = 0.0f;
+                    object->physics.speed.x = 0.0f;
+                    break;
+                }
+
+                if (abs_int(delta_x) > abs_int(delta_y))
+                {
+                    target.x -= delta_x;
+                }
+                else
+                {
+                    target.y -= delta_y;
+                }
+
+                /*
+                float ratio;
+                int full_length;
+                int closer_length;
+
+                if (abs_int(delta_x) >= abs_int(delta_y))
+                {
+                    full_length = abs_int(origin.x - temp.pos_x);
+                    closer_length = abs_int(origin.x - (temp.pos_x - delta_x));
+                    target.x -= delta_x;
+                    ratio = (float)full_length / (float)closer_length;
+                    delta_y *= (int)ratio;
+                    target.y -= delta_y;
+                }
+                else
+                {
+                    full_length = abs_int(origin.y - temp.pos_y);
+                    closer_length = abs_int(origin.y - (temp.pos_y - delta_y));
+                    target.y -= delta_y;
+                    ratio = (float)full_length / (float)closer_length;
+                    delta_x *= (int)ratio;
+                    target.x -= delta_x;
+                }
+                */
+
+                object->physics.speed.x = 0.0f;
+                object->physics.speed.y = 0.0f;
             }
-
-            // TODO: finish
-
-            target.x -= delta_x;
-            target.y -= delta_y;
         }
     }
 

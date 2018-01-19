@@ -1,5 +1,7 @@
 #include "list.h"
+#include "util.h"
 #include <stdio.h>
+#include <stdbool.h>
 
 #ifndef _OBJECT_UPDATES
 #define _OBJECT_UPDATES

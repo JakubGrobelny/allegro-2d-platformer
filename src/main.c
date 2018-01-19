@@ -48,7 +48,7 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0, 0, 0, 0, 0);
-    Physics player_physics = create_physics(0, 0, 1.2f, 20.0f, 1);
+    Physics player_physics = create_physics(0, 0, 1.2f, 1.2f, 1);
 
     Object player;
     init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 242, 250, 48, 64, player_physics, 15);
@@ -67,21 +67,6 @@ int main()
     Object temp_platform;
     init_object(&temp_platform, PLATFORM, 260, 520, 128, 32, RECTANGLE, 260, 520, 128, 32, static_physics, 1);
     bind_bitmap(&temp_platform, platform);
-    push_back_ol(&obj_list, temp_platform);
-
-    init_object(&temp_platform, PLATFORM, 260+128, 520, 128, 32, RECTANGLE, 260+128, 520, 128, 32, static_physics, 1);
-    push_back_ol(&obj_list, temp_platform);
-
-    init_object(&temp_platform, PLATFORM, 260+128*2, 520, 128, 32, RECTANGLE, 260+128*2, 520, 128, 32, static_physics, 1);
-    push_back_ol(&obj_list, temp_platform);
-
-    init_object(&temp_platform, PLATFORM, 260+128*3, 520, 128, 32, RECTANGLE, 260+128*3, 520, 128, 32, static_physics, 1);
-    push_back_ol(&obj_list, temp_platform);
-
-    init_object(&temp_platform, PLATFORM, 460, 310, 128, 32, RECTANGLE, 460, 310, 128, 32, static_physics, 1);
-    push_back_ol(&obj_list, temp_platform);
-
-    init_object(&temp_platform, PLATFORM, 360, 460, 128, 32, RECTANGLE, 360, 460, 128, 32, static_physics, 1);
     push_back_ol(&obj_list, temp_platform);
 
     // variable used to determine whether the screen should be redrawed

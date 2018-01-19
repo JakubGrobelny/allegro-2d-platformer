@@ -3,6 +3,7 @@
 #include "object_updates.h"
 #include "defines.h"
 #include <stdbool.h>
+#include <stdio.h>
 
 #ifndef _PLAYER
 #define _PLAYER

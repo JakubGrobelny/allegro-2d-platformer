@@ -25,6 +25,6 @@ float abs_float(float number);
 float abs_int(int number);
 
 // create new point (x, y)
-Point create_point(int x, int y)
+Point create_point(int x, int y);
 
 #endif
