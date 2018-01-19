@@ -38,9 +38,9 @@ bool relative_direction(Object* observer, Object* object, int direction)
         case LEFT:
             if (observer->pos_x >= object->pos_x + object->width)
                 return true;
-            break;  
+            break;
         case RIGHT:
-            if (observer->pos_x + observer->width <= object->width)
+            if (observer->pos_x + observer->width <= object->pos_x)
                 return true;
             break;
     }
