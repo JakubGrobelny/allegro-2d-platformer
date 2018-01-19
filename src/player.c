@@ -111,9 +111,20 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
             {
                 player->animation_frame = 5;
             }
-            else
+            else if (player->physics.speed.x > 0)
             {
                 player->animation_frame = 12;
+            }
+            else
+            {
+                if (player->animation_frame > 6)
+                {
+                    player->animation_frame = 12;
+                }
+                else
+                {
+                    player->animation_frame = 5;
+                }
             }
         }
         // on the ground
@@ -148,7 +159,7 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
                     }
                 }
                 // if was running
-                else if (running && !(frame % 4 / (player->physics.speed.x / MAX_SPEED) )) // frame * player->physics.speed.x / MAX_SPEED
+                else if (running && !(frame % 5 / (player->physics.speed.x / MAX_SPEED) )) // frame * player->physics.speed.x / MAX_SPEED
                 {
                     if (player->physics.speed.x < 0)
                     {
@@ -162,6 +173,11 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
                     else
                     {
                         player->animation_frame++;
+
+                        if (player->animation_frame < 9)
+                        {
+                            player->animation_frame = 9;
+                        }
 
                         if (player->animation_frame >= 11)
                         {
@@ -178,9 +194,20 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
             {
                 player->animation_frame = 6;
             }
-            else
+            else if (player->physics.speed.x > 0)
             {
                 player->animation_frame = 13;
+            }
+            else
+            {
+                if (player->animation_frame > 6)
+                {
+                    player->animation_frame = 13;
+                }
+                else
+                {
+                    player->animation_frame = 6;
+                }
             }
         }
 }

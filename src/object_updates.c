@@ -44,13 +44,22 @@ void apply_vectors(Object* object, ObjectsList* list)
     int pos_x = object->pos_x;
     int pos_y = object->pos_y;
 
+    bool reset_speed_x = false;
+    bool reset_speed_y = false;
+
+
     if (!collides_in_direction(object, list, ((object->physics.speed.y < 0.0f) ? BOTTOM : TOP)))
         pos_y += object->physics.speed.y;
     else
-        object->physics.speed.y = 0;
+        reset_speed_y = true;
     if (!collides_in_direction(object, list, ((object->physics.speed.x > 0.0f) ? RIGHT : LEFT)))
         pos_x += object->physics.speed.x;
     else
+        reset_speed_x = true;
+
+    if (reset_speed_x)
+        object->physics.speed.x = 0;
+    if (reset_speed_y)
         object->physics.speed.y = 0;
 
     object->pos_x = pos_x;
