@@ -35,6 +35,10 @@ void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* 
                 keys_active[KEY_ENTER] = true;
                 keys_down[KEY_ENTER] = true;
                 break;
+            case ALLEGRO_KEY_SPACE:
+                keys_active[KEY_SPACE] = true;
+                keys_down[KEY_SPACE] = true;
+                break;
         }
     }
     else if (event->type == ALLEGRO_EVENT_KEY_UP)
@@ -60,6 +64,10 @@ void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* 
             case ALLEGRO_KEY_ENTER:
                 keys_active[KEY_ENTER] = false;
                 keys_up[KEY_ENTER] = true;
+                break;
+            case ALLEGRO_KEY_SPACE:
+                keys_active[KEY_SPACE] = false;
+                keys_up[KEY_SPACE] = true;
                 break;
         }
     }

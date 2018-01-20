@@ -4,7 +4,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 {
     //printf("X: %d Y: %d\n", player->hitbox.pos_x, player->hitbox.pos_y);// test
 
-    if (player->pos_y > DISPLAY_HEIGHT) // just for testings
+    if (keys_down[KEY_SPACE]) // just for testing
         respawn_player(player, 250, 250);
 
     //if (on_the_ground(player, list))
@@ -17,6 +17,10 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     if (keys_active[KEY_DOWN]) // TODO: or KEY_LCTRL
     {
         player->physics.speed.y += player->physics.acceleration.y;
+
+        if (player->physics.speed.y > MAX_FALLING_SPEED)
+            player->physics.speed.x = MAX_FALLING_SPEED;
+
         //crouch(player);
     }
     if (keys_active[KEY_RIGHT])
@@ -56,6 +60,9 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     if (keys_active[KEY_UP])
     {
         player->physics.speed.y -= player->physics.acceleration.y;
+
+        if (player->physics.speed.y < -MAX_FALLING_SPEED)
+            player->physics.speed.x = -MAX_FALLING_SPEED;
 
         //jump(player);
         //player->pos_y--; // an ugly hack but it works so I am not going to change it

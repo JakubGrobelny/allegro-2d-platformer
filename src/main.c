@@ -102,6 +102,7 @@ int main()
             break;
 
         // updating the keyboard
+
         update_buttons(&event, keys_down, keys_up, keys_active);
 
         // drawing things to the screen

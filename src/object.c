@@ -35,7 +35,7 @@ bool relative_direction(Object* observer, Object* object, int direction)
     }
     else if (direction == RIGHT)
     {
-        return ((observer->hitbox.pos_x + observer->hitbox.width <= object->hitbox.pos_x) || (observer->hitbox.pos_x + observer->hitbox.width <= object->hitbox.pos_x + object->hitbox.width));
+        return ((observer->hitbox.pos_x + observer->hitbox.width <= object->hitbox.pos_x) || (observer->hitbox.pos_x <= object->hitbox.pos_x));
     }
     else if (direction == LEFT)
     {
