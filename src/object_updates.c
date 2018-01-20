@@ -70,12 +70,12 @@ void apply_vectors(Object* object, ObjectsList* list)
         return;
     }
 
-    Point origin = create_point(object->pos_x, object->pos_y);
-    Point target = create_point(origin.x + (int)object->physics.speed.x, origin.y + (int)object->physics.speed.y);
+    Point origin = create_point(object->hitbox.pos_x, object->hitbox.pos_y);
+    Point target = create_point(origin.x + (int)object->physics.speed.x + 0.5f, origin.y + (int)object->physics.speed.y + 0.5f);
 
     Hitbox temp = object->hitbox;
-    temp.pos_x = target.x;
-    temp.pos_y = target.y;
+    temp.pos_x = object->hitbox.pos_x + (int)(object->physics.speed.x + 0.5f);
+    temp.pos_y = object->hitbox.pos_y + (int)(object->physics.speed.y + 0.5f);
 
     for (int i = 0; i < list->size; i++)
     {
@@ -85,7 +85,6 @@ void apply_vectors(Object* object, ObjectsList* list)
         {
             if (collide(temp, obstacle->hitbox))
             {
-
                 //test
                 printf("Collision!\n");
 
@@ -99,16 +98,12 @@ void apply_vectors(Object* object, ObjectsList* list)
                     printf("TOP\n");
                     delta_y = temp.pos_y - (obstacle->hitbox.pos_y + obstacle->hitbox.height);
 
-                    if (delta_y > 0)
-                    delta_y = 0;
                 }
                 else if (direction_y == BOTTOM)
                 {
                     printf("BOTTOM\n");
                     delta_y = temp.pos_y + temp.height - obstacle->hitbox.pos_y;
 
-                    if (delta_y < 0)
-                    delta_y = 0;
                 }
 
                 if (direction_x == RIGHT)
@@ -116,16 +111,12 @@ void apply_vectors(Object* object, ObjectsList* list)
                     printf("RIGHT\n");
                     delta_x = temp.pos_x + temp.width - obstacle->hitbox.pos_x;
 
-                    if (delta_x < 0)
-                        delta_x = 0;
                 }
                 else if (direction_x == LEFT)
                 {
                     printf("LEFT\n");
                     delta_x = temp.pos_x - (obstacle->hitbox.pos_x + obstacle->hitbox.width);
 
-                    if (delta_x > 0)
-                        delta_x = 0;
                 }
 
                 if (delta_y = 0 && delta_x == 0)
@@ -154,7 +145,6 @@ void apply_vectors(Object* object, ObjectsList* list)
                     target.y -= delta_y;
                 }
 
-                /*
                 float ratio;
                 int full_length;
                 int closer_length;
@@ -177,7 +167,6 @@ void apply_vectors(Object* object, ObjectsList* list)
                     delta_x *= (int)ratio;
                     target.x -= delta_x;
                 }
-                */
 
                 object->physics.speed.x = 0.0f;
                 object->physics.speed.y = 0.0f;
@@ -185,8 +174,8 @@ void apply_vectors(Object* object, ObjectsList* list)
         }
     }
 
-    object->pos_x = target.x;
-    object->pos_y = target.y;
+    object->pos_y = target.y - (object->height - object->hitbox.height) / 2;
+    object->pos_x = target.x - (object->width - object->hitbox.width) / 2;
 }
 
 void apply_gravity(Object* object)

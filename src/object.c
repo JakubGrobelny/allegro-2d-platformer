@@ -25,24 +25,21 @@ void draw_object(Object* object)
 
 bool relative_direction(Object* observer, Object* object, int direction)
 {
-    switch (direction)
+    if (direction == TOP)
     {
-        case TOP:
-            if (observer->pos_y >= object->pos_y + object->height)
-                return true;
-            break;
-        case BOTTOM:
-            if (observer->pos_y + observer->height <= object->pos_y)
-                return true;
-            break;
-        case LEFT:
-            if (observer->pos_x >= object->pos_x + object->width)
-                return true;
-            break;
-        case RIGHT:
-            if (observer->pos_x + observer->width <= object->pos_x)
-                return true;
-            break;
+        return ((observer->hitbox.pos_y >= object->hitbox.pos_y + object->hitbox.height) || (observer->hitbox.pos_y + observer->hitbox.height <= object->hitbox.pos_y + observer->hitbox.height));
+    }
+    else if (direction == BOTTOM)
+    {
+        return ((observer->hitbox.pos_y + observer->hitbox.height <= object->hitbox.pos_y + object->hitbox.height) || (observer->hitbox.pos_y + observer->hitbox.height <= object->hitbox.pos_y));
+    }
+    else if (direction == RIGHT)
+    {
+        return ((observer->hitbox.pos_x + observer->hitbox.width <= object->hitbox.pos_x) || (observer->hitbox.pos_x + observer->hitbox.width <= object->hitbox.pos_x + object->hitbox.width));
+    }
+    else if (direction == LEFT)
+    {
+        return ((observer->hitbox.pos_x >= object->hitbox.pos_x + object->hitbox.width) || (observer->hitbox.pos_x + observer->hitbox.width >= object->hitbox.pos_x + object->hitbox.width));
     }
 
     return false;
