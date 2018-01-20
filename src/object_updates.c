@@ -93,30 +93,30 @@ void apply_vectors(Object* object, ObjectsList* list)
                 int delta_y = 0;
 
                 // calculating the overlaps and moving the target accordingly by substracting the overlap
-                if (direction_y == TOP)
+                if (direction_y == TOP && relative_direction(object, obstacle, TOP))
                 {
-                    printf("TOP\n");
+                    //printf("TOP\n");
                     delta_y = temp.pos_y - (obstacle->hitbox.pos_y + obstacle->hitbox.height);
 
                 }
-                else if (direction_y == BOTTOM)
+                else if (direction_y == BOTTOM && relative_direction(object, obstacle, BOTTOM))
                 {
-                    printf("BOTTOM\n");
+                    //printf("BOTTOM\n");
                     delta_y = temp.pos_y + temp.height - obstacle->hitbox.pos_y;
 
                 }
 
-                if (direction_x == RIGHT)
+                if (direction_x == RIGHT && relative_direction(object, obstacle, RIGHT))
                 {
-                    printf("RIGHT\n");
+                    //printf("RIGHT\n");
                     delta_x = temp.pos_x + temp.width - obstacle->hitbox.pos_x;
 
                 }
-                else if (direction_x == LEFT)
+                else if (direction_x == LEFT && relative_direction(object, obstacle, LEFT))
                 {
-                    printf("LEFT\n");
+                    //printf("LEFT\n");
                     delta_x = temp.pos_x - (obstacle->hitbox.pos_x + obstacle->hitbox.width);
-
+                    delta_x--;
                 }
 
                 if (delta_y = 0 && delta_x == 0)
