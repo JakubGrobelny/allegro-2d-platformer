@@ -48,7 +48,7 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0, 0, 0, 0, 0);
-    Physics player_physics = create_physics(0, 0, 1.2f, 1.2f, 1);
+    Physics player_physics = create_physics(0, 0, 1.2f, 20.0f, 1);
 
     Object player;
     init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 242, 250, 48, 64, player_physics, 15);

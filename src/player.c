@@ -2,39 +2,38 @@
 
 void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, int frame)
 {
-    //printf("X: %d Y: %d\n", player->hitbox.pos_x, player->hitbox.pos_y);// test
 
-    if (keys_down[KEY_SPACE]) // just for testing
-        respawn_player(player, 250, 250);
+    // if (keys_down[KEY_SPACE]) // just for testing
+    //     respawn_player(player, 250, 250);
 
-    //if (on_the_ground(player, list))
-    //        player->physics.speed.y = 0;
-    //else
-    //    apply_gravity(player);
+    if (on_the_ground(player, list))
+            player->physics.speed.y = 0;
+    else
+        apply_gravity(player);
 
     bool running = false;
 
     if (keys_active[KEY_DOWN]) // TODO: or KEY_LCTRL
     {
-        player->physics.speed.y += player->physics.acceleration.y;
+        // player->physics.speed.y += player->physics.acceleration.y;
+        //
+        // if (player->physics.speed.y > MAX_FALLING_SPEED)
+        //     player->physics.speed.x = MAX_FALLING_SPEED;
 
-        if (player->physics.speed.y > MAX_FALLING_SPEED)
-            player->physics.speed.x = MAX_FALLING_SPEED;
-
-        //crouch(player);
+        crouch(player);
     }
     if (keys_active[KEY_RIGHT])
     {
-        //if (on_the_ground(player, list))
-        //{
-        //    player->physics.speed.x += player->physics.acceleration.x;
+        if (on_the_ground(player, list))
+        {
+            player->physics.speed.x += player->physics.acceleration.x;
 
-        //    running = true;
-        //}
-        //else
-        //{
+            running = true;
+        }
+        else
+        {
             player->physics.speed.x += (player->physics.acceleration.x / 1.25f);
-        //}
+        }
 
         if (player->physics.speed.x > MAX_SPEED)
             player->physics.speed.x = MAX_SPEED;
@@ -42,16 +41,16 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_LEFT])
     {
-        //if (on_the_ground(player, list))
-        //{
-        //    player->physics.speed.x -= player->physics.acceleration.x;
+        if (on_the_ground(player, list))
+        {
+            player->physics.speed.x -= player->physics.acceleration.x;
 
-        //    running = true;
-        //}
-        //else
-        //{
+            running = true;
+        }
+        else
+        {
             player->physics.speed.x -= (player->physics.acceleration.x / 1.25f);
-        //}
+        }
 
         if (abs_float(player->physics.speed.x) > MAX_SPEED)
             player->physics.speed.x = -MAX_SPEED;
@@ -59,24 +58,24 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     if (keys_active[KEY_UP])
     {
-        player->physics.speed.y -= player->physics.acceleration.y;
+        //player->physics.speed.y -= player->physics.acceleration.y;
 
-        if (player->physics.speed.y < -MAX_FALLING_SPEED)
-            player->physics.speed.x = -MAX_FALLING_SPEED;
+        //if (player->physics.speed.y < -MAX_FALLING_SPEED)
+        //    player->physics.speed.x = -MAX_FALLING_SPEED;
 
-        //jump(player);
-        //player->pos_y--; // an ugly hack but it works so I am not going to change it
+        jump(player);
+        player->pos_y--; // an ugly hack but it works so I am not going to change it
     }
 
-    if (keys_active[KEY_ENTER])
-    {
-        player->physics.speed.y = 0;
-        player->physics.speed.x = 0;
-    }
+    // if (keys_active[KEY_ENTER])
+    // {
+    //     player->physics.speed.y = 0;
+    //     player->physics.speed.x = 0;
+    // }
 
     animate_player(player, list, running, frame);
 
-    /*
+
     // temporary friction simulation:
     if (on_the_ground(player, list))
     {
@@ -90,7 +89,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         if (abs_float(player->physics.speed.x) < 0.2f)
             player->physics.speed.x = 0;
     }
-    */
+
+
     apply_vectors(player, list);
 
     player->hitbox.pos_y = player->pos_y + (player->height - player->hitbox.height) / 2;
