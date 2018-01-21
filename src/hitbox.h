@@ -33,4 +33,10 @@ Hitbox create_hitbox(short type, int pos_x, int pos_y, int width, int height);
 // checking if two hitboxes collide
 bool collide(Hitbox first, Hitbox second);
 
+// checking if two hitboxes collide but only in x axis
+bool collide_x(Hitbox first, Hitbox second);
+
+// checking if two hitboxes collide but only in y axis
+bool collide_y(Hitbox first, Hitbox second);
+
 #endif

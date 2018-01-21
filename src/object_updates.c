@@ -69,13 +69,12 @@ void apply_vectors(Object* object, ObjectsList* list)
     if (dir_y == dir_x) // static
         return;
 
-
     if (dir_y != BOTTOM)
         new_x.pos_y--;
-    if (dir_x == LEFT)
-        new_y.pos_x++;
-    if (dir_x == RIGHT)
-        new_y.pos_x--;
+    // if (dir_x == LEFT)
+    //     new_y.pos_x+=2;
+    // if (dir_x == RIGHT)
+    //     new_y.pos_x-=2; // i don't know why -2 works and -1 doesn't but that's ok
 
     for (int i = 0; i < list->size; i++)
     {
@@ -90,11 +89,11 @@ void apply_vectors(Object* object, ObjectsList* list)
 
                 if (dir_x == LEFT)
                 {
-                    adjustment = (obstacle.pos_x + obstacle.width) - new_x.pos_x;
+                    adjustment = (obstacle.pos_x + obstacle.width) - new_x.pos_x + 1;
                 }
                 else if (dir_x == RIGHT)
                 {
-                    adjustment = obstacle.pos_x - (new_x.pos_x + new_x.width);
+                    adjustment = obstacle.pos_x - (new_x.pos_x + new_x.width) - 1;
                     printf("adjustment_x_RIGHT = %d - (%d + %d) = %d, speed = %f\n", obstacle.pos_x, new_x.pos_x, new_x.width, adjustment, object->physics.speed.x);
                 }
 
