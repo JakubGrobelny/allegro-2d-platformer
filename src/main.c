@@ -42,9 +42,8 @@ int main()
     al_register_event_source(event_queue, al_get_keyboard_event_source());
 
     // clearing the screen and starting the timer
-    al_clear_to_color(WHITE);
+    al_clear_to_color(LIGHT_BLUE);
     al_start_timer(timer);
-
 
     // creating structures
     Physics static_physics = create_physics(0, 0, 0, 0, 0);
@@ -124,7 +123,7 @@ int main()
             }
 
             al_flip_display();
-            al_clear_to_color(WHITE);
+            al_clear_to_color(LIGHT_BLUE);
         }
     }
 

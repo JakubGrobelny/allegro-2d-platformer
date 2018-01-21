@@ -16,6 +16,7 @@
 #define CYAN        al_map_rgba(0  , 255, 255, 255)
 #define PURPLE      al_map_rgba(255, 0  , 255, 255)
 #define LIGHT_GRAY  al_map_rgba(200, 200, 200, 255)
+#define LIGHT_BLUE  al_map_rgba(92 , 150, 252, 255) // actual NES Mario sky color
 #define GRAY        al_map_rgba(120, 120, 120, 255)
 #define DARK_GRAY   al_map_rgba(50 , 50 , 50 , 255)
 #define DARK_RED    al_map_rgba(155, 0  , 0  , 255)
