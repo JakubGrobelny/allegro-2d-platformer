@@ -60,19 +60,30 @@ int main()
     bitmap = al_load_bitmap("./resources/mario_small.png");
     bind_bitmap(&player, bitmap);
 
-    ALLEGRO_BITMAP* platform = al_create_bitmap(128, 32);
-    platform = al_load_bitmap("./resources/platform.png");
+    ALLEGRO_BITMAP* brick = al_create_bitmap(128, 32);
+    brick = al_load_bitmap("./resources/brick_orange.png");
 
-    Object temp_platform;
-    init_object(&temp_platform, PLATFORM, 260, 520, 128, 32, RECTANGLE, 260, 520, 128, 32, static_physics, 1);
-    bind_bitmap(&temp_platform, platform);
-    push_back_ol(&obj_list, temp_platform);
+    Object temp_brick;
 
-    init_object(&temp_platform, PLATFORM, 260 + 128, 520, 128, 32, RECTANGLE, 260 + 128, 520, 128, 32, static_physics, 1);
-    push_back_ol(&obj_list, temp_platform);
+    bind_bitmap(&temp_brick, brick);
 
-    init_object(&temp_platform, PLATFORM, 260 + 128, 520 - 140, 128, 32, RECTANGLE, 260 + 128, 520 - 140, 128, 32, static_physics, 1);
-    push_back_ol(&obj_list, temp_platform);
+    init_object(&temp_brick, PLATFORM, 260, 520, 64, 64, RECTANGLE, 256, 520, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64, 520, 64, 64, RECTANGLE, 256+64, 520, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*2, 520, 64, 64, RECTANGLE, 256+64*2, 520, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*3, 520, 64, 64, RECTANGLE, 256+64*3, 520, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*5, 520-2*64, 64, 64, RECTANGLE, 256+64*5, 520-2*64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*6, 520-2*64, 64, 64, RECTANGLE, 256+64*6, 520-2*64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
 
     // variable used to determine whether the screen should be redrawed
     bool redraw = false;
@@ -132,7 +143,7 @@ int main()
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
     al_destroy_bitmap(bitmap);
-    al_destroy_bitmap(platform);
+    al_destroy_bitmap(brick);
     delete_list(&obj_list);
 
     return 0;
