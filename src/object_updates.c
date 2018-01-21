@@ -85,8 +85,6 @@ void apply_vectors(Object* object, ObjectsList* list)
         {
             if (collide(temp, obstacle->hitbox))
             {
-                //test
-                printf("Collision!\n");
 
                 // how much overlap there is in ox and oy axes
                 int delta_x = 0;
@@ -95,44 +93,50 @@ void apply_vectors(Object* object, ObjectsList* list)
                 // calculating the overlaps and moving the target accordingly by substracting the overlap
                 if (direction_y == TOP && relative_direction(object, obstacle, TOP))
                 {
-                    //printf("TOP\n");
                     delta_y = temp.pos_y - (obstacle->hitbox.pos_y + obstacle->hitbox.height);
+
+                    if (delta_y < 0)
+                        delta_y = 0;
 
                 }
                 else if (direction_y == BOTTOM && relative_direction(object, obstacle, BOTTOM))
                 {
-                    //printf("BOTTOM\n");
                     delta_y = temp.pos_y + temp.height - obstacle->hitbox.pos_y;
 
+                    if (delta_y > 0)
+                        delta_y = 0;
                 }
 
                 if (direction_x == RIGHT && relative_direction(object, obstacle, RIGHT))
                 {
-                    //printf("RIGHT\n");
                     delta_x = temp.pos_x + temp.width - obstacle->hitbox.pos_x;
 
+                    if (delta_x < 0)
+                        delta_x = 0;
                 }
                 else if (direction_x == LEFT && relative_direction(object, obstacle, LEFT))
                 {
-                    //printf("LEFT\n");
                     delta_x = temp.pos_x - (obstacle->hitbox.pos_x + obstacle->hitbox.width);
                     delta_x--;
+
+                    if (delta_x > 0)
+                        delta_x = 0;
                 }
 
-                if (delta_y = 0 && delta_x == 0)
+                if (delta_y == 0 && delta_x == 0)
                     break;
-                else if (delta_y == 0)
-                {
-                    target.x -= delta_x;
-                    object->physics.speed.x = 0.0f;
-                    object->physics.speed.y = 0.0f;
-                    break;
-                }
                 else if (delta_x == 0)
                 {
                     target.y -= delta_y;
                     object->physics.speed.y = 0.0f;
                     object->physics.speed.x = 0.0f;
+                    break;
+                }
+                else if (delta_y == 0)
+                {
+                    target.x -= delta_x;
+                    object->physics.speed.x = 0.0f;
+                    object->physics.speed.y = 0.0f;
                     break;
                 }
 
@@ -149,7 +153,7 @@ void apply_vectors(Object* object, ObjectsList* list)
                 int full_length;
                 int closer_length;
 
-                if (abs_int(delta_x) >= abs_int(delta_y))
+                if (abs_int(delta_x) < abs_int(delta_y))
                 {
                     full_length = abs_int(origin.x - temp.pos_x);
                     closer_length = abs_int(origin.x - (temp.pos_x - delta_x));
