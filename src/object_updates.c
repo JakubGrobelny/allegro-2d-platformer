@@ -70,17 +70,16 @@ void apply_vectors(Object* object, ObjectsList* list)
         return;
 
     if (dir_y != BOTTOM)
-        new_x.pos_y--;
-    // if (dir_x == LEFT)
-    //     new_y.pos_x+=2;
-    // if (dir_x == RIGHT)
-    //     new_y.pos_x-=2; // i don't know why -2 works and -1 doesn't but that's ok
+         new_x.pos_y--;
 
     for (int i = 0; i < list->size; i++)
     {
         if (relative_direction(object, get_element_pointer_ol(list, i), dir_x) || relative_direction(object, get_element_pointer_ol(list, i), dir_y))
         {
             Hitbox obstacle = get_element_pointer_ol(list, i)->hitbox;
+
+            if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
+                new_x.pos_y += 2;
 
             if (collide(new_x, obstacle))
             {
@@ -94,7 +93,6 @@ void apply_vectors(Object* object, ObjectsList* list)
                 else if (dir_x == RIGHT)
                 {
                     adjustment = obstacle.pos_x - (new_x.pos_x + new_x.width) - 1;
-                    printf("adjustment_x_RIGHT = %d - (%d + %d) = %d, speed = %f\n", obstacle.pos_x, new_x.pos_x, new_x.width, adjustment, object->physics.speed.x);
                 }
 
                 object->physics.speed.x += adjustment;
@@ -106,21 +104,20 @@ void apply_vectors(Object* object, ObjectsList* list)
 
                 if (dir_y == TOP)
                 {
-                    printf("adjustment_y_TOP = (%d + %d) - %d = %d, speed = %f\n", obstacle.pos_y, obstacle.height, new_y.pos_y, adjustment, object->physics.speed.y);
                     adjustment = (obstacle.pos_y + obstacle.height) - new_y.pos_y;
                 }
                 else if (dir_y == BOTTOM)
                 {
-                    printf("adjustment_y_BOTTOM = %d - (%d + %d) = %d, speed = %f\n", obstacle.pos_y, new_y.pos_y, new_y.width, adjustment, object->physics.speed.y);
                     adjustment = obstacle.pos_y - (new_y.pos_y + new_y.height);
                 }
 
                 object->physics.speed.y += adjustment;
+
+                if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
+                    new_x.pos_y -= 2;
             }
         }
     }
-
-    printf("speed.x = %f, speed.y = %f\n", object->physics.speed.x, object->physics.speed.y);
 
     object->pos_x += (int)object->physics.speed.x;
     object->pos_y += (int)object->physics.speed.y;

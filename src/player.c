@@ -56,7 +56,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x = -MAX_SPEED;
     }
 
-    if (keys_active[KEY_UP])
+    if (keys_down[KEY_UP])
     {
         //player->physics.speed.y -= player->physics.acceleration.y;
 

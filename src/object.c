@@ -26,7 +26,7 @@ bool relative_direction(Object* observer, Object* object, int direction)
 {
     if (direction == TOP)
     {
-        return ((observer->hitbox.pos_y >= object->hitbox.pos_y + object->hitbox.height) || (observer->hitbox.pos_y + observer->hitbox.height <= object->hitbox.pos_y + observer->hitbox.height));
+        return ((observer->hitbox.pos_y >= object->hitbox.pos_y + object->hitbox.height) || (observer->hitbox.pos_y + observer->hitbox.height >= object->hitbox.pos_y + observer->hitbox.height));
     }
     else if (direction == BOTTOM)
     {
