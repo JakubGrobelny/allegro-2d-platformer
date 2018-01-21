@@ -69,6 +69,9 @@ int main()
     bind_bitmap(&temp_platform, platform);
     push_back_ol(&obj_list, temp_platform);
 
+    init_object(&temp_platform, PLATFORM, 260 + 64, 520 - 64, 128, 32, RECTANGLE, 260 + 64, 520 - 64, 128, 32, static_physics, 1);
+    push_back_ol(&obj_list, temp_platform);
+
     // variable used to determine whether the screen should be redrawed
     bool redraw = false;
 

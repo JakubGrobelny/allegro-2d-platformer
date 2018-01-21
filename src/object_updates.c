@@ -48,9 +48,10 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
 
 void apply_vectors(Object* object, ObjectsList* list)
 {
-    Hitbox new = object->hitbox;
-    new.pos_x += (int)object->physics.speed.x;
-    new.pos_y += (int)object->physics.speed.y;
+    Hitbox new_x = object->hitbox;
+    Hitbox new_y = new_x;
+    new_x.pos_x += (int)object->physics.speed.x;
+    new_y.pos_y += (int)object->physics.speed.y;
 
     int dir_x = STATIC;
     int dir_y = STATIC;
@@ -65,26 +66,19 @@ void apply_vectors(Object* object, ObjectsList* list)
     else if (object->physics.speed.y < 0)
         dir_y = TOP;
 
-    bool move = true;
-
     for (int i = 0; i < list->size; i++)
     {
         if (relative_direction(object, get_element_pointer_ol(list, i), dir_x) || relative_direction(object, get_element_pointer_ol(list, i), dir_y))
         {
-            if (collide(new, get_element_pointer_ol(list, i)->hitbox))
-            {
-                move = false;
+            if (collide(new_x, get_element_pointer_ol(list, i)->hitbox))
                 object->physics.speed.x = 0;
+            if (collide(new_y, get_element_pointer_ol(list, i)->hitbox))
                 object->physics.speed.y = 0;
-            }
         }
     }
 
-    if (move)
-    {
-        object->pos_x += (int)object->physics.speed.x;
-        object->pos_y += (int)object->physics.speed.y;
-    }
+    object->pos_x += (int)object->physics.speed.x;
+    object->pos_y += (int)object->physics.speed.y;
 }
 
 void apply_gravity(Object* object)

@@ -63,8 +63,11 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         //if (player->physics.speed.y < -MAX_FALLING_SPEED)
         //    player->physics.speed.x = -MAX_FALLING_SPEED;
 
-        jump(player);
-        player->pos_y--; // an ugly hack but it works so I am not going to change it
+        if (on_the_ground(player, list))
+        {
+            jump(player);
+            player->pos_y--; // an ugly hack but it works so I am not going to change it
+        }
     }
 
     // if (keys_active[KEY_ENTER])
@@ -74,7 +77,6 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     // }
 
     animate_player(player, list, running, frame);
-
 
     // temporary friction simulation:
     if (on_the_ground(player, list))
