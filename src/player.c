@@ -6,7 +6,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     // if (keys_down[KEY_SPACE]) // just for testing
     //     respawn_player(player, 250, 250);
 
-    if (player->hitbox.pos_y >= DISPLAY_HEIGHT)
+    if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
     {
         die(player);
         printf("TEST\n");
