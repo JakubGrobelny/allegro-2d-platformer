@@ -93,3 +93,8 @@ bool collide(Hitbox first, Hitbox second)
     }
     return false;
 }
+
+void draw_hitbox(Hitbox hitbox, int screen_offset)
+{
+    al_draw_filled_rectangle(hitbox.pos_x - screen_offset, hitbox.pos_y, hitbox.pos_x + hitbox.width - screen_offset, hitbox.pos_y + hitbox.height, OPAQUE_RED);
+}

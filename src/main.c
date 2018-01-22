@@ -35,6 +35,11 @@ int main()
         al_show_native_message_box(display, "Error", "Error", "al_init_image_addon() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
+    if (!al_init_primitives_addon())
+    {
+        al_show_native_message_box(display, "Error", "Error", "al_init_primitives_addon() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
 
     // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -84,6 +89,27 @@ int main()
 
     init_object(&temp_brick, PLATFORM, 260+64*6, 520-3*64, 64, 64, RECTANGLE, 256+64*6, 520-3*64, 64, 64, static_physics, 1);
     push_back_ol(&obj_list, temp_brick);
+
+
+
+    init_object(&temp_brick, PLATFORM, 260+64*8, 520-64, 64, 64, RECTANGLE, 260+64*8, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*9, 520-64, 64, 64, RECTANGLE, 260+64*9, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*10, 520-64, 64, 64, RECTANGLE, 260+64*10, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*11, 520-64, 64, 64, RECTANGLE, 260+64*11, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*12, 520-64, 64, 64, RECTANGLE, 260+64*12, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*13, 520-64, 64, 64, RECTANGLE, 260+64*13, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
 
     // screen offset to the right
     int screen_offset = 0;
@@ -136,10 +162,12 @@ int main()
             redraw = false;
 
             draw_object(&player, screen_offset);
+            //draw_hitbox(player.hitbox, screen_offset);
 
             for (int i = 0; i < obj_list.size; i++)
             {
                 draw_object(get_element_pointer_ol(&obj_list, i), screen_offset);
+                //draw_hitbox(get_element_pointer_ol(&obj_list, i)->hitbox, screen_offset);
             }
 
             al_flip_display();

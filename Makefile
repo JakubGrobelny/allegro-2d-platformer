@@ -2,7 +2,7 @@
 #W celu kompilacji nalezy uzyc polecenia "make"
 
 CC = gcc
-LDFLAGS = -L/usr/lib -lallegro -lallegro_image -lallegro_dialog
+LDFLAGS = -L/usr/lib -lallegro -lallegro_image -lallegro_dialog -lallegro_primitives
 INCLUDE = -I. -I/usr/include/allegro5
 LIBS = -lallegro -lm
 

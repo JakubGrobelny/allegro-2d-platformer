@@ -1,4 +1,6 @@
 #include <stdbool.h>
+#include <allegro5/allegro_primitives.h>
+#include "defines.h"
 
 #ifndef _HITBOX
 #define _HITBOX
@@ -38,5 +40,8 @@ bool collide_x(Hitbox first, Hitbox second);
 
 // checking if two hitboxes collide but only in y axis
 bool collide_y(Hitbox first, Hitbox second);
+
+// drawing a hitbox for debuggings
+void draw_hitbox(Hitbox hitbox, int screen_offset);
 
 #endif

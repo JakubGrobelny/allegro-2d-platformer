@@ -22,5 +22,6 @@
 #define DARK_RED    al_map_rgba(155, 0  , 0  , 255)
 #define DARK_GREEN  al_map_rgba(0  , 155, 0  , 255)
 #define DARK_BLUE   al_map_rgba(0  , 0  , 155, 255)
+#define OPAQUE_RED  al_map_rgba(255, 0  , 0  , 127)
 
 #endif

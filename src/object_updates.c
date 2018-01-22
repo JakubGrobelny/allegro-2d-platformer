@@ -68,6 +68,8 @@ void apply_vectors(Object* object, ObjectsList* list)
     {
         if (relative_direction(object, get_element_pointer_ol(list, i), dir_x) || relative_direction(object, get_element_pointer_ol(list, i), dir_y))
         {
+            //printf("speed_x = %f, speed_y = %f\n", object->physics.speed.x, object->physics.speed.y);
+
             Hitbox obstacle = get_element_pointer_ol(list, i)->hitbox;
 
             if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
@@ -81,10 +83,12 @@ void apply_vectors(Object* object, ObjectsList* list)
                 if (dir_x == LEFT)
                 {
                     adjustment = (obstacle.pos_x + obstacle.width) - new_x.pos_x + 1;
+                    printf("Adjustment_x_left = (%d + %d) - %d + 1 = %d\n", obstacle.pos_x, obstacle.width, new_x.pos_x, adjustment);
                 }
                 else if (dir_x == RIGHT)
                 {
                     adjustment = obstacle.pos_x - (new_x.pos_x + new_x.width) - 1;
+                    printf("Adjustment_x_right = %d - (%d - %d) - 1 = %d\n", obstacle.pos_x, new_x.pos_x, new_x.width, adjustment);
                 }
 
                 object->physics.speed.x += adjustment;
@@ -97,10 +101,12 @@ void apply_vectors(Object* object, ObjectsList* list)
                 if (dir_y == TOP)
                 {
                     adjustment = (obstacle.pos_y + obstacle.height) - new_y.pos_y;
+                    printf("Adjustment_y_top = (%d + %d) - %d + 1 = %d\n", obstacle.pos_y, obstacle.width, new_y.pos_y, adjustment);
                 }
                 else if (dir_y == BOTTOM)
                 {
                     adjustment = obstacle.pos_y - (new_y.pos_y + new_y.height);
+                    printf("Adjustment_y_bottom = %d - (%d - %d) - 1 = %d\n", obstacle.pos_y, new_y.pos_y, new_y.height, adjustment);
                 }
 
                 object->physics.speed.y += adjustment;
