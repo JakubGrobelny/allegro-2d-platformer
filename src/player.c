@@ -2,20 +2,8 @@
 
 void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, int frame)
 {
-
-    // if (keys_down[KEY_SPACE]) // just for testing
-    //     respawn_player(player, 250, 250);
-
     if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
-    {
         die(player);
-        printf("TEST\n");
-    }
-
-    if (!player->alive)
-    {
-        printf("pos_x=%d, pos_y=%d\n", player->hitbox.pos_x, player->hitbox.pos_y);
-    }
 
     if (on_the_ground(player, list))
             player->physics.speed.y = 0;
@@ -24,16 +12,11 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     bool running = false;
 
-    if (keys_active[KEY_DOWN]) // TODO: or KEY_LCTRL
+    if (keys_active[KEY_DOWN] && player->alive) // TODO: or KEY_LCTRL
     {
-        // player->physics.speed.y += player->physics.acceleration.y;
-        //
-        // if (player->physics.speed.y > MAX_FALLING_SPEED)
-        //     player->physics.speed.x = MAX_FALLING_SPEED;
-
         crouch(player);
     }
-    if (keys_active[KEY_RIGHT])
+    if (keys_active[KEY_RIGHT] && player->alive)
     {
         if (on_the_ground(player, list))
         {
@@ -50,7 +33,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x = MAX_SPEED;
 
     }
-    if (keys_active[KEY_LEFT])
+    if (keys_active[KEY_LEFT] && player->alive)
     {
         if (on_the_ground(player, list))
         {
@@ -67,25 +50,14 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x = -MAX_SPEED;
     }
 
-    if (keys_down[KEY_UP])
+    if (keys_down[KEY_UP] && player->alive)
     {
-        //player->physics.speed.y -= player->physics.acceleration.y;
-
-        //if (player->physics.speed.y < -MAX_FALLING_SPEED)
-        //    player->physics.speed.x = -MAX_FALLING_SPEED;
-
         if (on_the_ground(player, list))
         {
             jump(player);
             player->pos_y--; // an ugly hack but it works so I am not going to change it
         }
     }
-
-    // if (keys_active[KEY_ENTER])
-    // {
-    //     player->physics.speed.y = 0;
-    //     player->physics.speed.x = 0;
-    // }
 
     if (player->alive)
         animate_player(player, list, running, frame);
@@ -250,5 +222,6 @@ void die(Object* player)
     player->animation_frame = 14;
     terminate_velocity(player);
     // TODO: player->hitbox.collision = false // turn off collisions
-    player->physics.speed.y = -25.0f;
+    player->physics.speed.y = -17.5f;
+    player->physics.mass /= 2.0f; // TODO: cancel it
 }

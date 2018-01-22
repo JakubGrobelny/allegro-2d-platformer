@@ -8,8 +8,6 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
         {
             Hitbox temp = object->hitbox;
 
-            // int += float !!!
-
             if (direction == BOTTOM)
             {
                 temp.pos_y += (int)(object->physics.speed.y + 0.5f);
@@ -32,14 +30,8 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
                 temp.pos_y += (int)(object->physics.speed.y);
             }
 
-
             if (collide(temp, get_element_pointer_ol(list, i)->hitbox))
-            {
-                //if (direction != BOTTOM)
-                //    printf("%s Collision!\n", direction == RIGHT ? "right" : (direction == LEFT ? "left" : (direction == TOP ? "top" : "bottom")));
-                //object->animation_frame = 14; for collision testing
                 return true;
-            }
         }
     }
 

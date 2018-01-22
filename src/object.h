@@ -63,7 +63,7 @@ void init_object(Object* object, int type, int pos_x, int pos_y, int width, int 
 void bind_bitmap(Object* object, ALLEGRO_BITMAP* bitmap);
 
 // drawing object's bitmap
-void draw_object(Object* object);
+void draw_object(Object* object, int screen_offset);
 
 // checking whether the object is in the given direction relatively to the observer
 bool relative_direction(Object* observer, Object* object, int direction);

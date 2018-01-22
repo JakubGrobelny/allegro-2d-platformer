@@ -18,9 +18,9 @@ void bind_bitmap(Object* object, ALLEGRO_BITMAP* bitmap)
     object->bitmap = bitmap;
 }
 
-void draw_object(Object* object)
+void draw_object(Object* object, int screen_offset)
 {
-    al_draw_bitmap_region(object->bitmap, 0, object->height * object->animation_frame, object->width, object->height, (float)object->pos_x, (float)object->pos_y, 0);
+    al_draw_bitmap_region(object->bitmap, 0, object->height * object->animation_frame, object->width, object->height, (float)(object->pos_x - screen_offset), (float)object->pos_y, 0);
 }
 
 bool relative_direction(Object* observer, Object* object, int direction)

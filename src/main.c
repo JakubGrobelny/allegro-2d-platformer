@@ -85,7 +85,10 @@ int main()
     init_object(&temp_brick, PLATFORM, 260+64*6, 520-3*64, 64, 64, RECTANGLE, 256+64*6, 520-3*64, 64, 64, static_physics, 1);
     push_back_ol(&obj_list, temp_brick);
 
-    // variable used to determine whether the screen should be redrawed
+    // screen offset to the right
+    int screen_offset = 0;
+
+    // variable used to determine whether the screen should be redrawn(ed?)
     bool redraw = false;
 
     // arrays containing the states of keyboard buttons
@@ -111,6 +114,12 @@ int main()
 
             update_player(&player, keys_active, keys_down, keys_up, &obj_list, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
+
+            if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
+            {
+                screen_offset -= DISPLAY_WIDTH / 2 + screen_offset - player.hitbox.pos_x;
+            }
+
             redraw = true;
         }
         // closing the window
@@ -126,11 +135,11 @@ int main()
         {
             redraw = false;
 
-            draw_object(&player);
+            draw_object(&player, screen_offset);
 
             for (int i = 0; i < obj_list.size; i++)
             {
-                draw_object(get_element_pointer_ol(&obj_list, i));
+                draw_object(get_element_pointer_ol(&obj_list, i), screen_offset);
             }
 
             al_flip_display();
