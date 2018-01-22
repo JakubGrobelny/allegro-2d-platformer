@@ -6,6 +6,17 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     // if (keys_down[KEY_SPACE]) // just for testing
     //     respawn_player(player, 250, 250);
 
+    if (player->hitbox.pos_y >= DISPLAY_HEIGHT)
+    {
+        die(player);
+        printf("TEST\n");
+    }
+
+    if (!player->alive)
+    {
+        printf("pos_x=%d, pos_y=%d\n", player->hitbox.pos_x, player->hitbox.pos_y);
+    }
+
     if (on_the_ground(player, list))
             player->physics.speed.y = 0;
     else
@@ -76,7 +87,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     //     player->physics.speed.x = 0;
     // }
 
-    animate_player(player, list, running, frame);
+    if (player->alive)
+        animate_player(player, list, running, frame);
 
     // temporary friction simulation:
     if (on_the_ground(player, list))
@@ -91,7 +103,6 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         if (abs_float(player->physics.speed.x) < 0.2f)
             player->physics.speed.x = 0;
     }
-
 
     apply_vectors(player, list);
 
@@ -231,4 +242,13 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame)
                 }
             }
         }
+}
+
+void die(Object* player)
+{
+    player->alive = false;
+    player->animation_frame = 14;
+    terminate_velocity(player);
+    // TODO: player->hitbox.collision = false // turn off collisions
+    player->physics.speed.y = -25.0f;
 }

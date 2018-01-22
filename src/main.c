@@ -79,10 +79,10 @@ int main()
     init_object(&temp_brick, PLATFORM, 260+64*3, 520, 64, 64, RECTANGLE, 256+64*3, 520, 64, 64, static_physics, 1);
     push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*5, 520-2*64, 64, 64, RECTANGLE, 256+64*5, 520-2*64, 64, 64, static_physics, 1);
+    init_object(&temp_brick, PLATFORM, 260+64*5, 520-3*64, 64, 64, RECTANGLE, 256+64*5, 520-3*64, 64, 64, static_physics, 1);
     push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*6, 520-2*64, 64, 64, RECTANGLE, 256+64*6, 520-2*64, 64, 64, static_physics, 1);
+    init_object(&temp_brick, PLATFORM, 260+64*6, 520-3*64, 64, 64, RECTANGLE, 256+64*6, 520-3*64, 64, 64, static_physics, 1);
     push_back_ol(&obj_list, temp_brick);
 
     // variable used to determine whether the screen should be redrawed

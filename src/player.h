@@ -23,4 +23,7 @@ void respawn_player(Object* player, int x, int y);
 // changes player's current sprite
 void animate_player(Object* player, ObjectsList* list, bool running, int frame);
 
+// killing the player
+void die(Object* player);
+
 #endif

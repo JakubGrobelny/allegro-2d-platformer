@@ -24,6 +24,8 @@ typedef struct
     short animation_frame;      // current frame of the animation
     short frames_number;        // amount of the frames in the object's animation
 
+    bool alive;                 // the state of object
+
     Hitbox hitbox;      // object's hitbox
     Physics physics;    // structure that holds the object's physical properties
 
@@ -50,6 +52,7 @@ typedef enum
 
     PLAYER,
     PLATFORM,
+    MULTI_BRICK_PLATFORM
 
 } ObjectTypes;
 
@@ -67,5 +70,8 @@ bool relative_direction(Object* observer, Object* object, int direction);
 
 // checking if the object is standing on top of other object
 bool stands_on(Object* object, Object* platform);
+
+// making the given object stationary
+void terminate_velocity(Object* object);
 
 #endif
