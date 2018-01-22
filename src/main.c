@@ -65,8 +65,11 @@ int main()
     bitmap = al_load_bitmap("./resources/mario_small.png");
     bind_bitmap(&player, bitmap);
 
-    ALLEGRO_BITMAP* brick = al_create_bitmap(128, 32);
+    ALLEGRO_BITMAP* brick = al_create_bitmap(32, 32);
     brick = al_load_bitmap("./resources/brick_orange.png");
+
+    ALLEGRO_BITMAP* brick2 = al_create_bitmap(32, 32);
+    brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
 
     Object temp_brick;
 
@@ -109,6 +112,16 @@ int main()
     push_back_ol(&obj_list, temp_brick);
 
     init_object(&temp_brick, PLATFORM, 260+64*13, 520-64, 64, 64, RECTANGLE, 260+64*13, 520-64, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*12, 520-128, 64, 64, RECTANGLE, 260+64*12, 520-128, 64, 64, static_physics, 1);
+    bind_bitmap(&temp_brick, brick2);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*3, 64, 64, RECTANGLE, 260+64*12, 520-64*3, 64, 64, static_physics, 1);
+    push_back_ol(&obj_list, temp_brick);
+
+    init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*4, 64, 64, RECTANGLE, 260+64*12, 520-64*4, 64, 64, static_physics, 1);
     push_back_ol(&obj_list, temp_brick);
 
 
