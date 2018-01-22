@@ -74,6 +74,8 @@ void apply_vectors(Object* object, ObjectsList* list)
 
             if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
                 new_x.pos_y += 2;
+            if (relative_direction(object, get_element_pointer_ol(list, i), BOTTOM) && dir_x == LEFT)
+                new_x.pos_y -= 5;
 
             if (collide(new_x, obstacle))
             {
