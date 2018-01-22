@@ -1,6 +1,6 @@
 #Plik makefile sluzacy do skompilowania calego projektu
 #W celu kompilacji nalezy uzyc polecenia "make"
-
+#-g
 CC = gcc
 LDFLAGS = -L/usr/lib -lallegro -lallegro_image -lallegro_dialog -lallegro_primitives
 INCLUDE = -I. -I/usr/include/allegro5

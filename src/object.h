@@ -52,6 +52,7 @@ typedef enum
 
     PLAYER,
     PLATFORM,
+    BACKGROUND,
     MULTI_BRICK_PLATFORM
 
 } ObjectTypes;

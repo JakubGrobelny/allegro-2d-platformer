@@ -60,6 +60,9 @@ int main()
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
 
+    ObjectsList background_elements;
+    background_elements = create_objects_list(1);
+
     // bitmaps
     ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
     bitmap = al_load_bitmap("./resources/mario_small.png");
@@ -70,6 +73,19 @@ int main()
 
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(32, 32);
     brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
+
+    ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
+    cloud = al_load_bitmap("./resources/cloud.png");
+
+    Object temp_cloud;
+
+    bind_bitmap(&temp_cloud, cloud);
+
+    init_object(&temp_cloud, BACKGROUND, 130, 100, 256, 256, RECTANGLE, 130, 100, 256, 256, static_physics, 1);
+    push_back_ol(&background_elements, temp_cloud);
+
+    init_object(&temp_cloud, BACKGROUND, 620, 65, 256, 256, RECTANGLE, 620, 65, 256, 256, static_physics, 1);
+    push_back_ol(&background_elements, temp_cloud);
 
     Object temp_brick;
 
@@ -175,14 +191,23 @@ int main()
         {
             redraw = false;
 
+            // BACKGROUND
+            for (int i = 0; i < background_elements.size; i++)
+            {
+                draw_object(get_element_pointer_ol(&background_elements, i), 0); // TODO: add offset to SOME elements
+            }
+
+            // ACTORS
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
 
+            // MAP
             for (int i = 0; i < obj_list.size; i++)
             {
                 draw_object(get_element_pointer_ol(&obj_list, i), screen_offset);
                 //draw_hitbox(get_element_pointer_ol(&obj_list, i)->hitbox, screen_offset);
             }
+
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
