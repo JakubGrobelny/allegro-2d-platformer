@@ -2,6 +2,8 @@
 
 void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, int frame)
 {
+    Vector previous_speed = player->physics.speed;
+
     if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
         die(player);
 
@@ -18,7 +20,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_RIGHT] && player->alive)
     {
-        if (on_the_ground(player, list))
+        if (player->physics.speed.y == previous_speed.y) // on_the_ground
         {
             player->physics.speed.x += player->physics.acceleration.x;
 
@@ -35,7 +37,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_LEFT] && player->alive)
     {
-        if (on_the_ground(player, list))
+        if (player->physics.speed.y == previous_speed.y) // on_the_ground
         {
             player->physics.speed.x -= player->physics.acceleration.x;
 
@@ -52,10 +54,10 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     if (keys_down[KEY_UP] && player->alive)
     {
-        if (on_the_ground(player, list))
+        if (player->physics.speed.y == previous_speed.y) // on_the_ground
         {
             jump(player);
-            player->pos_y--; // an ugly hack but it works so I am not going to change it
+            //player->pos_y--;
         }
     }
 
@@ -222,6 +224,6 @@ void die(Object* player)
     player->animation_frame = 14;
     terminate_velocity(player);
     // TODO: player->hitbox.collision = false // turn off collisions
-    player->physics.speed.y = -17.5f;
+    player->physics.speed.y = -19.75f;
     player->physics.mass /= 2.0f; // TODO: cancel it
 }
