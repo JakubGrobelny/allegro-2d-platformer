@@ -1,6 +1,6 @@
 #include "player.h"
 
-void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, int frame)
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, ObjectsList* non_static, int frame)
 {
     Vector previous_speed = player->physics.speed;
 
@@ -80,6 +80,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     apply_vectors(player, list);
 
+    non_static_object_interactions(player, non_static);
+
     player->hitbox.pos_y = player->pos_y + (player->height - player->hitbox.height) / 2;
     player->hitbox.pos_x = player->pos_x + (player->width - player->hitbox.width) / 2;
 }
@@ -106,6 +108,25 @@ void respawn_player(Object* player, int x, int y)
 
     player->physics.speed.x = 0;
     player->physics.speed.x = 0;
+}
+
+void non_static_object_interactions(Object* player, ObjectsList* list)
+{
+    for (int i = 0; i < list->size; i++)
+    {
+        Object* object = get_element_pointer_ol(list, i);
+
+        if (object->type == ENEMY_GOOMBA)
+        {
+            if (collide(player->hitbox, object->hitbox))
+            {
+                if (relative_direction(player, object, LEFT) || relative_direction(player,object, RIGHT)) // TODO: fix the damned relative_direction thing (maybe a function that returns the directions instead of checking them)
+                    die(player);
+                else
+                    kill(object);
+            }
+        }
+    }
 }
 
 void animate_player(Object* player, ObjectsList* list, bool running, int frame)

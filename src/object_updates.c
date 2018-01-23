@@ -149,7 +149,22 @@ bool on_the_ground(Object* object, ObjectsList* list)
     return collides_in_direction(object, list, BOTTOM); // TODO: if object on list is platform
 }
 
+void kill(Object* object)
+{
+    printf("TEST!\n");
+}
+
 void update_non_static_objects(ObjectsList* non_static_objects, ObjectsList* static_objects)
 {
-    
+    for (int i = 0; i < non_static_objects->size; i++)
+    {
+        Object* object = get_element_pointer_ol(non_static_objects, i);
+
+        if (object->type == ENEMY_GOOMBA)
+        {
+            // TODO:
+        }
+
+        // TODO:
+    }
 }

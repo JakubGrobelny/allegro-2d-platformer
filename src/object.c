@@ -3,6 +3,7 @@
 void init_object(Object* object, int type, int pos_x, int pos_y, int width, int height, int hitbox_type, int hitbox_pos_x, int hitbox_pos_y, int hitbox_width, int hitbox_height, Physics physics, short frames_number)
 {
     object->alive = true;
+    object->type = type;
     object->pos_x = pos_x;
     object->pos_y = pos_y;
     object->width = width;

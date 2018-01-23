@@ -9,7 +9,7 @@
 #define _PLAYER
 
 // apply keypresses etc. to the player object
-void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, int frame);
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, ObjectsList* non_static, int frame);
 
 // making the player jump
 void jump(Object* player);
@@ -25,5 +25,8 @@ void animate_player(Object* player, ObjectsList* list, bool running, int frame);
 
 // killing the player
 void die(Object* player);
+
+// checking the collisions with non static objects
+void non_static_object_interactions(Object* player, ObjectsList* list);
 
 #endif

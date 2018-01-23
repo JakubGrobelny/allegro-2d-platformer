@@ -53,7 +53,7 @@ int main()
     // creating structures
     Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
     Physics player_physics = create_physics(0, 0, 1.2f, 20.0f, 1);
-    Physics enemy_physics  = create_physics(0, 0, 2.0f, 0.0f , 2);
+    Physics enemy_physics  = create_physics(0, 0, 2.0f, 0.0f , 0.4f);
 
     Object player;
     init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 248, 250, 60, 64, player_physics, 15);
@@ -88,6 +88,7 @@ int main()
 
         bind_bitmap(&temp_enemy, enemy1);
         init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 520-4*64, 64, 64, RECTANGLE, 260+64, 520-4*64+8, 64, 64-8, enemy_physics, 2);
+        temp_enemy.physics.speed.x = 4.0f;
         push_back_ol(&enemies, temp_enemy);
 
     Object temp_cloud;
@@ -181,7 +182,8 @@ int main()
             if (frame > 60)
                 frame = 0;
 
-            update_player(&player, keys_active, keys_down, keys_up, &obj_list, frame);
+            update_non_static_objects(&enemies, &obj_list);
+            update_player(&player, keys_active, keys_down, keys_up, &obj_list, &enemies, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
 
             if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
