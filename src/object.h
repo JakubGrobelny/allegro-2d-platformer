@@ -51,9 +51,10 @@ typedef enum
      */
 
     PLAYER,
+    PLAYER_BIG,
+    ENEMY_GOOMBA,
     PLATFORM,
     BACKGROUND,
-    MULTI_BRICK_PLATFORM
 
 } ObjectTypes;
 

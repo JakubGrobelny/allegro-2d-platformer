@@ -51,11 +51,12 @@ int main()
     al_start_timer(timer);
 
     // creating structures
-    Physics static_physics = create_physics(0, 0, 0, 0, 0);
+    Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
     Physics player_physics = create_physics(0, 0, 1.2f, 20.0f, 1);
+    Physics enemy_physics  = create_physics(0, 0, 2.0f, 0.0f , 2);
 
     Object player;
-    init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 242, 250, 48, 64, player_physics, 15);
+    init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 248, 250, 60, 64, player_physics, 15);
 
     ObjectsList obj_list;
     obj_list = create_objects_list(1);
@@ -63,82 +64,94 @@ int main()
     ObjectsList background_elements;
     background_elements = create_objects_list(1);
 
+    ObjectsList enemies;
+    enemies = create_objects_list(1);
+
     // bitmaps
     ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
     bitmap = al_load_bitmap("./resources/mario_small.png");
     bind_bitmap(&player, bitmap);
 
-    ALLEGRO_BITMAP* brick = al_create_bitmap(32, 32);
+    ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     brick = al_load_bitmap("./resources/brick_orange.png");
 
-    ALLEGRO_BITMAP* brick2 = al_create_bitmap(32, 32);
+    ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
     brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
 
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     cloud = al_load_bitmap("./resources/cloud.png");
 
+    ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
+    enemy1 = al_load_bitmap("./resources/enemy_1.png");
+
+    Object temp_enemy;
+
+        bind_bitmap(&temp_enemy, enemy1);
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 520-4*64, 64, 64, RECTANGLE, 260+64, 520-4*64+8, 64, 64-8, enemy_physics, 2);
+        push_back_ol(&enemies, temp_enemy);
+
     Object temp_cloud;
 
-    bind_bitmap(&temp_cloud, cloud);
+        bind_bitmap(&temp_cloud, cloud);
 
-    init_object(&temp_cloud, BACKGROUND, 130, 100, 128, 128, RECTANGLE, 130, 100, 256, 256, static_physics, 1);
-    push_back_ol(&background_elements, temp_cloud);
+        init_object(&temp_cloud, BACKGROUND, 130, 100, 128, 128, RECTANGLE, 130, 100, 256, 256, static_physics, 1);
+        push_back_ol(&background_elements, temp_cloud);
 
-    init_object(&temp_cloud, BACKGROUND, 620, 65, 128, 128, RECTANGLE, 620, 65, 256, 256, static_physics, 1);
-    push_back_ol(&background_elements, temp_cloud);
+        init_object(&temp_cloud, BACKGROUND, 620, 65, 128, 128, RECTANGLE, 620, 65, 256, 256, static_physics, 1);
+        push_back_ol(&background_elements, temp_cloud);
 
     Object temp_brick;
 
-    bind_bitmap(&temp_brick, brick);
+        bind_bitmap(&temp_brick, brick);
 
-    init_object(&temp_brick, PLATFORM, 260, 520, 64, 64, RECTANGLE, 260, 520, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260, 520, 64, 64, RECTANGLE, 260, 520, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64, 520, 64, 64, RECTANGLE, 260+64, 520, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64, 520, 64, 64, RECTANGLE, 260+64, 520, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*2, 520, 64, 64, RECTANGLE, 260+64*2, 520, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*2, 520, 64, 64, RECTANGLE, 260+64*2, 520, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*3, 520, 64, 64, RECTANGLE, 260+64*3, 520, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*3, 520, 64, 64, RECTANGLE, 260+64*3, 520, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*5, 520-3*64, 64, 64, RECTANGLE, 260+64*5, 520-3*64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*5, 520-3*64, 64, 64, RECTANGLE, 260+64*5, 520-3*64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*6, 520-3*64, 64, 64, RECTANGLE, 260+64*6, 520-3*64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*6, 520-3*64, 64, 64, RECTANGLE, 260+64*6, 520-3*64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64, 520-3*64, 64, 64, RECTANGLE, 260+64, 520-3*64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64, 520-3*64, 64, 64, RECTANGLE, 260+64, 520-3*64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*8, 520-64, 64, 64, RECTANGLE, 260+64*8, 520-64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*8, 520-64, 64, 64, RECTANGLE, 260+64*8, 520-64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*9, 520-64, 64, 64, RECTANGLE, 260+64*9, 520-64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*9, 520-64, 64, 64, RECTANGLE, 260+64*9, 520-64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*10, 520-64, 64, 64, RECTANGLE, 260+64*10, 520-64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*10, 520-64, 64, 64, RECTANGLE, 260+64*10, 520-64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*11, 520-64, 64, 64, RECTANGLE, 260+64*11, 520-64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*11, 520-64, 64, 64, RECTANGLE, 260+64*11, 520-64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*12, 520-64, 64, 64, RECTANGLE, 260+64*12, 520-64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*12, 520-64, 64, 64, RECTANGLE, 260+64*12, 520-64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*13, 520-64, 64, 64, RECTANGLE, 260+64*13, 520-64, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*13, 520-64, 64, 64, RECTANGLE, 260+64*13, 520-64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*12, 520-128, 64, 64, RECTANGLE, 260+64*12, 520-128, 64, 64, static_physics, 1);
-    bind_bitmap(&temp_brick, brick2);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*12, 520-128, 64, 64, RECTANGLE, 260+64*12, 520-128, 64, 64, static_physics, 1);
+        bind_bitmap(&temp_brick, brick2);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*3, 64, 64, RECTANGLE, 260+64*12, 520-64*3, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*3, 64, 64, RECTANGLE, 260+64*12, 520-64*3, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
-    init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*4, 64, 64, RECTANGLE, 260+64*12, 520-64*4, 64, 64, static_physics, 1);
-    push_back_ol(&obj_list, temp_brick);
+        init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*4, 64, 64, RECTANGLE, 260+64*12, 520-64*4, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
 
 
     // screen offset to the right
@@ -199,15 +212,17 @@ int main()
 
             // ACTORS
             draw_object(&player, screen_offset);
-            //draw_hitbox(player.hitbox, screen_offset);
+
+            for (int i = 0; i < enemies.size; i++)
+            {
+                draw_object(get_element_pointer_ol(&enemies, i), screen_offset);
+            }
 
             // MAP
             for (int i = 0; i < obj_list.size; i++)
             {
                 draw_object(get_element_pointer_ol(&obj_list, i), screen_offset);
-                //draw_hitbox(get_element_pointer_ol(&obj_list, i)->hitbox, screen_offset);
             }
-
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
@@ -221,6 +236,8 @@ int main()
     al_destroy_bitmap(bitmap);
     al_destroy_bitmap(brick);
     delete_list(&obj_list);
+    delete_list(&enemies);
+    delete_list(&background_elements);
 
     return 0;
 }

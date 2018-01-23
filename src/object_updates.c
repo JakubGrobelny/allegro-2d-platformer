@@ -148,3 +148,8 @@ bool on_the_ground(Object* object, ObjectsList* list)
 {
     return collides_in_direction(object, list, BOTTOM); // TODO: if object on list is platform
 }
+
+void update_non_static_objects(ObjectsList* non_static_objects, ObjectsList* static_objects)
+{
+    
+}

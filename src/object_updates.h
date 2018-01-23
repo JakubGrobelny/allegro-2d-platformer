@@ -18,4 +18,7 @@ bool on_the_ground(Object* object, ObjectsList* list);
 // making things fall
 void apply_gravity(Object* object);
 
+// updating non-static objects
+void update_non_static_objects(ObjectsList* non_static_objects, ObjectsList* static_objects);
+
 #endif

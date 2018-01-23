@@ -8,7 +8,7 @@ void init_object(Object* object, int type, int pos_x, int pos_y, int width, int 
     object->width = width;
     object->height = height;
     object->physics = physics;
-    object->hitbox = create_hitbox(hitbox_type, pos_x, pos_y, width, height);
+    object->hitbox = create_hitbox(hitbox_type, hitbox_pos_x, hitbox_pos_y, hitbox_width, hitbox_height);
     object->animation_frame = 0;
     object->frames_number = frames_number;
 }
