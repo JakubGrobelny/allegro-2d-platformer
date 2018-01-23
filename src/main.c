@@ -81,10 +81,10 @@ int main()
 
     bind_bitmap(&temp_cloud, cloud);
 
-    init_object(&temp_cloud, BACKGROUND, 130, 100, 256, 256, RECTANGLE, 130, 100, 256, 256, static_physics, 1);
+    init_object(&temp_cloud, BACKGROUND, 130, 100, 128, 128, RECTANGLE, 130, 100, 256, 256, static_physics, 1);
     push_back_ol(&background_elements, temp_cloud);
 
-    init_object(&temp_cloud, BACKGROUND, 620, 65, 256, 256, RECTANGLE, 620, 65, 256, 256, static_physics, 1);
+    init_object(&temp_cloud, BACKGROUND, 620, 65, 128, 128, RECTANGLE, 620, 65, 256, 256, static_physics, 1);
     push_back_ol(&background_elements, temp_cloud);
 
     Object temp_brick;
