@@ -112,7 +112,9 @@ void respawn_player(Object* player, int x, int y)
 
 void non_static_object_interactions(Object* player, ObjectsList* list)
 {
-    for (int i = list->size; i >= 0; i--)
+    int size = list->size;
+
+    for (int i = 0; i < size; i++)
     {
         Object* object = get_element_pointer_ol(list, i);
         Hitbox bottom = create_hitbox(RECTANGLE, player->hitbox.pos_x, player->hitbox.pos_y + player->hitbox.height - 1, player->hitbox.width, 1);
@@ -122,8 +124,8 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             if (collide(bottom, object->hitbox))
             {
                 kill(object, i, list);
-                player->physics.speed.y = -10.0f; // TODO: set to constant value
-                i--; // TODO: NIE DZIALA :(((
+                player->physics.speed.y = -10.0f;
+                size--;
             }
             else if (collide(player->hitbox, object->hitbox))
             {

@@ -156,7 +156,7 @@ bool on_the_ground(Object* object, ObjectsList* list)
 
 void kill(Object* object, int i, ObjectsList* list)
 {
-    printf("Before: ");
+    printf("%d:\nBefore: ", i);
 
     for (int e = 0; e < list->size; e++)
     {
