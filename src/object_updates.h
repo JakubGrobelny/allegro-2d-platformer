@@ -22,6 +22,6 @@ void apply_gravity(Object* object);
 void update_non_static_objects(ObjectsList* non_static_objects, ObjectsList* static_objects);
 
 // kills an object :( (literally)
-void kill(Object* object);
+void kill(Object* object, int i, ObjectsList* list);
 
 #endif

@@ -120,10 +120,10 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
         {
             if (collide(player->hitbox, object->hitbox))
             {
-                if (relative_direction(player, object, LEFT) || relative_direction(player,object, RIGHT)) // TODO: fix the damned relative_direction thing (maybe a function that returns the directions instead of checking them)
-                    die(player);
+                if (relative_direction(player, object, TOP) || relative_direction(player,object, BOTTOM)) // TODO: fix the damned relative_direction thing (maybe a function that returns the directions instead of checking them)
+                    kill(object, i, list);
                 else
-                    kill(object);
+                    die(player);
             }
         }
     }

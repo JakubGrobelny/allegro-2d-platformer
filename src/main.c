@@ -126,6 +126,9 @@ int main()
         init_object(&temp_brick, PLATFORM, 260+64, 520-3*64, 64, 64, RECTANGLE, 260+64, 520-3*64, 64, 64, static_physics, 1);
         push_back_ol(&obj_list, temp_brick);
 
+        init_object(&temp_brick, PLATFORM, 260+128, 520-3*64, 64, 64, RECTANGLE, 260+128, 520-3*64, 64, 64, static_physics, 1);
+        push_back_ol(&obj_list, temp_brick);
+
         init_object(&temp_brick, PLATFORM, 260+64*8, 520-64, 64, 64, RECTANGLE, 260+64*8, 520-64, 64, 64, static_physics, 1);
         push_back_ol(&obj_list, temp_brick);
 

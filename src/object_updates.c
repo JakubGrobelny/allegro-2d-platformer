@@ -149,8 +149,9 @@ bool on_the_ground(Object* object, ObjectsList* list)
     return collides_in_direction(object, list, BOTTOM); // TODO: if object on list is platform
 }
 
-void kill(Object* object)
+void kill(Object* object, int i, ObjectsList* list)
 {
+    pop_element_ol(list, i);
     printf("TEST!\n");
 }
 
