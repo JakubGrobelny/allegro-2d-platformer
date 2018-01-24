@@ -52,7 +52,7 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
-    Physics player_physics = create_physics(0, 0, 1.2f, 20.0f, 1);
+    Physics player_physics = create_physics(0, 0, 1.2f, 21.0f, 1);
     Physics enemy_physics  = create_physics(0, 0, 2.0f, 0.0f , 0.4f);
 
     Object player;

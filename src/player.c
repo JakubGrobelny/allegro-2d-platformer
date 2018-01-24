@@ -7,10 +7,10 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
         die(player);
 
-    if (on_the_ground(player, list))
-            player->physics.speed.y = 0;
-    else
-        apply_gravity(player);
+    //if (on_the_ground(player, list))
+    //        player->physics.speed.y = 0;
+    //else
+    //    apply_gravity(player);
 
     bool running = false;
 
@@ -123,6 +123,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             {
                 kill(object, i, list);
                 player->physics.speed.y = -10.0f; // TODO: set to constant value
+                i--; // TODO: NIE DZIALA :(((
             }
             else if (collide(player->hitbox, object->hitbox))
             {

@@ -40,6 +40,8 @@ bool collides_in_direction(Object* object, ObjectsList* list, int direction)
 
 void apply_vectors(Object* object, ObjectsList* list)
 {
+    apply_gravity(object);
+
     Hitbox new_x = object->hitbox;
     Hitbox new_y = new_x;
     new_x.pos_x += (int)object->physics.speed.x;
@@ -78,10 +80,13 @@ void apply_vectors(Object* object, ObjectsList* list)
             {
                 new_x.pos_y += 1;
             }
-            if (relative_direction(object, get_element_pointer_ol(list, i), BOTTOM)) // fix for <-> + \/
+            else
             {
-                new_x.pos_y -= 1;
+                new_x.pos_y -= 2;
             }
+            // if (relative_direction(object, get_element_pointer_ol(list, i), BOTTOM)) // fix for <-> + \/
+            // {
+            // }
 
             if (collide(new_x, obstacle))
             {
@@ -151,7 +156,23 @@ bool on_the_ground(Object* object, ObjectsList* list)
 
 void kill(Object* object, int i, ObjectsList* list)
 {
+    printf("Before: ");
+
+    for (int e = 0; e < list->size; e++)
+    {
+        printf("%d ", get_element_pointer_ol(list, e)->pos_x);
+    }
+
     pop_element_ol(list, i);
+
+    printf(" After: ");
+
+    for (int e = 0; e < list->size; e++)
+    {
+        printf("%d ", get_element_pointer_ol(list, e)->pos_x);
+    }
+    putchar('\n');
+
     // TODO: play animation
 }
 

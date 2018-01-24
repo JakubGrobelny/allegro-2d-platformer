@@ -79,7 +79,7 @@ void remove_element_ol(ObjectsList* list, int i)
 {
     for (int e = i; e < list->size - 1; e++)
     {
-        set_element_ol(list, i, get_element_ol(list, i + 1));
+        set_element_ol(list, e, get_element_ol(list, e + 1));
     }
     // Ta funkcja nie powinna byc uzywana poza pop_element poniewaz nie zmienia wielkosci listy
     // TODO: przeniesc zawartosc do pop_element_ol (nie chce mi sie teraz :S)
@@ -88,7 +88,6 @@ void remove_element_ol(ObjectsList* list, int i)
 Object pop_element_ol(ObjectsList* list, int i)
 {
     Object obj = get_element_ol(list, i);
-    remove_element_ol(list, i);
 
     if (i == 0)
     {
@@ -98,6 +97,10 @@ Object pop_element_ol(ObjectsList* list, int i)
         }
         else
             list->first++;
+    }
+    else if (i < list->size - 1)
+    {
+        remove_element_ol(list, i);
     }
 
     list->size -= 1;
