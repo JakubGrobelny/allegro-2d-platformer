@@ -79,8 +79,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
 
     apply_vectors(player, list);
-
     non_static_object_interactions(player, non_static);
+
 
     player->hitbox.pos_y = player->pos_y + (player->height - player->hitbox.height) / 2;
     player->hitbox.pos_x = player->pos_x + (player->width - player->hitbox.width) / 2;
@@ -112,18 +112,21 @@ void respawn_player(Object* player, int x, int y)
 
 void non_static_object_interactions(Object* player, ObjectsList* list)
 {
-    for (int i = 0; i < list->size; i++)
+    for (int i = list->size; i >= 0; i--)
     {
         Object* object = get_element_pointer_ol(list, i);
+        Hitbox bottom = create_hitbox(RECTANGLE, player->hitbox.pos_x, player->hitbox.pos_y + player->hitbox.height - 1, player->hitbox.width, 1);
 
         if (object->type == ENEMY_GOOMBA)
         {
-            if (collide(player->hitbox, object->hitbox))
+            if (collide(bottom, object->hitbox))
             {
-                if (relative_direction(player, object, TOP) || relative_direction(player,object, BOTTOM)) // TODO: fix the damned relative_direction thing (maybe a function that returns the directions instead of checking them)
-                    kill(object, i, list);
-                else
-                    die(player);
+                kill(object, i, list);
+                player->physics.speed.y = -10.0f; // TODO: set to constant value
+            }
+            else if (collide(player->hitbox, object->hitbox))
+            {
+                die(player);
             }
         }
     }

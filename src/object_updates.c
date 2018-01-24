@@ -152,7 +152,7 @@ bool on_the_ground(Object* object, ObjectsList* list)
 void kill(Object* object, int i, ObjectsList* list)
 {
     pop_element_ol(list, i);
-    printf("TEST!\n");
+    // TODO: play animation
 }
 
 void update_non_static_objects(ObjectsList* non_static_objects, ObjectsList* static_objects)

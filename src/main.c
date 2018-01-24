@@ -157,6 +157,19 @@ int main()
         init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*4, 64, 64, RECTANGLE, 260+64*12, 520-64*4, 64, 64, static_physics, 1);
         push_back_ol(&obj_list, temp_brick);
 
+        bind_bitmap(&temp_brick, brick);
+
+        for (int i = 13; i < 20; i++)
+        {
+                if (i % 2)
+                {
+                    init_object(&temp_enemy, ENEMY_GOOMBA, 260+64*i, 520-64*3, 64, 64, RECTANGLE, 260+64*i, 520-64*3+8, 64, 64-8, enemy_physics, 2);
+                    push_back_ol(&enemies, temp_enemy);
+                }
+
+                init_object(&temp_brick, PLATFORM, 260+64*i, 520-64*2, 64, 64, RECTANGLE, 260+64*i, 520-64*2, 64, 64, static_physics, 1);
+                push_back_ol(&obj_list, temp_brick);
+        }
 
     // screen offset to the right
     int screen_offset = 0;
@@ -216,17 +229,21 @@ int main()
             }
 
             // ACTORS
-            draw_object(&player, screen_offset);
 
             for (int i = 0; i < enemies.size; i++)
             {
                 draw_object(get_element_pointer_ol(&enemies, i), screen_offset);
+                draw_hitbox(get_element_pointer_ol(&enemies, i)->hitbox, screen_offset);
             }
+
+            draw_object(&player, screen_offset);
+            draw_hitbox(player.hitbox, screen_offset);
 
             // MAP
             for (int i = 0; i < obj_list.size; i++)
             {
                 draw_object(get_element_pointer_ol(&obj_list, i), screen_offset);
+                draw_hitbox(get_element_pointer_ol(&obj_list, i)->hitbox, screen_offset);
             }
 
             al_flip_display();

@@ -89,7 +89,19 @@ Object pop_element_ol(ObjectsList* list, int i)
 {
     Object obj = get_element_ol(list, i);
     remove_element_ol(list, i);
+
+    if (i == 0)
+    {
+        if (list->size <= 1)
+        {
+            list->first = 0;
+        }
+        else
+            list->first++;
+    }
+
     list->size -= 1;
+
     return obj;
 }
 
