@@ -51,6 +51,19 @@ int main()
     al_start_timer(timer);
 
     // creating structures
+
+    Object air;
+    Object level[32][256] = {}; // row / column
+
+    for (int i = 0; i < 32; i++)
+    {
+        for (int e = 0; e < 256; e++)
+        {
+            init_object(&air, EMPTY, e*64, i*64, 64, 64, RECTANGLE, e*64, i*64, 64, 64, static_physics, 0);
+            level[i][e] = air;
+        }
+    }
+
     Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
     Physics player_physics = create_physics(0, 0, 1.2f, 21.0f, 1);
     Physics enemy_physics  = create_physics(0, 0, 2.0f, 0.0f , 0.4f);
