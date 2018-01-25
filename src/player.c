@@ -1,6 +1,6 @@
 #include "player.h"
 
-void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, ObjectsList* list, ObjectsList* non_static, int frame)
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[], ObjectsList* non_static, int frame)
 {
     Vector previous_speed = player->physics.speed;
 
@@ -110,7 +110,7 @@ void respawn_player(Object* player, int x, int y)
     player->physics.speed.x = 0;
 }
 
-void non_static_object_interactions(Object* player, ObjectsList* list)
+void non_static_object_interactions(Object* player, Object level[])
 {
     int size = list->size;
 
@@ -135,7 +135,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
     }
 }
 
-void animate_player(Object* player, ObjectsList* list, bool running, int frame)
+void animate_player(Object* player, Object level[], bool running, int frame)
 {
         // jumping
         if (player->physics.speed.y < 0)

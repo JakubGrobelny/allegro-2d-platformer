@@ -1,44 +1,27 @@
 #include "object_updates.h"
 
-bool collides_in_direction(Object* object, ObjectsList* list, int direction)
+bool collides_in_direction(Object* object, Object level[], int direction)
 {
-    for (int i = 0; i < list->size; i++)
+    int x;
+    int y;
+
+    x = object->hitbox.pos_x / 64;
+    y = object->hitbox.pos_y / 64;
+
+// TODO: FINISH!!!1
+
+    switch (direction)
     {
-        if (relative_direction(object, get_element_pointer_ol(list, i), direction))
-        {
-            Hitbox temp = object->hitbox;
-
-            if (direction == BOTTOM)
-            {
-                temp.pos_y += (int)(object->physics.speed.y + 0.5f);
-                temp.pos_x += (int)(object->physics.speed.x);
-            }
-            else if (direction == RIGHT)
-            {
-                temp.pos_x += (int)(object->physics.speed.x + 0.5f);
-                temp.pos_y += (int)(object->physics.speed.y);
-
-            }
-            else if (direction == TOP)
-            {
-                temp.pos_y += (int)(object->physics.speed.y - 0.5f);
-                temp.pos_x += (int)(object->physics.speed.x);
-            }
-            else if (direction == LEFT)
-            {
-                temp.pos_x += (int)(object->physics.speed.x - 0.5f);
-                temp.pos_y += (int)(object->physics.speed.y);
-            }
-
-            if (collide(temp, get_element_pointer_ol(list, i)->hitbox))
-                return true;
-        }
+        case LEFT:
+        case RIGHT:
+        case TOP:
+        case BOTTOM:
     }
 
     return false;
 }
 
-void apply_vectors(Object* object, ObjectsList* list)
+void apply_vectors(Object* object, Object level[])
 {
     apply_gravity(object);
 
@@ -154,7 +137,7 @@ bool on_the_ground(Object* object, ObjectsList* list)
     return collides_in_direction(object, list, BOTTOM); // TODO: if object on list is platform
 }
 
-void kill(Object* object, int i, ObjectsList* list)
+void kill(Object* object, int i, Object level[])
 {
     printf("%d:\nBefore: ", i);
 
@@ -176,7 +159,7 @@ void kill(Object* object, int i, ObjectsList* list)
     // TODO: play animation
 }
 
-void update_non_static_objects(ObjectsList* non_static_objects, ObjectsList* static_objects)
+void update_non_static_objects(ObjectsList* objects, Object level[])
 {
     for (int i = 0; i < non_static_objects->size; i++)
     {
