@@ -52,33 +52,29 @@ int main()
 
     // creating structures
 
-    Object air;
-    Object level[32][256] = {}; // row / column
+    Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
+    // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
+    Object background_elements[MAP_HEIGHT][MAP_WIDTH];
+    // array that holds the decorative objects in the background
 
     for (int i = 0; i < 32; i++)
     {
         for (int e = 0; e < 256; e++)
         {
-            init_object(&air, EMPTY, e*64, i*64, 64, 64, RECTANGLE, e*64, i*64, 64, 64, static_physics, 0);
-            level[i][e] = air;
+            init_object(&level[i][e], EMPTY, e*64, i*64, 64, 64, RECTANGLE, e*64, i*64, 64, 64, static_physics, 0);
+            background_elements[i][e] = level[i][e];
         }
     }
 
     Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
     Physics player_physics = create_physics(0, 0, 1.2f, 21.0f, 1);
-    Physics enemy_physics  = create_physics(0, 0, 2.0f, 0.0f , 0.4f);
+    Physics goomba_physics  = create_physics(0, 0, 2.0f, 0.0f , 0.4f);
 
     Object player;
     init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 248, 250, 60, 64, player_physics, 15);
 
-    ObjectsList obj_list;
-    obj_list = create_objects_list(1);
-
-    ObjectsList background_elements;
-    background_elements = create_objects_list(1);
-
-    ObjectsList enemies;
-    enemies = create_objects_list(1);
+    ObjectsList non_static_elements;
+    non_static_elements = create_objects_list(1);
 
     // bitmaps
     ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
@@ -86,102 +82,33 @@ int main()
     bind_bitmap(&player, bitmap);
 
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
-    brick = al_load_bitmap("./resources/brick_orange.png");
-
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
-    brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
-
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
-    cloud = al_load_bitmap("./resources/cloud.png");
-
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
+
+    brick = al_load_bitmap("./resources/brick_orange.png");
+    brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
+    cloud = al_load_bitmap("./resources/cloud.png");
     enemy1 = al_load_bitmap("./resources/enemy_1.png");
 
     Object temp_enemy;
-
         bind_bitmap(&temp_enemy, enemy1);
-        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 520-4*64, 64, 64, RECTANGLE, 260+64, 520-4*64+8, 64, 64-8, enemy_physics, 2);
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 520-4*64, 64, 64, RECTANGLE, 260+64, 520-4*64+8, 64, 64-8, goomba_physics, 2);
         temp_enemy.physics.speed.x = 4.0f;
-        push_back_ol(&enemies, temp_enemy);
+        push_back_ol(&non_static_elements, temp_enemy);
 
     Object temp_cloud;
-
         bind_bitmap(&temp_cloud, cloud);
-
-        init_object(&temp_cloud, BACKGROUND, 130, 100, 128, 128, RECTANGLE, 130, 100, 256, 256, static_physics, 1);
-        push_back_ol(&background_elements, temp_cloud);
-
-        init_object(&temp_cloud, BACKGROUND, 620, 65, 128, 128, RECTANGLE, 620, 65, 256, 256, static_physics, 1);
-        push_back_ol(&background_elements, temp_cloud);
+        init_object(&temp_cloud, BACKGROUND, 4*64, 1*64, 256, 256, RECTANGLE, 0, 0, 1, 1, static_physics, 1);
+        background_elements[1][4] = temp_cloud;
 
     Object temp_brick;
-
         bind_bitmap(&temp_brick, brick);
 
-        init_object(&temp_brick, PLATFORM, 260, 520, 64, 64, RECTANGLE, 260, 520, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64, 520, 64, 64, RECTANGLE, 260+64, 520, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*2, 520, 64, 64, RECTANGLE, 260+64*2, 520, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*3, 520, 64, 64, RECTANGLE, 260+64*3, 520, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*5, 520-3*64, 64, 64, RECTANGLE, 260+64*5, 520-3*64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*6, 520-3*64, 64, 64, RECTANGLE, 260+64*6, 520-3*64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64, 520-3*64, 64, 64, RECTANGLE, 260+64, 520-3*64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+128, 520-3*64, 64, 64, RECTANGLE, 260+128, 520-3*64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*8, 520-64, 64, 64, RECTANGLE, 260+64*8, 520-64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*9, 520-64, 64, 64, RECTANGLE, 260+64*9, 520-64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*10, 520-64, 64, 64, RECTANGLE, 260+64*10, 520-64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*11, 520-64, 64, 64, RECTANGLE, 260+64*11, 520-64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*12, 520-64, 64, 64, RECTANGLE, 260+64*12, 520-64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*13, 520-64, 64, 64, RECTANGLE, 260+64*13, 520-64, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*12, 520-128, 64, 64, RECTANGLE, 260+64*12, 520-128, 64, 64, static_physics, 1);
-        bind_bitmap(&temp_brick, brick2);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*3, 64, 64, RECTANGLE, 260+64*12, 520-64*3, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        init_object(&temp_brick, PLATFORM, 260+64*12, 520-64*4, 64, 64, RECTANGLE, 260+64*12, 520-64*4, 64, 64, static_physics, 1);
-        push_back_ol(&obj_list, temp_brick);
-
-        bind_bitmap(&temp_brick, brick);
-
-        for (int i = 13; i < 20; i++)
+        for (int i = 1; i < 6; i++)
         {
-                if (i % 2)
-                {
-                    init_object(&temp_enemy, ENEMY_GOOMBA, 260+64*i, 520-64*3, 64, 64, RECTANGLE, 260+64*i, 520-64*3+8, 64, 64-8, enemy_physics, 2);
-                    push_back_ol(&enemies, temp_enemy);
-                }
-
-                init_object(&temp_brick, PLATFORM, 260+64*i, 520-64*2, 64, 64, RECTANGLE, 260+64*i, 520-64*2, 64, 64, static_physics, 1);
-                push_back_ol(&obj_list, temp_brick);
+            init_object(&temp_brick, PLATFORM, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
+            level[7][i] = temp_brick;
         }
 
     // screen offset to the right
@@ -211,8 +138,8 @@ int main()
             if (frame > 60)
                 frame = 0;
 
-            update_non_static_objects(&enemies, &obj_list);
-            update_player(&player, keys_active, keys_down, keys_up, &obj_list, &enemies, frame);
+            update_non_static_objects(&non_static_elements, level);
+            update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
 
             if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
@@ -236,27 +163,36 @@ int main()
             redraw = false;
 
             // BACKGROUND
-            for (int i = 0; i < background_elements.size; i++)
+
+            for (int height = 0; height < MAP_HEIGHT; height++) // TODO: limit the range to the window's size (also maybe merge background display with map display)
             {
-                draw_object(get_element_pointer_ol(&background_elements, i), 0); // TODO: add offset to SOME elements
+                for (int width = 0; width < MAP_WIDTH; width++)
+                {
+                    if (background_elements[height][width].type != EMPTY)
+                        draw_object(&background_elements[height][width]);
+                }
             }
 
             // ACTORS
 
-            for (int i = 0; i < enemies.size; i++)
+            for (int i = 0; i < non_static_elements.size; i++)
             {
-                draw_object(get_element_pointer_ol(&enemies, i), screen_offset);
-                draw_hitbox(get_element_pointer_ol(&enemies, i)->hitbox, screen_offset);
+                draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
+                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             draw_object(&player, screen_offset);
-            draw_hitbox(player.hitbox, screen_offset);
+            //draw_hitbox(player.hitbox, screen_offset);
 
             // MAP
-            for (int i = 0; i < obj_list.size; i++)
+
+            for (int height = 0; height < MAP_HEIGHT, height++)
             {
-                draw_object(get_element_pointer_ol(&obj_list, i), screen_offset);
-                draw_hitbox(get_element_pointer_ol(&obj_list, i)->hitbox, screen_offset);
+                for (int width = 0; width < MAP_WIDTH; width++)
+                {
+                    if (level[height][width].type != EMPTY)
+                        draw_object(&level[height][width]);
+                }
             }
 
             al_flip_display();
@@ -270,9 +206,7 @@ int main()
     al_destroy_event_queue(event_queue);
     al_destroy_bitmap(bitmap);
     al_destroy_bitmap(brick);
-    delete_list(&obj_list);
-    delete_list(&enemies);
-    delete_list(&background_elements);
+    delete_list(&non_static_elements);
 
     return 0;
 }

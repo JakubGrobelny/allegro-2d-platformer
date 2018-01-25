@@ -6,6 +6,10 @@
 #define DISPLAY_WIDTH 1280
 #define FPS 60
 
+// Map properties
+#define MAP_WIDTH   256
+#define MAP_HEIGHT  32
+
 // Colors
 #define BLACK       al_map_rgba(0  , 0  , 0  , 255)
 #define WHITE       al_map_rgba(255, 255, 255, 255)
