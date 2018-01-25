@@ -23,15 +23,28 @@
 
 void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 {
-    if (!on_the_ground(object, level))
-        apply_gravity(object);
+    apply_gravity(object);
 
-    if (object->physics.speed.x == 0 && object->physics.speed.y == 0)
-        return;
-        // TODO: change to:
-        // temporary y correction for x correction
-        // x correction
-        // y correction
+    Hitbox new_x = object->hitbox;
+    Hitbox new_y = new_x;
+    new_x.pos_x += (int)object->physics.speed.x;
+    new_y.pos_y += (int)object->physics.speed.y;
+
+    int dir_x = STATIC;
+    int dir_y = STATIC;
+
+    if (object->physics.speed.x > 0)
+        dir_x = RIGHT;
+    else if (object->physics.speed.x < 0)
+        dir_x = LEFT;
+
+    if (object->physics.speed.y > 0)
+        dir_y = BOTTOM;
+    else if (object->physics.speed.y < 0)
+        dir_y = TOP;
+
+    if (dir_y == dir_x) // static
+     return;
 
     int grid_height = abs_int((object->physics.speed.y / 64)) + 1;
     int grid_width = abs_int((object->physics.speed.x / 64)) + 1;
@@ -42,45 +55,65 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         {
             if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH)
             {
-                if (level[y][x].type != EMPTY)
+                Object* obstacle = &level[y][x];
+
+                if (obstacle->type != EMPTY && (relative_direction(object, obstacle, dir_x) || relative_direction(object, obstacle, dir_y)))
                 {
-                    Hitbox new_y = object->hitbox;
-                    new_y.pos_y += object->physics.speed.y;
-                    new_y.pos_x += object->physics.speed.x;
-
-                    Hitbox temp_object = level[y][x].hitbox;
-
-                    if (collide(new_y, temp_object))
+                    if (relative_direction(object, obstacle, TOP))
                     {
-                        if (object->physics.speed.y > 0)
-                        {
-                            if ((new_y.pos_y + new_y.height) - temp_object.pos_y > 0)
-                                object->physics.speed.y -= (new_y.pos_y + new_y.height) - temp_object.pos_y;
-                        }
-                        else if (object->physics.speed.y < 0)
-                        {
-                            if ((temp_object.pos_y + temp_object.height) - new_y.pos_y > 0)
-                                object->physics.speed.y += (temp_object.pos_y + temp_object.height) - new_y.pos_y;
-                        }
+                        new_x.pos_y += 1;
+                    }
+                    else
+                    {
+                        new_x.pos_y -= 2;
                     }
 
-                    Hitbox new_x = object->hitbox;
-                    new_x.pos_y += object->physics.speed.y;
-                    new_x.pos_x += object->physics.speed.x;
-
-                    if (collide(new_x, temp_object))
+                    if (collide(new_x, obstacle->hitbox))
                     {
-                        if (object->physics.speed.y > 0)
+                        // adjust speed
+                        int adjustment = 0;
+
+                        if (dir_x == LEFT)
                         {
-                            if ((new_x.pos_y + new_x.height) - temp_object.pos_y > 0)
-                                object->physics.speed.y -= (new_x.pos_y + new_x.height) - temp_object.pos_y;
+                            adjustment = (obstacle->hitbox.pos_x + obstacle->hitbox.width) - new_x.pos_x + 1;
+                            //printf("Adjustment_x_left = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_x, obstacle->hitbox.width, new_x.pos_x, adjustment);
                         }
-                        else if (object->physics.speed.y < 0)
+                        else if (dir_x == RIGHT)
                         {
-                            if ((temp_object.pos_y + temp_object.height) - new_x.pos_y > 0)
-                                object->physics.speed.y += (temp_object.pos_y + temp_object.height) - new_x.pos_y;
+                            adjustment = obstacle->hitbox.pos_x - (new_x.pos_x + new_x.width) - 1;
+                            //printf("Adjustment_x_right = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_x, new_x.pos_x, new_x.width, adjustment);
                         }
+
+                        if ((object->physics.speed.x + adjustment) * object->physics.speed.x > 0)
+                            object->physics.speed.x += adjustment;
+                        else
+                            object->physics.speed.x = 0;
                     }
+                    if (collide(new_y, obstacle->hitbox))
+                    {
+                        // adjust speed
+                        int adjustment = 0;
+
+                        if (dir_y == TOP)
+                        {
+                            adjustment = (obstacle->hitbox.pos_y + obstacle->hitbox.height) - new_y.pos_y;
+                            //printf("Adjustment_y_top = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_y, obstacle->hitbox.width, new_y.pos_y, adjustment);
+                        }
+                        else if (dir_y == BOTTOM)
+                        {
+                            adjustment = obstacle->hitbox.pos_y - (new_y.pos_y + new_y.height);
+                            //printf("Adjustment_y_bottom = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_y, new_y.pos_y, new_y.height, adjustment);
+                        }
+
+                        if ((object->physics.speed.y + adjustment) * object->physics.speed.y > 0)
+                            object->physics.speed.y += adjustment;
+                        else
+                            object->physics.speed.y = 0;
+
+                        //if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
+                        //    new_x.pos_y -= 2;
+                    }
+
                 }
             }
         }
