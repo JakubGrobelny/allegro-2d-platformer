@@ -41,7 +41,7 @@ void set_element_ol(ObjectsList* list, int i, Object obj);
 // add the given object as the last element of the list
 void push_back_ol(ObjectsList* list, Object obj);
 
-// remove i-th element from the list
+// remove i-th element from the list (DO NOT USE IT)
 void remove_element_ol(ObjectsList* list, int i);
 
 // free the memory taken by the list

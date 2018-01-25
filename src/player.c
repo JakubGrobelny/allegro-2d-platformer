@@ -1,6 +1,6 @@
 #include "player.h"
 
-void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[], ObjectsList* non_static, int frame)
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static, int frame)
 {
     Vector previous_speed = player->physics.speed;
 
@@ -28,7 +28,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
         else
         {
-            player->physics.speed.x += (player->physics.acceleration.x / 1.25f);
+            player->physics.speed.x += (int)(player->physics.acceleration.x / 2);
         }
 
         if (player->physics.speed.x > MAX_SPEED)
@@ -45,14 +45,14 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
         else
         {
-            player->physics.speed.x -= (player->physics.acceleration.x / 1.25f);
+            player->physics.speed.x -= (int)(player->physics.acceleration.x / 2);
         }
 
         if (abs_float(player->physics.speed.x) > MAX_SPEED)
             player->physics.speed.x = -MAX_SPEED;
     }
 
-    if (keys_down[KEY_UP] && player->alive)
+    if (keys_down[KEY_UP] && player->alive) // if active && ~pressed then lower the gravity
     {
         if (player->physics.speed.y == previous_speed.y) // on_the_ground
         {
@@ -62,25 +62,26 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
 
     if (player->alive)
-        animate_player(player, list, running, frame);
+        animate_player(player, level, running, frame);
 
     // temporary friction simulation:
-    if (on_the_ground(player, list))
+    if (on_the_ground(player, level))
     {
-        player->physics.speed.x /= 1.1f;
-        if (abs_float(player->physics.speed.x) < 0.2f)
+        player->physics.speed.x = (int)(player->physics.speed.x / 1.1);
+
+        if (abs_float(player->physics.speed.x) < 1)
             player->physics.speed.x = 0;
     }
     else
     {
-        player->physics.speed.x /= 1.05f;
-        if (abs_float(player->physics.speed.x) < 0.2f)
+        player->physics.speed.x /= 1.02;
+
+        if (abs_float(player->physics.speed.x) < 1)
             player->physics.speed.x = 0;
     }
 
-    apply_vectors(player, list);
+    apply_vectors(player, level);
     non_static_object_interactions(player, non_static);
-
 
     player->hitbox.pos_y = player->pos_y + (player->height - player->hitbox.height) / 2;
     player->hitbox.pos_x = player->pos_x + (player->width - player->hitbox.width) / 2;
@@ -110,7 +111,7 @@ void respawn_player(Object* player, int x, int y)
     player->physics.speed.x = 0;
 }
 
-void non_static_object_interactions(Object* player, Object level[])
+void non_static_object_interactions(Object* player, ObjectsList* list)
 {
     int size = list->size;
 
@@ -124,7 +125,7 @@ void non_static_object_interactions(Object* player, Object level[])
             if (collide(bottom, object->hitbox))
             {
                 kill(object, i, list);
-                player->physics.speed.y = -10.0f;
+                player->physics.speed.y = -10;
                 size--;
             }
             else if (collide(player->hitbox, object->hitbox))
@@ -135,7 +136,7 @@ void non_static_object_interactions(Object* player, Object level[])
     }
 }
 
-void animate_player(Object* player, Object level[], bool running, int frame)
+void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool running, int frame)
 {
         // jumping
         if (player->physics.speed.y < 0)
@@ -161,7 +162,7 @@ void animate_player(Object* player, Object level[], bool running, int frame)
             }
         }
         // on the ground
-        else if (on_the_ground(player, list))
+        else if (on_the_ground(player, level))
         {
             // idle
             if (player->physics.speed.x == 0 || !running)
@@ -192,7 +193,7 @@ void animate_player(Object* player, Object level[], bool running, int frame)
                     }
                 }
                 // if was running
-                else if (running && !(frame % 5 / (player->physics.speed.x / MAX_SPEED) )) // frame * player->physics.speed.x / MAX_SPEED
+                else if (running && !(frame % 5))// && !(frame % ((abs_int((int)(player->physics.speed.x / MAX_SPEED)))))) // frame * player->physics.speed.x / MAX_SPEED
                 {
                     if (player->physics.speed.x < 0)
                     {
@@ -251,6 +252,5 @@ void die(Object* player)
     player->animation_frame = 14;
     terminate_velocity(player);
     // TODO: player->hitbox.collision = false // turn off collisions
-    player->physics.speed.y = -19.75f;
-    player->physics.mass /= 2.0f; // TODO: cancel it
+    player->physics.speed.y = -25;
 }

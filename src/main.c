@@ -50,7 +50,11 @@ int main()
     al_clear_to_color(LIGHT_BLUE);
     al_start_timer(timer);
 
+
     // creating structures
+    Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
+    Physics player_physics = create_physics(0, 0, 2, 21, 1);
+    Physics goomba_physics  = create_physics(0, 0, 2, 0 , 1);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
@@ -66,12 +70,8 @@ int main()
         }
     }
 
-    Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
-    Physics player_physics = create_physics(0, 0, 1.2f, 21.0f, 1);
-    Physics goomba_physics  = create_physics(0, 0, 2.0f, 0.0f , 0.4f);
-
     Object player;
-    init_object(&player, PLAYER, 250, 250, 64, 64, RECTANGLE, 248, 250, 60, 64, player_physics, 15);
+    init_object(&player, PLAYER, 230 - 64, 250, 64, 64, RECTANGLE, 248, 250, 60, 64, player_physics, 15);
 
     ObjectsList non_static_elements;
     non_static_elements = create_objects_list(1);
@@ -93,7 +93,7 @@ int main()
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
-        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 520-4*64, 64, 64, RECTANGLE, 260+64, 520-4*64+8, 64, 64-8, goomba_physics, 2);
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 3*64, 64, 64, RECTANGLE, 260+64, 3*64+8, 64, 64-8, goomba_physics, 2);
         temp_enemy.physics.speed.x = 4.0f;
         push_back_ol(&non_static_elements, temp_enemy);
 
@@ -110,6 +110,14 @@ int main()
             init_object(&temp_brick, PLATFORM, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
             level[7][i] = temp_brick;
         }
+
+        bind_bitmap(&temp_brick, brick2);
+        for (int i = 4; i < 8; i++)
+        {
+            init_object(&temp_brick, PLATFORM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 1);
+            level[4][i] = temp_brick;
+        }
+
 
     // screen offset to the right
     int screen_offset = 0;
@@ -169,7 +177,7 @@ int main()
                 for (int width = 0; width < MAP_WIDTH; width++)
                 {
                     if (background_elements[height][width].type != EMPTY)
-                        draw_object(&background_elements[height][width]);
+                        draw_object(&background_elements[height][width], screen_offset);
                 }
             }
 
@@ -186,12 +194,12 @@ int main()
 
             // MAP
 
-            for (int height = 0; height < MAP_HEIGHT, height++)
+            for (int height = 0; height < MAP_HEIGHT; height++)
             {
                 for (int width = 0; width < MAP_WIDTH; width++)
                 {
                     if (level[height][width].type != EMPTY)
-                        draw_object(&level[height][width]);
+                        draw_object(&level[height][width], screen_offset);
                 }
             }
 

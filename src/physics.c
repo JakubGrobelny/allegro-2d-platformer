@@ -1,6 +1,6 @@
 #include "physics.h"
 
-Physics create_physics(float speed_x, float speed_y, float acceleration_x, float acceleration_y, float mass)
+Physics create_physics(int speed_x, int speed_y, int acceleration_x, int acceleration_y, int mass)
 {
     Physics new;
     Vector speed = create_vector(speed_x, speed_y);
@@ -12,7 +12,7 @@ Physics create_physics(float speed_x, float speed_y, float acceleration_x, float
     return new;
 }
 
-Vector create_vector(float x, float y)
+Vector create_vector(int x, int y)
 {
     Vector new;
     new.x = x;
