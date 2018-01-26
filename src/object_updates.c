@@ -11,7 +11,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     Hitbox new_y = new_x;
     new_x.pos_x += (int)object->physics.speed.x;
     new_y.pos_y += (int)object->physics.speed.y;
-    
+
     int dir_x = STATIC;
     int dir_y = STATIC;
 
@@ -47,11 +47,13 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
                     }
                     else
                     {
-                        new_x.pos_y -= 2;
+                        new_x.pos_y -= 3;
                     }
 
                     if (collide(new_x, obstacle->hitbox))
                     {
+                        //printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
+
                         // adjust speed
                         int adjustment = 0;
 
@@ -73,6 +75,8 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
                     }
                     if (collide(new_y, obstacle->hitbox))
                     {
+                        //printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == BOTTOM? "down" : "up");
+
                         // adjust speed
                         int adjustment = 0;
 
