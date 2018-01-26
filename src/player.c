@@ -14,40 +14,43 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     bool running = false;
 
-    if (keys_active[KEY_DOWN] && player->alive) // TODO: or KEY_LCTRL
+    if (player->alive)
     {
-        crouch(player);
-    }
-    if (keys_active[KEY_RIGHT] && player->alive)
-    {
-        player->physics.speed.x += player->physics.acceleration.x;
-        running = true;
+        if (keys_active[KEY_DOWN]) // TODO: or KEY_LCTRL
+        {
+            crouch(player);
+        }
+        if (keys_active[KEY_RIGHT])
+        {
+            player->physics.speed.x += player->physics.acceleration.x;
+            running = true;
 
-        if (keys_active[KEY_ENTER])
+            if (keys_active[KEY_ENTER])
             player->physics.speed.x += player->physics.acceleration.x;
 
-        if (player->physics.speed.x > MAX_SPEED)
+            if (player->physics.speed.x > MAX_SPEED)
             player->physics.speed.x = MAX_SPEED;
 
-    }
-    if (keys_active[KEY_LEFT] && player->alive)
-    {
-        player->physics.speed.x -= player->physics.acceleration.x;
-        running = true;
+        }
+        if (keys_active[KEY_LEFT])
+        {
+            player->physics.speed.x -= player->physics.acceleration.x;
+            running = true;
 
-        if (keys_active[KEY_ENTER])
+            if (keys_active[KEY_ENTER])
             player->physics.speed.x -= player->physics.acceleration.x;
 
-        if (abs_float(player->physics.speed.x) > MAX_SPEED)
+            if (abs_float(player->physics.speed.x) > MAX_SPEED)
             player->physics.speed.x = -MAX_SPEED;
-    }
+        }
 
-    if (keys_down[KEY_UP] && player->alive) // if active && ~pressed then lower the gravity
-    {
-        if (player->physics.speed.y == previous_speed.y) // on_the_ground
+        if (keys_down[KEY_UP]) // TODO: if active && ~pressed then lower the gravity
         {
-            jump(player);
-            //player->pos_y--;
+            if (player->physics.speed.y == previous_speed.y) // on_the_ground
+            {
+                jump(player);
+                //player->pos_y--;
+            }
         }
     }
 

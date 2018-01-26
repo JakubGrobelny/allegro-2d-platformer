@@ -106,9 +106,34 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         }
     }
 
+    // SPECIAL OBJECT TYPES HANDLING
+    if (object->type == ENEMY_GOOMBA)
+    {
+        if (object->physics.speed.x == 0)
+        {
+            if (dir_x == LEFT)
+                object->physics.speed.x = object->physics.acceleration.x;
+            else
+                object->physics.speed.x = -object->physics.acceleration.x;
+        }
+    }
+
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
 
+    handle_being_stuck(object, level, previous_pos_x, previous_pos_y);
+
+    object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);
+    object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;
+
+    if (previous_speed_x != object->physics.speed.x)
+        object->physics.speed.x = 0;
+    if (previous_speed_y != object->physics.speed.y)
+        object->physics.speed.y = 0;
+}
+
+void handle_being_stuck(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], int previous_pos_x, int previous_pos_y)
+{
     if (level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
     {
         Object* temp = &level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64];
@@ -124,13 +149,6 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
             object->pos_y += (temp->hitbox.pos_y - (object->pos_y + object->height));
     }
 
-    object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);
-    object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;
-
-    if (previous_speed_x != object->physics.speed.x)
-        object->physics.speed.x = 0;
-    if (previous_speed_y != object->physics.speed.y)
-        object->physics.speed.y = 0;
 }
 
 void apply_gravity(Object* object)
@@ -163,6 +181,11 @@ void kill(Object* object, int i, ObjectsList* list)
     // TODO: play animation
 }
 
+void animate_non_static_objects(ObjectsList* objects, int frame)
+{
+
+}
+
 void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH])
 {
     for (int i = 0; i < objects->size; i++)
@@ -171,7 +194,35 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
         if (object->type == ENEMY_GOOMBA)
         {
+            int x;
+            int y;
+
+            x = object->physics.speed.x > 0.0f ? (int)((object->hitbox.pos_x + object->hitbox.width) / 64) : (int)((object->hitbox.pos_x) / 64);
+            y = object->hitbox.pos_y / 64;
+
+            int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
+
             apply_vectors(object, level);
+
+            if (dir_x == RIGHT)
+            {
+                if (x >= 0 && x < MAP_WIDTH)
+                {
+                    if (level[y][x].type != EMPTY)
+                        object->physics.speed.x = -object->physics.acceleration.x;
+                }
+            }
+            else if (dir_x == LEFT)
+            {
+                x--;
+
+                if (x >= 0 && x < MAP_WIDTH)
+                {
+                    if (level[y][x].type != EMPTY)
+                        object->physics.speed.x = object->physics.acceleration.x;
+                }
+            }
+
 
             if (object->pos_y > DISPLAY_HEIGHT)
                 kill(object, i, objects);

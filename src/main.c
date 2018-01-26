@@ -54,16 +54,16 @@ int main()
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     Physics player_physics = create_physics(0.0f, 0.0f, 0.4f, 21, 1.0f);
-    Physics goomba_physics = create_physics(3.0f, 0.0f, 2.0f, 20.0f, 1.0f);
+    Physics goomba_physics = create_physics(3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
     Object background_elements[MAP_HEIGHT][MAP_WIDTH];
     // array that holds the decorative objects in the background
 
-    for (int i = 0; i < 32; i++)
+    for (int i = 0; i < MAP_HEIGHT; i++)
     {
-        for (int e = 0; e < 256; e++)
+        for (int e = 0; e < MAP_WIDTH; e++)
         {
             init_object(&level[i][e], EMPTY, e*64, i*64, 64, 64, RECTANGLE, e*64, i*64, 64, 64, static_physics, 0);
             background_elements[i][e] = level[i][e];
@@ -120,10 +120,15 @@ int main()
         bind_bitmap(&temp_brick, brick);
         for (int i = 6; i < 25; i++)
         {
-            if (i != 13)
+            if (i != 15)
             {
                 init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
                 level[9][i] = temp_brick;
+            }
+            else
+            {
+                init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
+                level[8][i] = temp_brick;
             }
             // if (i == 13)
             // {
@@ -191,7 +196,7 @@ int main()
                 for (int width = 0; width < MAP_WIDTH; width++)
                 {
                     if (background_elements[height][width].type != EMPTY)
-                        draw_object(&background_elements[height][width], screen_offset);
+                        draw_object(&background_elements[height][width], screen_offset / 2);
                 }
             }
 

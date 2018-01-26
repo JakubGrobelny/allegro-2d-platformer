@@ -18,8 +18,14 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH]);
 // making things fall
 void apply_gravity(Object* object);
 
+// fix overlaps
+void handle_being_stuck(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], int previous_pos_x, int previous_pos_y);
+
 // updating non-static objects
 void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH]);
+
+// updating non-static objects' animations
+void animate_non_static_objects(ObjectsList* objects, int frame);
 
 // kills an object :( (literally)
 void kill(Object* object, int i, ObjectsList* list);
