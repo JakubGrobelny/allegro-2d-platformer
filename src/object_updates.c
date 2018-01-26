@@ -6,17 +6,22 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
     int previous_speed_x = object->physics.speed.x;
     int previous_speed_y = object->physics.speed.y;
+    int previous_pos_x = object->pos_x;
+    int previous_pos_y = object->pos_y;
 
     Hitbox new_x = object->hitbox;
     Hitbox new_y = new_x;
     new_x.pos_x += object->physics.speed.x;
     new_y.pos_y += object->physics.speed.y;
 
-    new_x.pos_y += 3;
-    new_x.height -= 6;
+    new_x.pos_y += 4;
+    new_x.height -= 8;
 
-    new_y.pos_x += 3;
-    new_y.width -= 6;
+    new_y.pos_x += 4;
+    new_y.width -= 8;
+
+    draw_hitbox(new_x, 0);
+    draw_hitbox(new_y, 0);
 
     int dir_x = STATIC;
     int dir_y = STATIC;
@@ -47,23 +52,6 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
                 if (obstacle->type != EMPTY && (relative_direction(object, obstacle, dir_x) || relative_direction(object, obstacle, dir_y)))
                 {
-                    /*
-                    if (relative_direction(object, obstacle, TOP))
-                    {
-                        new_x.pos_y += 1;
-                    }
-                    else
-                    {
-                        new_x.pos_y -= 5;
-                    }*/
-
-                    // if (on_the_ground(object, level) && relative_direction(object, obstacle, BOTTOM))
-                    // {
-                    //     new_x.pos_y -= 1;
-                    //     new_x.height -= 1;
-                    //     printf("Lowered y position for (%d, %d)\n",obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64);
-                    // }
-
                     if (collide(new_x, obstacle->hitbox))
                     {
                         printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
@@ -120,6 +108,33 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
+
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO THE SAME THING BUT FOR BEING STUCK IN THE WALL!
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+//TODO
+    // fixing the player's position if he is stuck
+    if (level[object->pos_y / 64 + 1][object->pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
+    {
+        Object* temp = &level[object->pos_y / 64 + 1][object->pos_x / 64];
+
+        if (temp->pos_y < object->pos_y + object->height)
+            object->pos_y += (temp->pos_y - (object->pos_y + object->height));
+    }
+    if (level[object->pos_y / 64 + 1][(object->pos_x + object->width) / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x) // TODO: merge it with the if statement above
+    {
+        Object* temp = &level[object->pos_y / 64 + 1][(object->pos_x + object->width) / 64];
+
+        if (temp->pos_y < object->pos_y + object->height)
+            object->pos_y += (temp->pos_y - (object->pos_y + object->height));
+    }
 
     object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);
     object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;

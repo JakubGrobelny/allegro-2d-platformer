@@ -53,7 +53,7 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0, 0, 0, 0, 0);
-    Physics player_physics = create_physics(0, 0, 2, 21, 1);
+    Physics player_physics = create_physics(0, 0, 1, 21, 1);
     Physics goomba_physics = create_physics(0, 0, 2, 20, 1);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
@@ -71,7 +71,7 @@ int main()
     }
 
     Object player;
-    init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 248, 6*64, 60, 64, player_physics, 15);
+    init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
 
     ObjectsList non_static_elements;
     non_static_elements = create_objects_list(1);
@@ -119,12 +119,19 @@ int main()
         }
 
         bind_bitmap(&temp_brick, brick);
-        for (int i = 5; i < 13; i++)
+        for (int i = 6; i < 15; i++)
         {
-            init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
-            level[9][i] = temp_brick;
+            if (i != 8)
+            {
+                init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
+                level[9][i] = temp_brick;
+            }
+            if (i == 13)
+            {
+                init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
+                level[8][i] = temp_brick;
+            }
         }
-
 
 
     // screen offset to the right
@@ -198,7 +205,7 @@ int main()
             }
 
             draw_object(&player, screen_offset);
-            draw_hitbox(player.hitbox, screen_offset);
+            //draw_hitbox(player.hitbox, screen_offset);
 
             // MAP
 

@@ -49,19 +49,11 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         animate_player(player, level, running, frame);
 
     // temporary friction simulation:
-    if (on_the_ground(player, level))
-    {
-        player->physics.speed.x = (int)(player->physics.speed.x / 1.1);
-
-        if (abs_float(player->physics.speed.x) < 1)
-            player->physics.speed.x = 0;
-    }
-    else
+    if (frame % 3 == 0)
     {
         player->physics.speed.x = (int)(player->physics.speed.x / 1.02);
-
         if (abs_float(player->physics.speed.x) < 1)
-            player->physics.speed.x = 0;
+        player->physics.speed.x = 0;
     }
 
     apply_vectors(player, level);
@@ -99,19 +91,21 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
     for (int i = 0; i < size; i++)
     {
         Object* object = get_element_pointer_ol(list, i);
-        Hitbox bottom = create_hitbox(RECTANGLE, player->hitbox.pos_x, player->hitbox.pos_y + player->hitbox.height - 1, player->hitbox.width, 1);
 
         if (object->type == ENEMY_GOOMBA)
         {
-            if (collide(bottom, object->hitbox))
+            if (collide(player->hitbox, object->hitbox))
             {
-                kill(object, i, list);
-                player->physics.speed.y = -10;
-                size--;
-            }
-            else if (collide(player->hitbox, object->hitbox))
-            {
-                die(player);
+                if (player->physics.speed.y > 0)
+                {
+                    kill(object, i, list);
+                    player->physics.speed.y = -10;
+                    size--;
+                }
+                else
+                {
+                    die(player);
+                }
             }
         }
     }
