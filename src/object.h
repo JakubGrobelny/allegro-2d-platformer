@@ -55,6 +55,7 @@ typedef enum
     EMPTY,
     ENEMY_GOOMBA,
     ENEMY_KOOPA,
+    KOOPA_SHELL,
     PLATFORM,
     BACKGROUND,
 

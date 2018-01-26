@@ -101,11 +101,10 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
         {
             if (player->physics.speed.y > 0 && relative_direction(player, object, BOTTOM))
             {
-                kill(object, i, list);
+                if (object->type == ENEMY_KOOPA)
+                    spawn_shell(object, list);
 
-                // TODO: TODO: TODO:
-                //if (object->type == ENEMY_KOOPA)
-                    // spawn_shell();
+                kill(object, i, list);
 
                 player->physics.speed.y = -15;
                 size--;

@@ -264,3 +264,17 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
         // TODO:
     }
 }
+
+void spawn_shell(Object* enemy, ObjectsList* list)
+{
+    Object new_shell;
+    Physics shell_physics = create_physics(0.0f, 0.0f, 6.0f, 0.0f, 2.0f);
+
+    // shell is 60x53 vs koopa's 96x80
+
+    bind_bitmap(&new_shell, enemy->bitmap);
+    init_object(&new_shell, KOOPA_SHELL, enemy->pos_x, enemy->pos_y, 96, 80, RECTANGLE, enemy->pos_x + 18, enemy->pos_y + 32, 60, 48, shell_physics, 1);
+    new_shell.animation_frame = 4;
+
+    push_back_ol(list, new_shell);
+}

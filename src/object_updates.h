@@ -30,4 +30,7 @@ void animate_non_static_objects(ObjectsList* objects, int frame);
 // kills an object :( (literally)
 void kill(Object* object, int i, ObjectsList* list);
 
+// spawns a shell after a kooppa enemy die
+void spawn_shell(Object* enemy, ObjectsList* list);
+
 #endif

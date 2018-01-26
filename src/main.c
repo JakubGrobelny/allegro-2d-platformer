@@ -87,7 +87,7 @@ int main()
     ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
-    ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*4);
+    ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*5);
 
     brick = al_load_bitmap("./resources/brick_orange.png");
     brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
@@ -98,14 +98,14 @@ int main()
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
-        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 2*64, 64, 64, RECTANGLE, 260+64, 2*64+8, 64, 64-8, goomba_physics, 2);
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 2*64, 64, 64, RECTANGLE, 260+64+7, 2*64+8, 50, 64-8, goomba_physics, 2);
         push_back_ol(&non_static_elements, temp_enemy);
 
-        init_object(&temp_enemy, ENEMY_GOOMBA, 260, 2*64, 64, 64, RECTANGLE, 260, 2*64+8, 64, 64-8, goomba_physics, 2);
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260, 2*64, 64, 64, RECTANGLE, 260+7, 2*64+8, 50, 64-8, goomba_physics, 2);
         push_back_ol(&non_static_elements, temp_enemy);
 
         bind_bitmap(&temp_enemy, enemy2);
-        init_object(&temp_enemy, ENEMY_KOOPA, 21*64, 8*64-16, 96, 80, RECTANGLE, 21*64+16, 8*64-16, 64, 80, koopa_physics, 2);
+        init_object(&temp_enemy, ENEMY_KOOPA, 21*64, 8*64-16, 96, 80, RECTANGLE, 21*64+16, 8*64-16, 64, 80, koopa_physics, 4);
         push_back_ol(&non_static_elements, temp_enemy);
 
     Object temp_cloud;
@@ -242,7 +242,7 @@ int main()
                 //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
-            // PLAYERS
+            // PLAYER
 
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
