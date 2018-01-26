@@ -83,11 +83,13 @@ int main()
 
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
+    ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
 
     brick = al_load_bitmap("./resources/brick_orange.png");
     brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
+    brick3 = al_load_bitmap("./resources/orange_rock.png");
     cloud = al_load_bitmap("./resources/cloud.png");
     enemy1 = al_load_bitmap("./resources/enemy_1.png");
 
@@ -102,7 +104,7 @@ int main()
         background_elements[1][4] = temp_cloud;
 
     Object temp_brick;
-        bind_bitmap(&temp_brick, brick);
+        bind_bitmap(&temp_brick, brick3);
 
         for (int i = 1; i < 9; i++)
         {
@@ -110,14 +112,14 @@ int main()
             level[7][i] = temp_brick;
         }
 
-        bind_bitmap(&temp_brick, brick2);
+        bind_bitmap(&temp_brick, brick);
         for (int i = 2; i < 8; i++)
         {
             init_object(&temp_brick, PLATFORM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 1);
             level[4][i] = temp_brick;
         }
 
-        bind_bitmap(&temp_brick, brick);
+        bind_bitmap(&temp_brick, brick3);
         for (int i = 6; i < 25; i++)
         {
             if (i != 15)
@@ -128,9 +130,11 @@ int main()
             }
             else
             {
+                bind_bitmap(&temp_brick, brick2);
                 init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
                 level[8][i] = temp_brick;
 
+                bind_bitmap(&temp_brick, brick3);
                 init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
                 level[9][i] = temp_brick;
             }
