@@ -53,8 +53,9 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Physics player_physics = create_physics(0.0f, 0.0f, 0.4f, 21, 1.0f);
+    Physics player_physics = create_physics(0.1f, 0.0f, 0.4f, 21, 1.0f);
     Physics goomba_physics = create_physics(3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
+    Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
@@ -86,12 +87,14 @@ int main()
     ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
+    ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*4);
 
     brick = al_load_bitmap("./resources/brick_orange.png");
     brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
     brick3 = al_load_bitmap("./resources/orange_rock.png");
     cloud = al_load_bitmap("./resources/cloud.png");
     enemy1 = al_load_bitmap("./resources/enemy_1.png");
+    enemy2 = al_load_bitmap("./resources/enemy_2.png");
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
@@ -99,6 +102,10 @@ int main()
         push_back_ol(&non_static_elements, temp_enemy);
 
         init_object(&temp_enemy, ENEMY_GOOMBA, 260, 2*64, 64, 64, RECTANGLE, 260, 2*64+8, 64, 64-8, goomba_physics, 2);
+        push_back_ol(&non_static_elements, temp_enemy);
+
+        bind_bitmap(&temp_enemy, enemy2);
+        init_object(&temp_enemy, ENEMY_KOOPA, 21*64, 8*64-16, 96, 80, RECTANGLE, 21*64+16, 8*64-16, 64, 80, koopa_physics, 2);
         push_back_ol(&non_static_elements, temp_enemy);
 
     Object temp_cloud;
@@ -111,41 +118,44 @@ int main()
 
         for (int i = 1; i < 9; i++)
         {
-            init_object(&temp_brick, PLATFORM, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
-            level[7][i] = temp_brick;
+            init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
+            level[8][i] = temp_brick;
         }
 
         bind_bitmap(&temp_brick, brick);
         for (int i = 2; i < 8; i++)
         {
-            init_object(&temp_brick, PLATFORM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 1);
-            level[4][i] = temp_brick;
+            init_object(&temp_brick, PLATFORM, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 1);
+            level[5][i] = temp_brick;
         }
 
         bind_bitmap(&temp_brick, brick3);
-        for (int i = 6; i < 25; i++)
+        for (int i = 6; i < 26; i++)
         {
-            if (i != 15)
+            if (i != 15 && i != 25)
             {
-                init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
-                level[9][i] = temp_brick;
+                init_object(&temp_brick, PLATFORM, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
+                level[10][i] = temp_brick;
 
             }
             else
             {
                 bind_bitmap(&temp_brick, brick2);
+                init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
+                level[9][i] = temp_brick;
+
+                bind_bitmap(&temp_brick, brick2);
                 init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
                 level[8][i] = temp_brick;
 
+                bind_bitmap(&temp_brick, brick2);
+                init_object(&temp_brick, PLATFORM, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
+                level[7][i] = temp_brick;
+
                 bind_bitmap(&temp_brick, brick3);
-                init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
-                level[9][i] = temp_brick;
+                init_object(&temp_brick, PLATFORM, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
+                level[10][i] = temp_brick;
             }
-            // if (i == 13)
-            // {
-            //     init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
-            //     level[8][i] = temp_brick;
-            // }
         }
 
 
@@ -212,17 +222,6 @@ int main()
                 }
             }
 
-            // ACTORS
-
-            for (int i = 0; i < non_static_elements.size; i++)
-            {
-                draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
-            }
-
-            draw_object(&player, screen_offset);
-            //draw_hitbox(player.hitbox, screen_offset);
-
             // MAP
 
             for (int height = 0; height < MAP_HEIGHT; height++)
@@ -231,8 +230,22 @@ int main()
                 {
                     if (level[height][width].type != EMPTY)
                         draw_object(&level[height][width], screen_offset);
+                        //draw_hitbox(level[height][width].hitbox, screen_offset);
                 }
             }
+
+            // ACTORS
+
+            for (int i = 0; i < non_static_elements.size; i++)
+            {
+                draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
+                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+            }
+
+            // PLAYERS
+
+            draw_object(&player, screen_offset);
+            //draw_hitbox(player.hitbox, screen_offset);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);

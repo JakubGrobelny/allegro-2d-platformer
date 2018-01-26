@@ -130,7 +130,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         object->physics.speed.y = 0;
 
         // SPECIAL OBJECT TYPES HANDLING
-        if (object->type == ENEMY_GOOMBA)
+        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA)
         {
             if (collision_left)
             {
@@ -177,9 +177,9 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     int y;
 
     x1 = object->hitbox.pos_x / 64;
-    y = (object->hitbox.pos_y + object->hitbox.height) / 64;
-
     x2 = (object->hitbox.pos_x + object->hitbox.width) / 64;
+
+    y = (object->hitbox.pos_y + object->hitbox.height) / 64;
 
     if (x1 < 0 || x1 >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT || x2 < 0 || x2 >= MAP_WIDTH)
         return false;
@@ -195,16 +195,43 @@ void kill(Object* object, int i, ObjectsList* list)
 
 void animate_non_static_objects(ObjectsList* objects, int frame)
 {
-    if (frame % 12 == 0 && frame != 0)
+    for (int i = 0; i < objects->size; i++)
     {
-        for (int i = 0; i < objects->size; i++)
-        {
-            Object* temp = get_element_pointer_ol(objects, i);
-            temp->animation_frame++;
+        Object* temp = get_element_pointer_ol(objects, i);
 
-            if (temp->animation_frame >= temp->frames_number)
+        if (temp->type == ENEMY_GOOMBA)
+        {
+            if (frame % 12 == 0 && frame != 0)
             {
+                temp->animation_frame++;
+
+                if (temp->animation_frame >= temp->frames_number)
+                {
+                    temp->animation_frame = 0;
+                }
+            }
+        }
+        else if (temp->type == ENEMY_KOOPA)
+        {
+            if (temp->physics.speed.x > 0 && temp->animation_frame < 2)
+                temp->animation_frame = 2;
+            else if (temp->physics.speed.x < 0 && temp->animation_frame > 1)
                 temp->animation_frame = 0;
+
+            if (frame % 12 == 0 && frame != 0)
+            {
+                temp->animation_frame++;
+
+                if (temp->physics.speed.x > 0)
+                {
+                    if (temp->animation_frame > 3)
+                    temp->animation_frame = 2;
+                }
+                else if (temp->physics.speed.x < 0)
+                {
+                    if (temp->animation_frame > 1)
+                    temp->animation_frame = 0;
+                }
             }
         }
     }
@@ -216,7 +243,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
     {
         Object* object = get_element_pointer_ol(objects, i);
 
-        if (object->type == ENEMY_GOOMBA)
+        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA)
         {
             int x;
             int y;

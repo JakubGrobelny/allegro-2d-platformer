@@ -97,20 +97,22 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
     {
         Object* object = get_element_pointer_ol(list, i);
 
-        if (object->type == ENEMY_GOOMBA)
+        if (collide(player->hitbox, object->hitbox))
         {
-            if (collide(player->hitbox, object->hitbox))
+            if (player->physics.speed.y > 0 && relative_direction(player, object, BOTTOM))
             {
-                if (player->physics.speed.y > 0)
-                {
-                    kill(object, i, list);
-                    player->physics.speed.y = -10;
-                    size--;
-                }
-                else
-                {
-                    die(player);
-                }
+                kill(object, i, list);
+
+                // TODO: TODO: TODO:
+                //if (object->type == ENEMY_KOOPA)
+                    // spawn_shell();
+
+                player->physics.speed.y = -15;
+                size--;
+            }
+            else
+            {
+                die(player);
             }
         }
     }

@@ -54,6 +54,7 @@ typedef enum
     PLAYER_BIG,
     EMPTY,
     ENEMY_GOOMBA,
+    ENEMY_KOOPA,
     PLATFORM,
     BACKGROUND,
 
