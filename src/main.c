@@ -98,6 +98,9 @@ int main()
         init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 2*64, 64, 64, RECTANGLE, 260+64, 2*64+8, 64, 64-8, goomba_physics, 2);
         push_back_ol(&non_static_elements, temp_enemy);
 
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260, 2*64, 64, 64, RECTANGLE, 260, 2*64+8, 64, 64-8, goomba_physics, 2);
+        push_back_ol(&non_static_elements, temp_enemy);
+
     Object temp_cloud;
         bind_bitmap(&temp_cloud, cloud);
         init_object(&temp_cloud, BACKGROUND, 4*64, 1*64, 256, 256, RECTANGLE, 0, 0, 1, 1, static_physics, 1);
@@ -174,6 +177,7 @@ int main()
                 frame = 0;
 
             update_non_static_objects(&non_static_elements, level);
+            animate_non_static_objects(&non_static_elements, frame);
             update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
 

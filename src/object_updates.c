@@ -30,111 +30,116 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     int dir_y = STATIC;
 
     if (object->physics.speed.x > 0)
-        dir_x = RIGHT;
+    dir_x = RIGHT;
     else if (object->physics.speed.x < 0)
-        dir_x = LEFT;
+    dir_x = LEFT;
 
     if (object->physics.speed.y > 0)
-        dir_y = BOTTOM;
+    dir_y = BOTTOM;
     else if (object->physics.speed.y < 0)
-        dir_y = TOP;
+    dir_y = TOP;
 
     if (dir_y == dir_x) // static
-        return;
+    return;
 
     int grid_height = abs_int((object->physics.speed.y / 64)) + 1;
     int grid_width = abs_int((object->physics.speed.x / 64)) + 1;
 
-    for (int y = (object->hitbox.pos_y) / 64 - 1 - grid_height; y <= (object->hitbox.pos_y) / 64 + 1 + grid_height; y++)
+    if (object->alive)
     {
-        for (int x = (object->hitbox.pos_x) / 64 - 1 - grid_width; x <= (object->hitbox.pos_x) / 64 + 1 + grid_width; x++)
+        for (int y = (object->hitbox.pos_y) / 64 - 1 - grid_height; y <= (object->hitbox.pos_y) / 64 + 1 + grid_height; y++)
         {
-            if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH)
+            for (int x = (object->hitbox.pos_x) / 64 - 1 - grid_width; x <= (object->hitbox.pos_x) / 64 + 1 + grid_width; x++)
             {
-                Object* obstacle = &level[y][x];
-
-                if (obstacle->type != EMPTY && (relative_direction(object, obstacle, dir_x) || relative_direction(object, obstacle, dir_y)))
+                if (y >= 0 && y < MAP_HEIGHT && x >= 0 && x < MAP_WIDTH)
                 {
-                    if (collide(new_x, obstacle->hitbox))
+                    Object* obstacle = &level[y][x];
+
+                    if (obstacle->type != EMPTY && (relative_direction(object, obstacle, dir_x) || relative_direction(object, obstacle, dir_y)))
                     {
-                        // printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
-
-                        // adjust speed
-                        int adjustment = 0;
-
-                        if (dir_x == LEFT)
+                        if (collide(new_x, obstacle->hitbox))
                         {
-                            collision_left = true;
-                            adjustment = (obstacle->hitbox.pos_x + obstacle->hitbox.width) - new_x.pos_x + 1;
-                            //printf("Adjustment_x_left = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_x, obstacle->hitbox.width, new_x.pos_x, adjustment);
-                        }
-                        else if (dir_x == RIGHT)
-                        {
-                            collision_right = true;
-                            adjustment = obstacle->hitbox.pos_x - (new_x.pos_x + new_x.width) - 1;
-                            //printf("Adjustment_x_right = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_x, new_x.pos_x, new_x.width, adjustment);
-                        }
+                            // printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
 
-                        if ((object->physics.speed.x + adjustment) * object->physics.speed.x > 0)
+                            // adjust speed
+                            int adjustment = 0;
+
+                            if (dir_x == LEFT)
+                            {
+                                collision_left = true;
+                                adjustment = (obstacle->hitbox.pos_x + obstacle->hitbox.width) - new_x.pos_x + 1;
+                                //printf("Adjustment_x_left = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_x, obstacle->hitbox.width, new_x.pos_x, adjustment);
+                            }
+                            else if (dir_x == RIGHT)
+                            {
+                                collision_right = true;
+                                adjustment = obstacle->hitbox.pos_x - (new_x.pos_x + new_x.width) - 1;
+                                //printf("Adjustment_x_right = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_x, new_x.pos_x, new_x.width, adjustment);
+                            }
+
+                            if ((object->physics.speed.x + adjustment) * object->physics.speed.x > 0)
                             object->physics.speed.x += adjustment;
-                        else
+                            else
                             object->physics.speed.x = 0;
-                    }
-                    if (collide(new_y, obstacle->hitbox))
-                    {
-                        //printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == BOTTOM? "down" : "up");
-
-                        // adjust speed
-                        int adjustment = 0;
-
-                        if (dir_y == TOP)
-                        {
-                            adjustment = (obstacle->hitbox.pos_y + obstacle->hitbox.height) - new_y.pos_y;
-                            //printf("Adjustment_y_top = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_y, obstacle->hitbox.width, new_y.pos_y, adjustment);
                         }
-                        else if (dir_y == BOTTOM)
+                        if (collide(new_y, obstacle->hitbox))
                         {
-                            adjustment = obstacle->hitbox.pos_y - (new_y.pos_y + new_y.height);
-                            //printf("Adjustment_y_bottom = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_y, new_y.pos_y, new_y.height, adjustment);
-                        }
+                            //printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == BOTTOM? "down" : "up");
 
-                        if ((object->physics.speed.y + adjustment) * object->physics.speed.y > 0)
+                            // adjust speed
+                            int adjustment = 0;
+
+                            if (dir_y == TOP)
+                            {
+                                adjustment = (obstacle->hitbox.pos_y + obstacle->hitbox.height) - new_y.pos_y;
+                                //printf("Adjustment_y_top = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_y, obstacle->hitbox.width, new_y.pos_y, adjustment);
+                            }
+                            else if (dir_y == BOTTOM)
+                            {
+                                adjustment = obstacle->hitbox.pos_y - (new_y.pos_y + new_y.height);
+                                //printf("Adjustment_y_bottom = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_y, new_y.pos_y, new_y.height, adjustment);
+                            }
+
+                            if ((object->physics.speed.y + adjustment) * object->physics.speed.y > 0)
                             object->physics.speed.y += adjustment;
-                        else
+                            else
                             object->physics.speed.y = 0;
 
-                        //if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
-                        //    new_x.pos_y -= 2;
+                            //if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
+                            //    new_x.pos_y -= 2;
+                        }
                     }
                 }
             }
         }
     }
 
-
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
 
-    handle_being_stuck(object, level, previous_pos_x, previous_pos_y);
+    if (object->alive)
+    {
+        handle_being_stuck(object, level, previous_pos_x, previous_pos_y);
 
-    object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);
-    object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;
+        object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);
+        object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;
 
-    if (previous_speed_x != object->physics.speed.x)
+        if (previous_speed_x != object->physics.speed.x)
         object->physics.speed.x = 0;
-    if (previous_speed_y != object->physics.speed.y)
+        if (previous_speed_y != object->physics.speed.y)
         object->physics.speed.y = 0;
 
-    // SPECIAL OBJECT TYPES HANDLING
-    if (object->type == ENEMY_GOOMBA)
-    {
-        if (collision_left)
+        // SPECIAL OBJECT TYPES HANDLING
+        if (object->type == ENEMY_GOOMBA)
         {
-            object->physics.speed.x = object->physics.acceleration.x;
-        }
-        else if (collision_right)
-        {
-            object->physics.speed.x = -object->physics.acceleration.x;
+            if (collision_left)
+            {
+                object->physics.speed.x = object->physics.acceleration.x;
+            }
+            else if (collision_right)
+            {
+                object->physics.speed.x = -object->physics.acceleration.x;
+            }
         }
     }
 }
@@ -190,7 +195,19 @@ void kill(Object* object, int i, ObjectsList* list)
 
 void animate_non_static_objects(ObjectsList* objects, int frame)
 {
+    if (frame % 12 == 0 && frame != 0)
+    {
+        for (int i = 0; i < objects->size; i++)
+        {
+            Object* temp = get_element_pointer_ol(objects, i);
+            temp->animation_frame++;
 
+            if (temp->animation_frame >= temp->frames_number)
+            {
+                temp->animation_frame = 0;
+            }
+        }
+    }
 }
 
 void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH])
@@ -210,23 +227,6 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
             int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
 
             apply_vectors(object, level);
-            //
-            // if (dir_x == RIGHT)
-            // {
-            //     if (x >= 0 && x < MAP_WIDTH)
-            //     {
-            //         if (level[y][x].type != EMPTY)
-            //             object->physics.speed.x = -object->physics.acceleration.x;
-            //     }
-            // }
-            // else if (dir_x == LEFT)
-            // {
-            //     if (x >= 0 && x < MAP_WIDTH)
-            //     {
-            //         if (level[y][x].type != EMPTY)
-            //             object->physics.speed.x = object->physics.acceleration.x;
-            //     }
-            // }
 
             if (object->pos_y > DISPLAY_HEIGHT)
                 kill(object, i, objects);

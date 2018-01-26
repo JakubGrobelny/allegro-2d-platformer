@@ -60,7 +60,9 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
 
     apply_vectors(player, level);
-    non_static_object_interactions(player, non_static);
+
+    if (player->alive)
+        non_static_object_interactions(player, non_static);
 }
 
 void jump(Object* player)
@@ -171,7 +173,7 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
                     }
                 }
                 // if was running
-                else if (running && !(frame % 5))// && !(frame % ((abs_int((int)(player->physics.speed.x / MAX_SPEED)))))) // frame * player->physics.speed.x / MAX_SPEED
+                else if (running && !(frame % 5) && frame)// && !(frame % ((abs_int((int)(player->physics.speed.x / MAX_SPEED)))))) // frame * player->physics.speed.x / MAX_SPEED
                 {
                     if (player->physics.speed.x < 0)
                     {
@@ -226,9 +228,11 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
 
 void die(Object* player)
 {
-    player->alive = false;
-    player->animation_frame = 14;
-    terminate_velocity(player);
-    // TODO: player->hitbox.collision = false // turn off collisions
-    player->physics.speed.y = -25;
+    if (player->alive)
+    {
+        player->alive = false;
+        player->animation_frame = 14;
+        terminate_velocity(player);
+        player->physics.speed.y = -25.0f;
+    }
 }
