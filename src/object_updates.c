@@ -23,6 +23,9 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     //draw_hitbox(new_x, 0);
     //draw_hitbox(new_y, 0);
 
+    bool collision_right = false;
+    bool collision_left = false;
+
     int dir_x = STATIC;
     int dir_y = STATIC;
 
@@ -61,11 +64,13 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
                         if (dir_x == LEFT)
                         {
+                            collision_left = true;
                             adjustment = (obstacle->hitbox.pos_x + obstacle->hitbox.width) - new_x.pos_x + 1;
                             //printf("Adjustment_x_left = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_x, obstacle->hitbox.width, new_x.pos_x, adjustment);
                         }
                         else if (dir_x == RIGHT)
                         {
+                            collision_right = true;
                             adjustment = obstacle->hitbox.pos_x - (new_x.pos_x + new_x.width) - 1;
                             //printf("Adjustment_x_right = %d - (%d - %d) - 1 = %d\n", obstacle->hitbox.pos_x, new_x.pos_x, new_x.width, adjustment);
                         }
@@ -106,17 +111,6 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         }
     }
 
-    // SPECIAL OBJECT TYPES HANDLING
-    if (object->type == ENEMY_GOOMBA)
-    {
-        if (object->physics.speed.x == 0)
-        {
-            if (dir_x == LEFT)
-                object->physics.speed.x = object->physics.acceleration.x;
-            else
-                object->physics.speed.x = -object->physics.acceleration.x;
-        }
-    }
 
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
@@ -130,6 +124,19 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         object->physics.speed.x = 0;
     if (previous_speed_y != object->physics.speed.y)
         object->physics.speed.y = 0;
+
+    // SPECIAL OBJECT TYPES HANDLING
+    if (object->type == ENEMY_GOOMBA)
+    {
+        if (collision_left)
+        {
+            object->physics.speed.x = object->physics.acceleration.x;
+        }
+        else if (collision_right)
+        {
+            object->physics.speed.x = -object->physics.acceleration.x;
+        }
+    }
 }
 
 void handle_being_stuck(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], int previous_pos_x, int previous_pos_y)
@@ -203,26 +210,23 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
             int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
 
             apply_vectors(object, level);
-
-            if (dir_x == RIGHT)
-            {
-                if (x >= 0 && x < MAP_WIDTH)
-                {
-                    if (level[y][x].type != EMPTY)
-                        object->physics.speed.x = -object->physics.acceleration.x;
-                }
-            }
-            else if (dir_x == LEFT)
-            {
-                x--;
-
-                if (x >= 0 && x < MAP_WIDTH)
-                {
-                    if (level[y][x].type != EMPTY)
-                        object->physics.speed.x = object->physics.acceleration.x;
-                }
-            }
-
+            //
+            // if (dir_x == RIGHT)
+            // {
+            //     if (x >= 0 && x < MAP_WIDTH)
+            //     {
+            //         if (level[y][x].type != EMPTY)
+            //             object->physics.speed.x = -object->physics.acceleration.x;
+            //     }
+            // }
+            // else if (dir_x == LEFT)
+            // {
+            //     if (x >= 0 && x < MAP_WIDTH)
+            //     {
+            //         if (level[y][x].type != EMPTY)
+            //             object->physics.speed.x = object->physics.acceleration.x;
+            //     }
+            // }
 
             if (object->pos_y > DISPLAY_HEIGHT)
                 kill(object, i, objects);

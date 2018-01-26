@@ -124,11 +124,15 @@ int main()
             {
                 init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
                 level[9][i] = temp_brick;
+
             }
             else
             {
                 init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
                 level[8][i] = temp_brick;
+
+                init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
+                level[9][i] = temp_brick;
             }
             // if (i == 13)
             // {
