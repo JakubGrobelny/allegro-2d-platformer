@@ -25,8 +25,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x += player->physics.acceleration.x;
             running = true;
 
-            if (keys_active[KEY_ENTER])
-            player->physics.speed.x += player->physics.acceleration.x;
+            if (keys_active[KEY_SHIFT])
+                player->physics.speed.x += player->physics.acceleration.x;
 
             if (player->physics.speed.x > MAX_SPEED)
             player->physics.speed.x = MAX_SPEED;
@@ -37,8 +37,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x -= player->physics.acceleration.x;
             running = true;
 
-            if (keys_active[KEY_ENTER])
-            player->physics.speed.x -= player->physics.acceleration.x;
+            if (keys_active[KEY_SHIFT])
+                player->physics.speed.x -= player->physics.acceleration.x;
 
             if (abs_float(player->physics.speed.x) > MAX_SPEED)
             player->physics.speed.x = -MAX_SPEED;
