@@ -52,9 +52,9 @@ int main()
 
 
     // creating structures
-    Physics static_physics = create_physics(0, 0, 0   , 0    , 0);
+    Physics static_physics = create_physics(0, 0, 0, 0, 0);
     Physics player_physics = create_physics(0, 0, 2, 21, 1);
-    Physics goomba_physics  = create_physics(0, 0, 2, 0 , 1);
+    Physics goomba_physics = create_physics(0, 0, 2, 20, 1);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
@@ -71,7 +71,7 @@ int main()
     }
 
     Object player;
-    init_object(&player, PLAYER, 230 - 64, 250, 64, 64, RECTANGLE, 248, 250, 60, 64, player_physics, 15);
+    init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 248, 6*64, 60, 64, player_physics, 15);
 
     ObjectsList non_static_elements;
     non_static_elements = create_objects_list(1);
@@ -93,7 +93,7 @@ int main()
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
-        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 3*64, 64, 64, RECTANGLE, 260+64, 3*64+8, 64, 64-8, goomba_physics, 2);
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 2*64, 64, 64, RECTANGLE, 260+64, 2*64+8, 64, 64-8, goomba_physics, 2);
         temp_enemy.physics.speed.x = 4.0f;
         push_back_ol(&non_static_elements, temp_enemy);
 
@@ -105,18 +105,26 @@ int main()
     Object temp_brick;
         bind_bitmap(&temp_brick, brick);
 
-        for (int i = 1; i < 6; i++)
+        for (int i = 1; i < 9; i++)
         {
             init_object(&temp_brick, PLATFORM, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
             level[7][i] = temp_brick;
         }
 
         bind_bitmap(&temp_brick, brick2);
-        for (int i = 4; i < 8; i++)
+        for (int i = 2; i < 8; i++)
         {
             init_object(&temp_brick, PLATFORM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 1);
             level[4][i] = temp_brick;
         }
+
+        bind_bitmap(&temp_brick, brick);
+        for (int i = 1; i < 13; i++)
+        {
+            init_object(&temp_brick, PLATFORM, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
+            level[10][i] = temp_brick;
+        }
+
 
 
     // screen offset to the right

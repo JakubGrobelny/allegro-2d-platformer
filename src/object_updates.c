@@ -1,35 +1,17 @@
 #include "object_updates.h"
 
-// bool collides_in_direction(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], int direction)
-// {
-//     int x;
-//     int y;
-//
-//     x = object->hitbox.pos_x / 64;
-//     y = object->hitbox.pos_y / 64;
-//
-// // TODO: FINISH!!!1
-//
-//     switch (direction)
-//     {
-//         case LEFT:
-//         case RIGHT:
-//         case TOP:
-//         case BOTTOM:
-//     }
-//
-//     return false;
-//}
-
 void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 {
     apply_gravity(object);
+
+    int previous_speed_x = object->physics.speed.x;
+    int previous_speed_y = object->physics.speed.y;
 
     Hitbox new_x = object->hitbox;
     Hitbox new_y = new_x;
     new_x.pos_x += (int)object->physics.speed.x;
     new_y.pos_y += (int)object->physics.speed.y;
-
+    
     int dir_x = STATIC;
     int dir_y = STATIC;
 
@@ -44,7 +26,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         dir_y = TOP;
 
     if (dir_y == dir_x) // static
-     return;
+        return;
 
     int grid_height = abs_int((object->physics.speed.y / 64)) + 1;
     int grid_width = abs_int((object->physics.speed.x / 64)) + 1;
@@ -121,6 +103,14 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
+
+    object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);
+    object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;
+
+    if (previous_speed_x != object->physics.speed.x)
+        object->physics.speed.x = 0;
+    if (previous_speed_y != object->physics.speed.y)
+        object->physics.speed.y = 0;
 }
 
 void apply_gravity(Object* object)
@@ -137,7 +127,7 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     int y;
 
     x1 = object->hitbox.pos_x / 64;
-    y = (object->hitbox.pos_y + object->hitbox.height)/ 64;
+    y = (object->hitbox.pos_y + object->hitbox.height) / 64;
 
     x2 = (object->hitbox.pos_x + object->hitbox.width) / 64;
 
@@ -161,6 +151,11 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
         if (object->type == ENEMY_GOOMBA)
         {
+            apply_vectors(object, level);
+
+            if (object->pos_y > DISPLAY_HEIGHT)
+                kill(object, i, objects);
+
             // TODO:
         }
 

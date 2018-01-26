@@ -20,16 +20,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_RIGHT] && player->alive)
     {
-        if (player->physics.speed.y == previous_speed.y) // on_the_ground
-        {
-            player->physics.speed.x += player->physics.acceleration.x;
-
-            running = true;
-        }
-        else
-        {
-            player->physics.speed.x += (int)(player->physics.acceleration.x / 2);
-        }
+        player->physics.speed.x += player->physics.acceleration.x;
+        running = true;
 
         if (player->physics.speed.x > MAX_SPEED)
             player->physics.speed.x = MAX_SPEED;
@@ -37,16 +29,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     if (keys_active[KEY_LEFT] && player->alive)
     {
-        if (player->physics.speed.y == previous_speed.y) // on_the_ground
-        {
-            player->physics.speed.x -= player->physics.acceleration.x;
-
-            running = true;
-        }
-        else
-        {
-            player->physics.speed.x -= (int)(player->physics.acceleration.x / 2);
-        }
+        player->physics.speed.x -= player->physics.acceleration.x;
+        running = true;
 
         if (abs_float(player->physics.speed.x) > MAX_SPEED)
             player->physics.speed.x = -MAX_SPEED;
@@ -74,7 +58,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     }
     else
     {
-        player->physics.speed.x /= 1.02;
+        player->physics.speed.x = (int)(player->physics.speed.x / 1.02);
 
         if (abs_float(player->physics.speed.x) < 1)
             player->physics.speed.x = 0;
@@ -82,9 +66,6 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     apply_vectors(player, level);
     non_static_object_interactions(player, non_static);
-
-    player->hitbox.pos_y = player->pos_y + (player->height - player->hitbox.height) / 2;
-    player->hitbox.pos_x = player->pos_x + (player->width - player->hitbox.width) / 2;
 }
 
 void jump(Object* player)
