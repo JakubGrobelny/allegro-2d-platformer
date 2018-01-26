@@ -119,10 +119,10 @@ int main()
         }
 
         bind_bitmap(&temp_brick, brick);
-        for (int i = 1; i < 13; i++)
+        for (int i = 5; i < 13; i++)
         {
-            init_object(&temp_brick, PLATFORM, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
-            level[10][i] = temp_brick;
+            init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
+            level[9][i] = temp_brick;
         }
 
 
@@ -198,7 +198,7 @@ int main()
             }
 
             draw_object(&player, screen_offset);
-            //draw_hitbox(player.hitbox, screen_offset);
+            draw_hitbox(player.hitbox, screen_offset);
 
             // MAP
 

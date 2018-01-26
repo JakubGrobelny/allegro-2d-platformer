@@ -9,8 +9,14 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
     Hitbox new_x = object->hitbox;
     Hitbox new_y = new_x;
-    new_x.pos_x += (int)object->physics.speed.x;
-    new_y.pos_y += (int)object->physics.speed.y;
+    new_x.pos_x += object->physics.speed.x;
+    new_y.pos_y += object->physics.speed.y;
+
+    new_x.pos_y += 3;
+    new_x.height -= 6;
+
+    new_y.pos_x += 3;
+    new_y.width -= 6;
 
     int dir_x = STATIC;
     int dir_y = STATIC;
@@ -41,18 +47,26 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
                 if (obstacle->type != EMPTY && (relative_direction(object, obstacle, dir_x) || relative_direction(object, obstacle, dir_y)))
                 {
+                    /*
                     if (relative_direction(object, obstacle, TOP))
                     {
                         new_x.pos_y += 1;
                     }
                     else
                     {
-                        new_x.pos_y -= 3;
-                    }
+                        new_x.pos_y -= 5;
+                    }*/
+
+                    // if (on_the_ground(object, level) && relative_direction(object, obstacle, BOTTOM))
+                    // {
+                    //     new_x.pos_y -= 1;
+                    //     new_x.height -= 1;
+                    //     printf("Lowered y position for (%d, %d)\n",obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64);
+                    // }
 
                     if (collide(new_x, obstacle->hitbox))
                     {
-                        //printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
+                        printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
 
                         // adjust speed
                         int adjustment = 0;
@@ -99,7 +113,6 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
                         //if (relative_direction(object, get_element_pointer_ol(list, i), TOP))
                         //    new_x.pos_y -= 2;
                     }
-
                 }
             }
         }
