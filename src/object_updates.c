@@ -20,8 +20,8 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     // new_y.pos_x += 4;
     // new_y.width -= 8;
 
-    draw_hitbox(new_x, 0);
-    draw_hitbox(new_y, 0);
+    //draw_hitbox(new_x, 0);
+    //draw_hitbox(new_y, 0);
 
     int dir_x = STATIC;
     int dir_y = STATIC;
