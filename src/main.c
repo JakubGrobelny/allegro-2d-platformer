@@ -52,9 +52,9 @@ int main()
 
 
     // creating structures
-    Physics static_physics = create_physics(0, 0, 0, 0, 0);
-    Physics player_physics = create_physics(0, 0, 1, 21, 1);
-    Physics goomba_physics = create_physics(0, 0, 2, 20, 1);
+    Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Physics player_physics = create_physics(0.0f, 0.0f, 0.7f, 21, 1.0f);
+    Physics goomba_physics = create_physics(0.0f, 0.0f, 2.0f, 20.0f, 1.0f);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid

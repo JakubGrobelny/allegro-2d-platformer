@@ -51,7 +51,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     // temporary friction simulation:
     if (frame % 3 == 0)
     {
-        player->physics.speed.x = (int)(player->physics.speed.x / 1.02);
+        player->physics.speed.x = (int)(player->physics.speed.x / 1.02f);
         if (abs_float(player->physics.speed.x) < 1)
         player->physics.speed.x = 0;
     }

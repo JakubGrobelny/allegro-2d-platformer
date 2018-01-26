@@ -4,8 +4,8 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 {
     apply_gravity(object);
 
-    int previous_speed_x = object->physics.speed.x;
-    int previous_speed_y = object->physics.speed.y;
+    float previous_speed_x = object->physics.speed.x;
+    float previous_speed_y = object->physics.speed.y;
     int previous_pos_x = object->pos_x;
     int previous_pos_y = object->pos_y;
 
@@ -121,6 +121,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 //TODO
 //TODO
     // fixing the player's position if he is stuck
+    // if (object->pos_x / 64 >= 0 && object->pos_x / 64 < MAP_WIDTH )
     if (level[object->pos_y / 64 + 1][object->pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
     {
         Object* temp = &level[object->pos_y / 64 + 1][object->pos_x / 64];
