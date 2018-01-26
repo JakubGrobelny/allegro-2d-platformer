@@ -7,11 +7,6 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
         die(player);
 
-    //if (on_the_ground(player, list))
-    //        player->physics.speed.y = 0;
-    //else
-    //    apply_gravity(player);
-
     bool running = false;
 
     if (player->alive)
@@ -25,11 +20,11 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x += player->physics.acceleration.x;
             running = true;
 
-            if (keys_active[KEY_SHIFT])
+            if (keys_active[KEY_SHIFT] && on_the_ground(player, level) && player->physics.speed.x >= 0.0f)
                 player->physics.speed.x += player->physics.acceleration.x;
 
             if (player->physics.speed.x > MAX_SPEED)
-            player->physics.speed.x = MAX_SPEED;
+                player->physics.speed.x = MAX_SPEED;
 
         }
         if (keys_active[KEY_LEFT])
@@ -37,19 +32,18 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             player->physics.speed.x -= player->physics.acceleration.x;
             running = true;
 
-            if (keys_active[KEY_SHIFT])
+            if (keys_active[KEY_SHIFT] && on_the_ground(player, level) && player->physics.speed.x <= 0.0f)
                 player->physics.speed.x -= player->physics.acceleration.x;
 
             if (abs_float(player->physics.speed.x) > MAX_SPEED)
-            player->physics.speed.x = -MAX_SPEED;
+                player->physics.speed.x = -MAX_SPEED;
         }
 
-        if (keys_down[KEY_UP]) // TODO: if active && ~pressed then lower the gravity
+        if (keys_down[KEY_UP] || keys_down[KEY_SPACE]) // TODO: if active && ~pressed then lower the gravity
         {
             if (player->physics.speed.y == previous_speed.y) // on_the_ground
             {
                 jump(player);
-                //player->pos_y--;
             }
         }
     }
