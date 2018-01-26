@@ -17,8 +17,8 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     new_x.pos_y += 4;
     new_x.height -= 8;
 
-    new_y.pos_x += 4;
-    new_y.width -= 8;
+    // new_y.pos_x += 4;
+    // new_y.width -= 8;
 
     draw_hitbox(new_x, 0);
     draw_hitbox(new_y, 0);
@@ -54,7 +54,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
                 {
                     if (collide(new_x, obstacle->hitbox))
                     {
-                        printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
+                        // printf("Collided with (%d,%d) while going %s\n", obstacle->hitbox.pos_x / 64, obstacle->hitbox.pos_y / 64, dir_x == LEFT? "left" : "right");
 
                         // adjust speed
                         int adjustment = 0;
@@ -109,32 +109,19 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
 
-//TODO
-//TODO
-//TODO
-//TODO
-//TODO THE SAME THING BUT FOR BEING STUCK IN THE WALL!
-//TODO
-//TODO
-//TODO
-//TODO
-//TODO
-//TODO
-    // fixing the player's position if he is stuck
-    // if (object->pos_x / 64 >= 0 && object->pos_x / 64 < MAP_WIDTH )
-    if (level[object->pos_y / 64 + 1][object->pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
+    if (level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
     {
-        Object* temp = &level[object->pos_y / 64 + 1][object->pos_x / 64];
+        Object* temp = &level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64];
 
-        if (temp->pos_y < object->pos_y + object->height)
-            object->pos_y += (temp->pos_y - (object->pos_y + object->height));
+        if (temp->hitbox.pos_y < object->hitbox.pos_y + object->hitbox.height)
+            object->pos_y += (temp->hitbox.pos_y - (object->pos_y + object->height));
     }
-    if (level[object->pos_y / 64 + 1][(object->pos_x + object->width) / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x) // TODO: merge it with the if statement above
+    if (level[object->hitbox.pos_y / 64 + 1][(object->hitbox.pos_x + object->hitbox.width) / 64].type != EMPTY && previous_pos_y == object->hitbox.pos_y && previous_pos_x == object->pos_x) // TODO: merge it with the if statement above
     {
-        Object* temp = &level[object->pos_y / 64 + 1][(object->pos_x + object->width) / 64];
+        Object* temp = &level[object->hitbox.pos_y / 64 + 1][(object->hitbox.pos_x + object->hitbox.width) / 64];
 
-        if (temp->pos_y < object->pos_y + object->height)
-            object->pos_y += (temp->pos_y - (object->pos_y + object->height));
+        if (temp->hitbox.pos_y < object->hitbox.pos_y + object->hitbox.height)
+            object->pos_y += (temp->hitbox.pos_y - (object->pos_y + object->height));
     }
 
     object->hitbox.pos_y = object->pos_y + (object->height - object->hitbox.height);

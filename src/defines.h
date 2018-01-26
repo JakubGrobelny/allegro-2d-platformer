@@ -8,7 +8,7 @@
 
 // Map properties
 #define MAP_WIDTH   256
-#define MAP_HEIGHT  32
+#define MAP_HEIGHT  16
 
 // Colors
 #define BLACK       al_map_rgba(0  , 0  , 0  , 255)

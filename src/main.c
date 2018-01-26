@@ -53,8 +53,8 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Physics player_physics = create_physics(0.0f, 0.0f, 0.7f, 21, 1.0f);
-    Physics goomba_physics = create_physics(0.0f, 0.0f, 2.0f, 20.0f, 1.0f);
+    Physics player_physics = create_physics(0.0f, 0.0f, 0.4f, 21, 1.0f);
+    Physics goomba_physics = create_physics(3.0f, 0.0f, 2.0f, 20.0f, 1.0f);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
@@ -94,7 +94,6 @@ int main()
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
         init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 2*64, 64, 64, RECTANGLE, 260+64, 2*64+8, 64, 64-8, goomba_physics, 2);
-        temp_enemy.physics.speed.x = 4.0f;
         push_back_ol(&non_static_elements, temp_enemy);
 
     Object temp_cloud;
@@ -119,18 +118,18 @@ int main()
         }
 
         bind_bitmap(&temp_brick, brick);
-        for (int i = 6; i < 15; i++)
+        for (int i = 6; i < 25; i++)
         {
-            if (i != 8)
+            if (i != 13)
             {
                 init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
                 level[9][i] = temp_brick;
             }
-            if (i == 13)
-            {
-                init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
-                level[8][i] = temp_brick;
-            }
+            // if (i == 13)
+            // {
+            //     init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
+            //     level[8][i] = temp_brick;
+            // }
         }
 
 

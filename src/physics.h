@@ -4,7 +4,7 @@
 #define _PHYSICS
 
 #define GRAV_CONST          1.0f  // gravitational constant
-#define MAX_SPEED           14.0f // speed limit of objects
+#define MAX_SPEED           20.0f // speed limit of objects
 #define MAX_FALLING_SPEED   20.0f // speed limit of falling objects
 
 typedef struct
