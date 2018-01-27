@@ -307,6 +307,20 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
             apply_vectors(object, level, objects);
 
+            for (int e = 0; e < objects->size; e++)
+            {
+                if (e != i)
+                {
+                    Object* temp = get_element_pointer_ol(objects, e);
+
+                    if (temp->type != PARTICLE_NORMAL)
+                    {
+                        if (collide(object->hitbox, temp->hitbox))
+                            object->physics.speed.x *= -1;
+                    }
+                }
+            }
+
             if (object->type == KOOPA_SHELL)
                 check_for_shell_collisions(i, objects);
 
@@ -395,7 +409,7 @@ void break_block(Object* block, ObjectsList* list)
             i--;
         }
     }
-    
+
     //TODO play sound
 
     // Doing some object initiation magic to spawn 4 particles
