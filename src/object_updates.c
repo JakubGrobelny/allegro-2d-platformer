@@ -105,18 +105,16 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
                                         if (obstacle->type == NORMAL_BLOCK)
                                         {
                                             if (object->type == PLAYER_BIG)
-                                            break_block(obstacle, list);
+                                                break_block(obstacle, list);
                                             else
-                                            bump_block(obstacle, list);
+                                                bump_block(obstacle, list);
                                         }
                                         if (obstacle->type == SECRET_BLOCK)
                                         {
-                                            bump_block(obstacle, list);
                                             spawn_coin(obstacle, list);
                                         }
                                         else if (obstacle->type == SECRET_BLOCK_MUSHROOM)
                                         {
-                                            bump_block(obstacle, list);
                                             spawn_mushroom(obstacle, list);
                                         }
                                     }
@@ -292,6 +290,19 @@ void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Obje
                     if (level[height][width].animation_frame >= level[height][width].frames_number)
                         level[height][width].animation_frame = 0;
                 }
+                else if (level[height][width].counter) // if bumped
+                {
+                    level[height][width].pos_y += level[height][width].physics.speed.y;
+                    level[height][width].physics.speed.y += GRAV_CONST * 1.25f;
+
+                    if (level[height][width].pos_y >= level[height][width].hitbox.pos_y)
+                    {
+                        level[height][width].pos_y = level[height][width].hitbox.pos_y;
+                        level[height][width].physics.speed.y = 0.0f;
+                        level[height][width].counter = 0;
+                    }
+
+                }
             }
         }
     }
@@ -385,20 +396,33 @@ void spawn_shell(Object* enemy, ObjectsList* list)
 
 void bump_block(Object* block, ObjectsList* list)
 {
-    //TODO
+    kill_enemies_above_block(block, list);
+
+    if (block->counter)
+    {
+        block->pos_y = block->hitbox.pos_y;
+    }
+
+    block->counter = 1; // 1 - bumped, 0 - not bumped
+    block->physics.speed.y = BUMP_AMOUNT;
+
+    //TODO play sound
 }
 
 void spawn_mushroom(Object* block, ObjectsList* list)
 {
-    //TODO
+    bump_block(block, list);
+    //TODO play sound
 }
 
 void spawn_coin(Object* block, ObjectsList* list)
 {
-    //TODO
+    bump_block(block, list);
+
+    //TODO play sound
 }
 
-void break_block(Object* block, ObjectsList* list)
+void kill_enemies_above_block(Object* block, ObjectsList* list)
 {
     // Killing enemies above
     Hitbox temp_hitbox;
@@ -419,6 +443,11 @@ void break_block(Object* block, ObjectsList* list)
             i--;
         }
     }
+}
+
+void break_block(Object* block, ObjectsList* list)
+{
+    kill_enemies_above_block(block, list);
 
     //TODO play sound
 

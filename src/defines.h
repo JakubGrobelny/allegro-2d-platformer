@@ -29,4 +29,7 @@
 #define DARK_BLUE   al_map_rgba(0  , 0  , 155, 255)
 #define OPAQUE_RED  al_map_rgba(255, 0  , 0  , 127)
 
+// Other
+#define BUMP_AMOUNT -5.0f
+
 #endif

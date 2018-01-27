@@ -51,4 +51,7 @@ void spawn_coin(Object* block, ObjectsList* list);
 // destroy the block that was hit by big mario
 void break_block(Object* block, ObjectsList* list);
 
+// kills enemies that are walking on given block
+void kill_enemies_above_block(Object* block, ObjectsList* list);
+
 #endif
