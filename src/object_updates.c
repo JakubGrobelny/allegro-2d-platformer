@@ -130,7 +130,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
         object->physics.speed.y = 0;
 
         // SPECIAL OBJECT TYPES HANDLING
-        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA)
+        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA || object->type == KOOPA_SHELL)
         {
             if (collision_left)
             {
@@ -243,34 +243,56 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
     {
         Object* object = get_element_pointer_ol(objects, i);
 
-        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA)
+        int x;
+        int y;
+
+        x = object->physics.speed.x > 0.0f ? (int)((object->hitbox.pos_x + object->hitbox.width) / 64) : (int)((object->hitbox.pos_x) / 64);
+        y = object->hitbox.pos_y / 64;
+
+        int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
+
+        apply_vectors(object, level);
+
+        if (object->type == KOOPA_SHELL)
+            check_for_shell_collisions(i, objects);
+
+        if (object->pos_y > DISPLAY_HEIGHT)
+            kill(object, i, objects);
+    }
+}
+
+void check_for_shell_collisions(int shell_index, ObjectsList* list)
+{
+    Object* shell = get_element_pointer_ol(list, shell_index);
+    int size = list->size;
+
+    for (int i = 0; i < size; i++)
+    {
+        if (i != shell_index)
         {
-            int x;
-            int y;
+            Object* object = get_element_pointer_ol(list, i);
 
-            x = object->physics.speed.x > 0.0f ? (int)((object->hitbox.pos_x + object->hitbox.width) / 64) : (int)((object->hitbox.pos_x) / 64);
-            y = object->hitbox.pos_y / 64;
+            if (collide(shell->hitbox, object->hitbox))
+            {
+                int dir_x = (shell->physics.speed.x > 0) ? RIGHT : (shell->physics.speed.x < 0 ? LEFT : STATIC);
 
-            int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
-
-            apply_vectors(object, level);
-
-            if (object->pos_y > DISPLAY_HEIGHT)
-                kill(object, i, objects);
-
-            // TODO:
+                if (dir_x != STATIC)
+                {
+                    if (relative_direction(shell, object, dir_x))
+                        kill(object, i, list);
+                    // break; <- i guess it can only colide with one object at a time so checking every single one of them is not necessary
+                }
+            }
         }
-
-        // TODO:
     }
 }
 
 void spawn_shell(Object* enemy, ObjectsList* list)
 {
     Object new_shell;
-    Physics shell_physics = create_physics(0.0f, 0.0f, 6.0f, 0.0f, 2.0f);
+    Physics shell_physics = create_physics(0.0f, 0.0f, 9.0f, 0.0f, 2.0f);
 
-    // shell is 60x53 vs koopa's 96x80
+    // shell is 60x48 vs koopa's 96x80
 
     bind_bitmap(&new_shell, enemy->bitmap);
     init_object(&new_shell, KOOPA_SHELL, enemy->pos_x, enemy->pos_y, 96, 80, RECTANGLE, enemy->pos_x + 18, enemy->pos_y + 32, 60, 48, shell_physics, 1);

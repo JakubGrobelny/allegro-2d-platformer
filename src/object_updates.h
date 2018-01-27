@@ -33,4 +33,7 @@ void kill(Object* object, int i, ObjectsList* list);
 // spawns a shell after a kooppa enemy die
 void spawn_shell(Object* enemy, ObjectsList* list);
 
+// goes through the objects list to check whether the shell has collided with something and handles the collision
+void check_for_shell_collisions(int shell_index, ObjectsList* list);
+
 #endif

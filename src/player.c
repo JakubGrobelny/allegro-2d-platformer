@@ -104,14 +104,42 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 if (object->type == ENEMY_KOOPA)
                     spawn_shell(object, list);
 
-                kill(object, i, list);
+                if (object->type != KOOPA_SHELL)
+                {
+                    kill(object, i, list);
+                    size--;
+                }
+                else
+                {
+                    object->physics.speed.x = 0.0f;
+                }
 
                 player->physics.speed.y = -15;
-                size--;
             }
             else
             {
-                die(player);
+                if (object->type != KOOPA_SHELL)
+                    die(player);
+                else
+                {
+                    if (abs_float(object->physics.speed.x) > 1.0f) // just some inaccuracy to be safe
+                    {
+                        int dir_x = (object->physics.speed.x > 0) ? RIGHT : (object->physics.speed.x < 0 ? LEFT : STATIC);
+
+                        if (dir_x != STATIC)
+                        {
+                            if (relative_direction(object, player, dir_x))
+                            die(player);
+                        }
+                    }
+                    else if (abs_float(player->physics.speed.x) > 0.1f) // if the shell was stationary
+                    {
+                        if (relative_direction(player, object, LEFT))
+                            object->physics.speed.x = -object->physics.acceleration.x;
+                        else if (relative_direction(player, object, RIGHT))
+                            object->physics.speed.x = object->physics.acceleration.x;
+                    }
+                }
             }
         }
     }
