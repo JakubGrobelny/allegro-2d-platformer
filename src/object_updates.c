@@ -387,12 +387,6 @@ void break_block(Object* block, ObjectsList* list)
 
     for (int i = 0; i < list->size; i++)
     {
-        printf("%d: %d %d  ", i, get_element_pointer_ol(list, i)->pos_x, get_element_pointer_ol(list, i)->pos_y);
-    }
-    putchar('\n');
-
-    for (int i = 0; i < list->size; i++)
-    {
         Object* temp_obj = get_element_pointer_ol(list, i);
 
         if (collide(temp_hitbox, temp_obj->hitbox))
@@ -401,13 +395,7 @@ void break_block(Object* block, ObjectsList* list)
             i--;
         }
     }
-
-    for (int i = 0; i < list->size; i++)
-    {
-        printf("%d: %d %d  ", i, get_element_pointer_ol(list, i)->pos_x, get_element_pointer_ol(list, i)->pos_y);
-    }
-    putchar('\n');
-
+    
     //TODO play sound
 
     // Doing some object initiation magic to spawn 4 particles
