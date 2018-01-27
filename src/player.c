@@ -59,7 +59,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         player->physics.speed.x = 0;
     }
 
-    apply_vectors(player, level);
+    apply_vectors(player, level, non_static);
 
     if (player->alive)
         non_static_object_interactions(player, non_static);

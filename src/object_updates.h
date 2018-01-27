@@ -10,7 +10,7 @@
 // bool collides_in_direction(Object* object, Object level[], int direction);
 
 // applying the vectors to an object
-void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH]);
+void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* list);
 
 // checking whether the object is standing on some platform
 bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH]);
@@ -38,5 +38,17 @@ void spawn_shell(Object* enemy, ObjectsList* list);
 
 // goes through the objects list to check whether the shell has collided with something and handles the collision
 void check_for_shell_collisions(int shell_index, ObjectsList* list);
+
+// add some y velocity to the block that was hit by the player
+void bump_block(Object* block, ObjectsList* list);
+
+// spawn mushroom from a secret block
+void spawn_mushroom(Object* block, ObjectsList* list);
+
+// spawn coin from a secret block
+void spawn_coin(Object* block, ObjectsList* list);
+
+// destroy the block that was hit by big mario
+void break_block(Object* block, ObjectsList* list);
 
 #endif

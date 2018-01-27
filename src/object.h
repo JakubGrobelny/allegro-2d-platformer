@@ -25,6 +25,7 @@ typedef struct
     short frames_number;        // amount of the frames in the object's animation
 
     bool alive;                 // the state of object
+    int counter;                // variable that will hold various things like object's lifetime
 
     Hitbox hitbox;      // object's hitbox
     Physics physics;    // structure that holds the object's physical properties
@@ -59,6 +60,7 @@ typedef enum
     NORMAL_BLOCK,
     UNBREAKABLE_BLOCK,
     SECRET_BLOCK,
+    SECRET_BLOCK_MUSHROOM,
     BACKGROUND,
 
 } ObjectTypes;

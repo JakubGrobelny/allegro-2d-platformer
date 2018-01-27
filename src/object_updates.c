@@ -1,6 +1,6 @@
 #include "object_updates.h"
 
-void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
+void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* list)
 {
     apply_gravity(object);
 
@@ -93,6 +93,35 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
                             {
                                 adjustment = (obstacle->hitbox.pos_y + obstacle->hitbox.height) - new_y.pos_y;
                                 //printf("Adjustment_y_top = (%d + %d) - %d + 1 = %d\n", obstacle->hitbox.pos_y, obstacle->hitbox.width, new_y.pos_y, adjustment);
+
+                                if (object->type == PLAYER || object->type == PLAYER_BIG)
+                                {
+                                    Hitbox middle = new_y;
+                                    middle.width = new_y.width - 32;
+                                    middle.pos_x += 16;
+
+                                    if (collide(middle, obstacle->hitbox))
+                                    {
+                                        if (obstacle->type == NORMAL_BLOCK)
+                                        {
+                                            if (object->type == PLAYER_BIG)
+                                            break_block(obstacle, list);
+                                            else
+                                            bump_block(obstacle, list);
+                                        }
+                                        if (obstacle->type == SECRET_BLOCK)
+                                        {
+                                            bump_block(obstacle, list);
+                                            spawn_coin(obstacle, list);
+                                        }
+                                        else if (obstacle->type == SECRET_BLOCK_MUSHROOM)
+                                        {
+                                            bump_block(obstacle, list);
+                                            spawn_mushroom(obstacle, list);
+                                        }
+                                    }
+
+                                }
                             }
                             else if (dir_y == BOTTOM)
                             {
@@ -276,7 +305,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
             int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
 
-            apply_vectors(object, level);
+            apply_vectors(object, level, objects);
 
             if (object->type == KOOPA_SHELL)
             check_for_shell_collisions(i, objects);
@@ -307,7 +336,7 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                     if (dir_x != STATIC)
                     {
                         if (relative_direction(shell, object, dir_x))
-                        kill(object, i, list);
+                            kill(object, i, list);
                         // break; <- i guess it can only colide with one object at a time so checking every single one of them is not necessary
                     }
                 }
@@ -328,4 +357,26 @@ void spawn_shell(Object* enemy, ObjectsList* list)
     new_shell.animation_frame = 4;
 
     push_back_ol(list, new_shell);
+}
+
+void bump_block(Object* block, ObjectsList* list)
+{
+    //TODO
+}
+
+void spawn_mushroom(Object* block, ObjectsList* list)
+{
+    //TODO
+}
+
+void spawn_coin(Object* block, ObjectsList* list)
+{
+    //TODO
+}
+
+void break_block(Object* block, ObjectsList* list)
+{
+    //Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    //init_object(block, EMPTY, block->pos_x, block->pos_y, 64, 64, RECTANGLE, block->hitbox.pos_x, block->hitbox.pos_y, 64, 64, static_physics, 0);
+    //TODO play sound
 }
