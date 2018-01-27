@@ -480,10 +480,15 @@ void kill_enemies_above_block(Object* block, ObjectsList* list)
     {
         Object* temp_obj = get_element_pointer_ol(list, i);
 
-        if (collide(temp_hitbox, temp_obj->hitbox) && temp_obj->type != PARTICLE_NORMAL)
+        if (collide(temp_hitbox, temp_obj->hitbox) && temp_obj->type != PARTICLE_NORMAL && temp_obj->type != SIZE_MUSHROOM)
         {
             kill(temp_obj, i, list);
             i--;
+        }
+        else if (temp_obj->type == SIZE_MUSHROOM) // making the mushroom go opposite direction
+        {
+            temp_obj->physics.speed.y += 2.5f * BUMP_AMOUNT;
+            temp_obj->physics.speed.x *= -1;
         }
     }
 }
