@@ -135,7 +135,11 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                         if (dir_x != STATIC)
                         {
                             if (relative_direction(object, player, dir_x))
-                            die(player);
+                                die(player);
+                            else
+                            {
+                                object->physics.speed.x = player->physics.speed.x;
+                            }
                         }
                     }
                     else if (abs_float(player->physics.speed.x) > 0.1f) // if the shell was stationary
