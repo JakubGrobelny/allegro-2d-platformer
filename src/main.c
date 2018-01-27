@@ -141,7 +141,7 @@ int main()
             else
             {
                 bind_bitmap(&temp_brick, secret_brick);
-                init_object(&temp_brick, SECRET_BLOCK, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 2);
+                init_object(&temp_brick, SECRET_BLOCK_MUSHROOM, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 2);
                 temp_brick.physics.mass = 5.0f;
                 level[5][i] = temp_brick;
                 bind_bitmap(&temp_brick, brick);

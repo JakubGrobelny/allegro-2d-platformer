@@ -89,6 +89,21 @@ void respawn_player(Object* player, int x, int y)
     player->physics.speed.x = 0;
 }
 
+void change_state(Object* player)
+{
+    // TODO CHANGE SIZE, BITMAP ETC.
+    if (player->type == PLAYER)
+    {
+        player->type = PLAYER_BIG;
+
+    }
+    else if (player->type == PLAYER_BIG)
+    {
+        player->type = PLAYER;
+
+    }
+}
+
 void non_static_object_interactions(Object* player, ObjectsList* list)
 {
     int size = list->size;
@@ -97,8 +112,22 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
     {
         Object* object = get_element_pointer_ol(list, i);
 
-        if (collide(player->hitbox, object->hitbox) && object->type != PARTICLE_NORMAL && object->type != DEAD_ENEMY)
+        if (collide(player->hitbox, object->hitbox) && object->type != PARTICLE_NORMAL)
         {
+            if (object->type == SIZE_MUSHROOM)
+            {
+                kill(object, i, list);
+                size--;
+
+                // TODO growth animation
+                //
+                if (player->type == PLAYER)
+                    change_state(player);
+                else
+                    lives++;
+                continue;
+            }
+
             if (player->physics.speed.y > 0 && relative_direction(player, object, BOTTOM))
             {
                 if (object->type == ENEMY_KOOPA)
@@ -121,9 +150,11 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 }
 
                 player->physics.speed.y = -15;
+
             }
             else
             {
+
                 if (object->type != KOOPA_SHELL)
                     die(player);
                 else
@@ -267,6 +298,8 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
 
 void die(Object* player)
 {
+    // TODO: check player's size and do stuff
+
     if (player->alive)
     {
         player->alive = false;

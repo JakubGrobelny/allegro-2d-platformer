@@ -157,7 +157,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
         object->physics.speed.y = 0;
 
         // SPECIAL OBJECT TYPES HANDLING
-        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA || object->type == KOOPA_SHELL)
+        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA || object->type == KOOPA_SHELL || object->type == SIZE_MUSHROOM)
         {
             if (collision_left)
             {
@@ -216,7 +216,7 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
 void kill(Object* object, int i, ObjectsList* list)
 {
-    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA)
+    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM)
         pop_element_ol(list, i);
     else
     {
@@ -339,7 +339,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                         if (temp->type != PARTICLE_NORMAL && temp->alive)
                         {
                             if (collide(object->hitbox, temp->hitbox))
-                            object->physics.speed.x *= -1;
+                                object->physics.speed.x *= -1;
                         }
                     }
                 }
@@ -362,7 +362,7 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
         {
             Object* object = get_element_pointer_ol(list, i);
 
-            if (distance_x(shell, object) < (int)(abs_float(shell->physics.speed.x) + 0.5f) + 10 && object->type != PARTICLE_NORMAL)
+            if (distance_x(shell, object) < (int)(abs_float(shell->physics.speed.x) + 0.5f) + 10 && object->type != PARTICLE_NORMAL && object->type != SIZE_MUSHROOM)
             {
                 if (collide(shell->hitbox, object->hitbox))
                 {
@@ -412,7 +412,20 @@ void bump_block(Object* block, ObjectsList* list)
 void spawn_mushroom(Object* block, ObjectsList* list)
 {
     bump_block(block, list);
+
     //TODO play sound
+
+    Object mushroom;
+
+    bind_bitmap(&mushroom, block->bitmap);
+    Physics mushroom_physics = create_physics(4.0f, BUMP_AMOUNT, 4.0f, 0.0f, 1.25f);
+    init_object(&mushroom, SIZE_MUSHROOM, block->pos_x, block->pos_y - block->height, block->width, block->height, RECTANGLE, block->pos_x, block->pos_y - block->height, block->width, block->height, mushroom_physics, 1);
+    mushroom.animation_frame = 4;
+    push_back_ol(list, mushroom);
+
+    block->animation_frame = 2;
+    block->frames_number = 1;
+    block->type = UNBREAKABLE_BLOCK;
 }
 
 void spawn_coin(Object* block, ObjectsList* list)

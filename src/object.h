@@ -66,7 +66,8 @@ typedef enum
     SECRET_BLOCK,
     SECRET_BLOCK_MUSHROOM,
     BACKGROUND,
-    PARTICLE_NORMAL
+    PARTICLE_NORMAL,
+    SIZE_MUSHROOM
 
 } ObjectTypes;
 
