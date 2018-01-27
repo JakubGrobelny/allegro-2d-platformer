@@ -50,7 +50,6 @@ int main()
     al_clear_to_color(LIGHT_BLUE);
     al_start_timer(timer);
 
-
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     Physics player_physics = create_physics(0.1f, 0.0f, 0.4f, 21, 1.0f);
@@ -85,7 +84,7 @@ int main()
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* secret_brick = al_create_bitmap(64, 64*2);
+    ALLEGRO_BITMAP* secret_brick = al_create_bitmap(64, 64*5);
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*3);
     ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*5);
@@ -143,6 +142,7 @@ int main()
             {
                 bind_bitmap(&temp_brick, secret_brick);
                 init_object(&temp_brick, SECRET_BLOCK, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 2);
+                temp_brick.physics.mass = 5.0f;
                 level[5][i] = temp_brick;
                 bind_bitmap(&temp_brick, brick);
             }

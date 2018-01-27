@@ -9,6 +9,9 @@
 #include "keyboard.h"
 #include "physics.h"
 
+extern int lives;
+extern int coins;
+
 typedef struct
 {
     /*

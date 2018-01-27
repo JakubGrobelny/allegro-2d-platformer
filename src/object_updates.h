@@ -6,8 +6,8 @@
 #ifndef _OBJECT_UPDATES
 #define _OBJECT_UPDATES
 
-// // checking if any object collides with given object in given direction
-// bool collides_in_direction(Object* object, Object level[], int direction);
+int lives; // extern variables
+int coins;
 
 // applying the vectors to an object
 void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* list);

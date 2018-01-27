@@ -251,9 +251,9 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
             else if (temp->type == ENEMY_KOOPA)
             {
                 if (temp->physics.speed.x > 0 && temp->animation_frame < 2)
-                temp->animation_frame = 2;
+                    temp->animation_frame = 2;
                 else if (temp->physics.speed.x < 0 && temp->animation_frame > 1)
-                temp->animation_frame = 0;
+                    temp->animation_frame = 0;
 
                 if (frame % 12 == 0 && frame != 0)
                 {
@@ -262,12 +262,12 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
                     if (temp->physics.speed.x > 0)
                     {
                         if (temp->animation_frame > 3)
-                        temp->animation_frame = 2;
+                            temp->animation_frame = 2;
                     }
                     else if (temp->physics.speed.x < 0)
                     {
                         if (temp->animation_frame > 1)
-                        temp->animation_frame = 0;
+                            temp->animation_frame = 0;
                     }
                 }
             }
@@ -420,6 +420,36 @@ void spawn_coin(Object* block, ObjectsList* list)
     bump_block(block, list);
 
     //TODO play sound
+
+    // ATTENTION
+    //
+    // This is probably the dirtiest hack i've ever done: Number of coins in a block is stored in it's
+    // mass because it's not used for static objects
+    //
+    // ATTENTION
+
+    if (block->physics.mass > 0.0f)
+    {
+        coins++;
+        block->physics.mass -= 1.0f;
+        Object coin;
+        bind_bitmap(&coin, block->bitmap);
+        Physics coin_physics = create_physics(0.0f, -18.0f, 0.0f, 0.0f, 2.0f);
+        init_object(&coin, PARTICLE_NORMAL, block->pos_x, block->pos_y - block->height, block->width, block->height, RECTANGLE, 0, 0, 1, 1, coin_physics, 1);
+        coin.animation_frame = 3;
+        coin.counter = 18;
+        coin.alive = false;
+        push_back_ol(list, coin);
+    }
+
+    if (block->physics.mass <= 0.0f)
+    {
+        block->animation_frame = 2;
+        block->frames_number = 1;
+        block->type = UNBREAKABLE_BLOCK;
+    }
+
+    printf("Coins: %d\n", coins);
 }
 
 void kill_enemies_above_block(Object* block, ObjectsList* list)
