@@ -104,6 +104,9 @@ int main()
         init_object(&temp_enemy, ENEMY_GOOMBA, 260, 2*64, 64, 64, RECTANGLE, 260+7, 2*64+8, 50, 64-8, goomba_physics, 2);
         push_back_ol(&non_static_elements, temp_enemy);
 
+        init_object(&temp_enemy, ENEMY_GOOMBA, 20*64, 8*64, 64, 64, RECTANGLE, 20*64+7, 8*64+8, 50, 64-8, goomba_physics, 2);
+        push_back_ol(&non_static_elements, temp_enemy);
+
         bind_bitmap(&temp_enemy, enemy2);
         init_object(&temp_enemy, ENEMY_KOOPA, 21*64, 8*64-16, 96, 80, RECTANGLE, 21*64+16, 8*64-16, 64, 80, koopa_physics, 4);
         push_back_ol(&non_static_elements, temp_enemy);

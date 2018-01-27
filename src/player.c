@@ -111,7 +111,13 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 }
                 else
                 {
-                    object->physics.speed.x = 0.0f;
+                    if (abs_float(object->physics.speed.x) > 0.1f)
+                        object->physics.speed.x = 0.0f;
+                    else
+                    {
+                        int player_dir_x = player->physics.speed.x > 0 ? 1 : -1;
+                        object->physics.speed.x = player_dir_x * object->physics.acceleration.x;
+                    }
                 }
 
                 player->physics.speed.y = -15;
