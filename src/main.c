@@ -87,7 +87,7 @@ int main()
     ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* secret_brick = al_create_bitmap(64, 64*2);
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
-    ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
+    ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*3);
     ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*5);
 
     brick = al_load_bitmap("./resources/brick_orange.png");

@@ -218,8 +218,16 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
 void kill(Object* object, int i, ObjectsList* list)
 {
-    pop_element_ol(list, i);
-    // TODO: play animation
+    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA)
+        pop_element_ol(list, i);
+    else
+    {
+        Physics dead_enemy_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
+        init_object(object, PARTICLE_NORMAL, object->pos_x, object->pos_y, object->width, object->height, RECTANGLE, object->hitbox.pos_x, object->hitbox.pos_y, object->hitbox.width, object->hitbox.height, dead_enemy_physics, object->frames_number);
+        object->animation_frame = object->frames_number;
+        object->counter = 30;
+        object->alive = false;
+    }
 }
 
 void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
@@ -307,22 +315,24 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
             apply_vectors(object, level, objects);
 
-            for (int e = 0; e < objects->size; e++)
+            if (object->type == KOOPA_SHELL)
+                check_for_shell_collisions(i, objects);
+            else
             {
-                if (e != i)
+                for (int e = 0; e < objects->size; e++)
                 {
-                    Object* temp = get_element_pointer_ol(objects, e);
-
-                    if (temp->type != PARTICLE_NORMAL)
+                    if (e != i)
                     {
-                        if (collide(object->hitbox, temp->hitbox))
+                        Object* temp = get_element_pointer_ol(objects, e);
+
+                        if (temp->type != PARTICLE_NORMAL && temp->alive)
+                        {
+                            if (collide(object->hitbox, temp->hitbox))
                             object->physics.speed.x *= -1;
+                        }
                     }
                 }
             }
-
-            if (object->type == KOOPA_SHELL)
-                check_for_shell_collisions(i, objects);
 
             if (object->pos_y > DISPLAY_HEIGHT)
                 kill(object, i, objects);
@@ -341,7 +351,7 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
         {
             Object* object = get_element_pointer_ol(list, i);
 
-            if (distance_x(shell, object) < (int)(abs_float(shell->physics.speed.x) + 0.5f) + 10)
+            if (distance_x(shell, object) < (int)(abs_float(shell->physics.speed.x) + 0.5f) + 10 && object->type != PARTICLE_NORMAL)
             {
                 if (collide(shell->hitbox, object->hitbox))
                 {
@@ -403,7 +413,7 @@ void break_block(Object* block, ObjectsList* list)
     {
         Object* temp_obj = get_element_pointer_ol(list, i);
 
-        if (collide(temp_hitbox, temp_obj->hitbox))
+        if (collide(temp_hitbox, temp_obj->hitbox) && temp_obj->type != PARTICLE_NORMAL)
         {
             kill(temp_obj, i, list);
             i--;

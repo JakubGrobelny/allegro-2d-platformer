@@ -97,7 +97,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
     {
         Object* object = get_element_pointer_ol(list, i);
 
-        if (collide(player->hitbox, object->hitbox) && object->type != PARTICLE_NORMAL)
+        if (collide(player->hitbox, object->hitbox) && object->type != PARTICLE_NORMAL && object->type != DEAD_ENEMY)
         {
             if (player->physics.speed.y > 0 && relative_direction(player, object, BOTTOM))
             {
