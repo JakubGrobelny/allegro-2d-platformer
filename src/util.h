@@ -1,6 +1,8 @@
 #ifndef _UTIL
 #define _UTIL
 
+#include "object.h"
+
 typedef struct Point
 {
     /*
@@ -26,5 +28,8 @@ float abs_int(int number);
 
 // create new point (x, y)
 Point create_point(int x, int y);
+
+// calculates the distance between two objects on the X axis
+int distance_x(Object* first, Object* second);
 
 #endif

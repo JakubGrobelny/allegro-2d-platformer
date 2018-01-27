@@ -22,10 +22,13 @@ void apply_gravity(Object* object);
 void handle_being_stuck(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], int previous_pos_x, int previous_pos_y);
 
 // updating non-static objects
-void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH]);
+void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH], Object* player);
 
 // updating non-static objects' animations
-void animate_non_static_objects(ObjectsList* objects, int frame);
+void animate_non_static_objects(ObjectsList* objects, int frame, Object* player);
+
+// updating static objects' animations
+void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Object* player);
 
 // kills an object :( (literally)
 void kill(Object* object, int i, ObjectsList* list);

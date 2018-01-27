@@ -85,6 +85,7 @@ int main()
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
+    ALLEGRO_BITMAP* secret_brick = al_create_bitmap(64, 64*2);
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*2);
     ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*5);
@@ -92,6 +93,7 @@ int main()
     brick = al_load_bitmap("./resources/brick_orange.png");
     brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
     brick3 = al_load_bitmap("./resources/orange_rock.png");
+    secret_brick = al_load_bitmap("./resources/secret_brick.png");
     cloud = al_load_bitmap("./resources/cloud.png");
     enemy1 = al_load_bitmap("./resources/enemy_1.png");
     enemy2 = al_load_bitmap("./resources/enemy_2.png");
@@ -121,15 +123,25 @@ int main()
 
         for (int i = 1; i < 9; i++)
         {
-            init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
+            init_object(&temp_brick, NORMAL_BLOCK, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
             level[8][i] = temp_brick;
         }
 
         bind_bitmap(&temp_brick, brick);
         for (int i = 2; i < 8; i++)
         {
-            init_object(&temp_brick, PLATFORM, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 1);
-            level[5][i] = temp_brick;
+            if (i != 6)
+            {
+                init_object(&temp_brick, NORMAL_BLOCK, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 1);
+                level[5][i] = temp_brick;
+            }
+            else
+            {
+                bind_bitmap(&temp_brick, secret_brick);
+                init_object(&temp_brick, SECRET_BLOCK, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 2);
+                level[5][i] = temp_brick;
+                bind_bitmap(&temp_brick, brick);
+            }
         }
 
         bind_bitmap(&temp_brick, brick3);
@@ -137,26 +149,26 @@ int main()
         {
             if (i != 15 && i != 25)
             {
-                init_object(&temp_brick, PLATFORM, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
+                init_object(&temp_brick, NORMAL_BLOCK, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
                 level[10][i] = temp_brick;
 
             }
             else
             {
                 bind_bitmap(&temp_brick, brick2);
-                init_object(&temp_brick, PLATFORM, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
+                init_object(&temp_brick, UNBREAKABLE_BLOCK, i*64, 9*64, 64, 64, RECTANGLE, i*64, 9*64, 64, 64, static_physics, 1);
                 level[9][i] = temp_brick;
 
                 bind_bitmap(&temp_brick, brick2);
-                init_object(&temp_brick, PLATFORM, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
+                init_object(&temp_brick, UNBREAKABLE_BLOCK, i*64, 8*64, 64, 64, RECTANGLE, i*64, 8*64, 64, 64, static_physics, 1);
                 level[8][i] = temp_brick;
 
                 bind_bitmap(&temp_brick, brick2);
-                init_object(&temp_brick, PLATFORM, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
+                init_object(&temp_brick, UNBREAKABLE_BLOCK, i*64, 7*64, 64, 64, RECTANGLE, i*64, 7*64, 64, 64, static_physics, 1);
                 level[7][i] = temp_brick;
 
                 bind_bitmap(&temp_brick, brick3);
-                init_object(&temp_brick, PLATFORM, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
+                init_object(&temp_brick, UNBREAKABLE_BLOCK, i*64, 10*64, 64, 64, RECTANGLE, i*64, 10*64, 64, 64, static_physics, 1);
                 level[10][i] = temp_brick;
             }
         }
@@ -189,10 +201,11 @@ int main()
             if (frame > 60)
                 frame = 0;
 
-            update_non_static_objects(&non_static_elements, level);
-            animate_non_static_objects(&non_static_elements, frame);
+            update_non_static_objects(&non_static_elements, level, &player);
+            animate_non_static_objects(&non_static_elements, frame, &player);
             update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
+            animate_static_objects(level, frame, &player);
 
             if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
             {

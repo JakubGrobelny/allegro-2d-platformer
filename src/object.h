@@ -56,7 +56,9 @@ typedef enum
     ENEMY_GOOMBA,
     ENEMY_KOOPA,
     KOOPA_SHELL,
-    PLATFORM,
+    NORMAL_BLOCK,
+    UNBREAKABLE_BLOCK,
+    SECRET_BLOCK,
     BACKGROUND,
 
 } ObjectTypes;

@@ -193,71 +193,97 @@ void kill(Object* object, int i, ObjectsList* list)
     // TODO: play animation
 }
 
-void animate_non_static_objects(ObjectsList* objects, int frame)
+void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
 {
     for (int i = 0; i < objects->size; i++)
     {
         Object* temp = get_element_pointer_ol(objects, i);
 
-        if (temp->type == ENEMY_GOOMBA)
+        if (distance_x(player, temp) <= RENDER_DISTANCE)
         {
-            if (frame % 12 == 0 && frame != 0)
+            if (temp->type == ENEMY_GOOMBA)
             {
-                temp->animation_frame++;
-
-                if (temp->animation_frame >= temp->frames_number)
+                if (frame % 12 == 0 && frame != 0)
                 {
-                    temp->animation_frame = 0;
+                    temp->animation_frame++;
+
+                    if (temp->animation_frame >= temp->frames_number)
+                    {
+                        temp->animation_frame = 0;
+                    }
                 }
             }
-        }
-        else if (temp->type == ENEMY_KOOPA)
-        {
-            if (temp->physics.speed.x > 0 && temp->animation_frame < 2)
+            else if (temp->type == ENEMY_KOOPA)
+            {
+                if (temp->physics.speed.x > 0 && temp->animation_frame < 2)
                 temp->animation_frame = 2;
-            else if (temp->physics.speed.x < 0 && temp->animation_frame > 1)
+                else if (temp->physics.speed.x < 0 && temp->animation_frame > 1)
                 temp->animation_frame = 0;
 
-            if (frame % 12 == 0 && frame != 0)
-            {
-                temp->animation_frame++;
+                if (frame % 12 == 0 && frame != 0)
+                {
+                    temp->animation_frame++;
 
-                if (temp->physics.speed.x > 0)
-                {
-                    if (temp->animation_frame > 3)
-                    temp->animation_frame = 2;
-                }
-                else if (temp->physics.speed.x < 0)
-                {
-                    if (temp->animation_frame > 1)
-                    temp->animation_frame = 0;
+                    if (temp->physics.speed.x > 0)
+                    {
+                        if (temp->animation_frame > 3)
+                        temp->animation_frame = 2;
+                    }
+                    else if (temp->physics.speed.x < 0)
+                    {
+                        if (temp->animation_frame > 1)
+                        temp->animation_frame = 0;
+                    }
                 }
             }
         }
     }
 }
 
-void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH])
+void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Object* player)
+{
+    for (int height = 0; height < MAP_HEIGHT; height++)
+    {
+        for (int width = ((int)((player->pos_x - 1) / 64) - MAP_WIDTH); width <= ((int)((player->pos_x + player->width + 1) / 64) + MAP_WIDTH); width++)
+        {
+            if (width >= 0 && width < MAP_WIDTH)
+            {
+                if (level[height][width].frames_number > 1 && (frame % 30 == 0) && frame != 0)
+                {
+                    level[height][width].animation_frame++;
+
+                    if (level[height][width].animation_frame >= level[height][width].frames_number)
+                        level[height][width].animation_frame = 0;
+                }
+            }
+        }
+    }
+}
+
+void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH], Object* player)
 {
     for (int i = 0; i < objects->size; i++)
     {
         Object* object = get_element_pointer_ol(objects, i);
 
-        int x;
-        int y;
+        if (distance_x(object, player) <= RENDER_DISTANCE) // only update objects that are close to the player
+        {
+            int x;
+            int y;
 
-        x = object->physics.speed.x > 0.0f ? (int)((object->hitbox.pos_x + object->hitbox.width) / 64) : (int)((object->hitbox.pos_x) / 64);
-        y = object->hitbox.pos_y / 64;
+            x = object->physics.speed.x > 0.0f ? (int)((object->hitbox.pos_x + object->hitbox.width) / 64) : (int)((object->hitbox.pos_x) / 64);
+            y = object->hitbox.pos_y / 64;
 
-        int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
+            int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
 
-        apply_vectors(object, level);
+            apply_vectors(object, level);
 
-        if (object->type == KOOPA_SHELL)
+            if (object->type == KOOPA_SHELL)
             check_for_shell_collisions(i, objects);
 
-        if (object->pos_y > DISPLAY_HEIGHT)
+            if (object->pos_y > DISPLAY_HEIGHT)
             kill(object, i, objects);
+        }
     }
 }
 
@@ -272,15 +298,18 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
         {
             Object* object = get_element_pointer_ol(list, i);
 
-            if (collide(shell->hitbox, object->hitbox))
+            if (distance_x(shell, object) < (int)(abs_float(shell->physics.speed.x) + 0.5f) + 10)
             {
-                int dir_x = (shell->physics.speed.x > 0) ? RIGHT : (shell->physics.speed.x < 0 ? LEFT : STATIC);
-
-                if (dir_x != STATIC)
+                if (collide(shell->hitbox, object->hitbox))
                 {
-                    if (relative_direction(shell, object, dir_x))
+                    int dir_x = (shell->physics.speed.x > 0) ? RIGHT : (shell->physics.speed.x < 0 ? LEFT : STATIC);
+
+                    if (dir_x != STATIC)
+                    {
+                        if (relative_direction(shell, object, dir_x))
                         kill(object, i, list);
-                    // break; <- i guess it can only colide with one object at a time so checking every single one of them is not necessary
+                        // break; <- i guess it can only colide with one object at a time so checking every single one of them is not necessary
+                    }
                 }
             }
         }
@@ -290,7 +319,7 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
 void spawn_shell(Object* enemy, ObjectsList* list)
 {
     Object new_shell;
-    Physics shell_physics = create_physics(0.0f, 0.0f, 9.0f, 0.0f, 2.0f);
+    Physics shell_physics = create_physics(0.0f, 0.0f, 13.0f, 0.0f, 2.0f);
 
     // shell is 60x48 vs koopa's 96x80
 
