@@ -72,7 +72,7 @@ int main()
     }
 
     Object player;
-    init_object(&player, PLAYER_BIG, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
+    init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
 
     ObjectsList non_static_elements;
     non_static_elements = create_objects_list(1);

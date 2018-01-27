@@ -376,9 +376,34 @@ void spawn_coin(Object* block, ObjectsList* list)
 
 void break_block(Object* block, ObjectsList* list)
 {
+    // Killing enemies above
+
+    int size = list->size; // it's stupid but whenever i delete something from the list in a loop it kinda breaks
+
+    Hitbox temp_hitbox;
+
+    temp_hitbox.type = RECTANGLE;
+    temp_hitbox.pos_x = block->hitbox.pos_x;
+    temp_hitbox.pos_y = block->hitbox.pos_y - block->hitbox.height;
+    temp_hitbox.width = block->hitbox.width;
+    temp_hitbox.height = block->hitbox.height;
+
+    for (int i = 0; i < size; i++)
+    {
+        Object* temp_obj = get_element_pointer_ol(list, i);
+
+        if (collide(temp_hitbox, temp_obj->hitbox))
+        {
+            kill(temp_obj, i, list);
+            size--;
+        }
+    }
+
+    //TODO play sound
+
+    // Doing some object initiation magic to spawn 4 particles
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     init_object(block, EMPTY, block->pos_x, block->pos_y, 64, 64, RECTANGLE, block->hitbox.pos_x, block->hitbox.pos_y, 64, 64, static_physics, 0);
-    //TODO play sound
     Object particle;
     Physics particle_physics = create_physics(-2.0f, -5.0f, 0.0f, 0.0f, 1.0f);
     bind_bitmap(&particle, block->bitmap);
