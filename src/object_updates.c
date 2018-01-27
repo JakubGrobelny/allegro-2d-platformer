@@ -97,8 +97,8 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
                                 if (object->type == PLAYER || object->type == PLAYER_BIG)
                                 {
                                     Hitbox middle = new_y;
-                                    middle.width = new_y.width - 32;
-                                    middle.pos_x += 16;
+                                    middle.width = new_y.width - 48;
+                                    middle.pos_x += 24;
 
                                     if (collide(middle, obstacle->hitbox))
                                     {
@@ -297,21 +297,21 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
         if (distance_x(object, player) <= RENDER_DISTANCE) // only update objects that are close to the player
         {
-            int x;
-            int y;
-
-            x = object->physics.speed.x > 0.0f ? (int)((object->hitbox.pos_x + object->hitbox.width) / 64) : (int)((object->hitbox.pos_x) / 64);
-            y = object->hitbox.pos_y / 64;
-
-            int dir_x = object->physics.speed.x > 0 ? RIGHT : LEFT;
+            if (object->type == PARTICLE_NORMAL)
+            {
+                if (object->counter > 0)
+                    object->counter--;
+                else
+                    kill(object, i, objects);
+            }
 
             apply_vectors(object, level, objects);
 
             if (object->type == KOOPA_SHELL)
-            check_for_shell_collisions(i, objects);
+                check_for_shell_collisions(i, objects);
 
             if (object->pos_y > DISPLAY_HEIGHT)
-            kill(object, i, objects);
+                kill(object, i, objects);
         }
     }
 }
@@ -376,7 +376,23 @@ void spawn_coin(Object* block, ObjectsList* list)
 
 void break_block(Object* block, ObjectsList* list)
 {
-    //Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    //init_object(block, EMPTY, block->pos_x, block->pos_y, 64, 64, RECTANGLE, block->hitbox.pos_x, block->hitbox.pos_y, 64, 64, static_physics, 0);
+    Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    init_object(block, EMPTY, block->pos_x, block->pos_y, 64, 64, RECTANGLE, block->hitbox.pos_x, block->hitbox.pos_y, 64, 64, static_physics, 0);
     //TODO play sound
+    Object particle;
+    Physics particle_physics = create_physics(-2.0f, -5.0f, 0.0f, 0.0f, 1.0f);
+    bind_bitmap(&particle, block->bitmap);
+    init_object(&particle, PARTICLE_NORMAL, block->pos_x - 24, block->pos_y - 24, 64, 64, RECTANGLE, block->pos_x, block->pos_y, 64, 64, particle_physics, 1);
+    particle.counter = 300;
+    particle.alive = false;
+    particle.animation_frame = 1;
+    push_back_ol(list, particle);
+    particle.pos_y += 48;
+    push_back_ol(list, particle);
+    particle.pos_x += 48;
+    particle_physics.speed.x *= -1;
+    particle.physics = particle_physics;
+    push_back_ol(list, particle);
+    particle.pos_y -= 48;
+    push_back_ol(list, particle);
 }
