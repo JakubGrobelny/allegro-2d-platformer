@@ -156,7 +156,11 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             {
 
                 if (object->type != KOOPA_SHELL)
+                {
                     die(player);
+                    object->physics.speed.x *= -1;
+
+                }
                 else
                 {
                     if (abs_float(object->physics.speed.x) > 1.0f) // just some inaccuracy to be safe
@@ -166,7 +170,10 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                         if (dir_x != STATIC)
                         {
                             if (relative_direction(object, player, dir_x))
+                            {
                                 die(player);
+                                object->physics.speed.x *= -1;
+                            }
                             else
                             {
                                 object->physics.speed.x = player->physics.speed.x;
@@ -298,13 +305,22 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
 
 void die(Object* player)
 {
-    // TODO: check player's size and do stuff
+    // TODO: do stuff
 
     if (player->alive)
     {
-        player->alive = false;
-        player->animation_frame = 14;
-        terminate_velocity(player);
-        player->physics.speed.y = -25.0f;
+        if (player->type == PLAYER_BIG)
+        {
+            player->type = PLAYER;
+            // TODO: play animation
+        }
+        else
+        {
+            // actually die and do stuff
+            player->alive = false;
+            player->animation_frame = 14;
+            terminate_velocity(player);
+            player->physics.speed.y = -25.0f;
+        }
     }
 }
