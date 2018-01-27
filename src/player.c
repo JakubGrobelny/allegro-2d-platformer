@@ -1,5 +1,8 @@
 #include "player.h"
 
+ALLEGRO_BITMAP* player_bitmap = NULL;
+ALLEGRO_BITMAP* player_big_bitmap = NULL;
+
 void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static, int frame)
 {
     Vector previous_speed = player->physics.speed;
@@ -8,6 +11,9 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         die(player);
 
     bool running = false;
+
+    if (player->counter > 0)
+        player->counter--;
 
     if (player->alive)
     {
@@ -95,7 +101,14 @@ void change_state(Object* player)
     if (player->type == PLAYER)
     {
         player->type = PLAYER_BIG;
-
+        player->counter = 30;
+        //TODO
+        //TODO
+        //TODO
+        //TODO add animation that makes player flash for 30 frames
+        //TODO
+        //TODO and play sound :v
+        //TODO
     }
     else if (player->type == PLAYER_BIG)
     {
@@ -309,10 +322,9 @@ void die(Object* player)
 
     if (player->alive)
     {
-        if (player->type == PLAYER_BIG)
+        if (player->type == PLAYER_BIG && player->hitbox.pos_y <= DISPLAY_HEIGHT)
         {
-            player->type = PLAYER;
-            // TODO: play animation
+            change_state(player);
         }
         else
         {

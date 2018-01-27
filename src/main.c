@@ -77,9 +77,9 @@ int main()
     non_static_elements = create_objects_list(1);
 
     // bitmaps
-    ALLEGRO_BITMAP* bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
-    bitmap = al_load_bitmap("./resources/mario_small.png");
-    bind_bitmap(&player, bitmap);
+    player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
+    player_bitmap = al_load_bitmap("./resources/mario_small.png");
+    bind_bitmap(&player, player_bitmap);
 
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
@@ -276,7 +276,8 @@ int main()
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
-    al_destroy_bitmap(bitmap);
+    al_destroy_bitmap(player_bitmap);
+    // TODO: destroy the rest of bitmaps and stuff
     al_destroy_bitmap(brick);
     delete_list(&non_static_elements);
 
