@@ -72,7 +72,7 @@ int main()
     }
 
     Object player;
-    init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
+    init_object(&player, PLAYER_BIG, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
 
     ObjectsList non_static_elements;
     non_static_elements = create_objects_list(1);
@@ -100,7 +100,11 @@ int main()
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
-        init_object(&temp_enemy, ENEMY_GOOMBA, 260+64, 2*64, 64, 64, RECTANGLE, 260+64+7, 2*64+8, 50, 64-8, goomba_physics, 2);
+
+        // init_object(&temp_enemy, ENEMY_GOOMBA, 260-64, 2*64, 64, 64, RECTANGLE, 260-64+7, 2*64+8, 50, 64-8, goomba_physics, 2);
+        // push_back_ol(&non_static_elements, temp_enemy);
+
+        init_object(&temp_enemy, ENEMY_GOOMBA, 260-64, 2*64, 64, 64, RECTANGLE, 260-64+7, 2*64+8, 50, 64-8, goomba_physics, 2);
         push_back_ol(&non_static_elements, temp_enemy);
 
         init_object(&temp_enemy, ENEMY_GOOMBA, 260, 2*64, 64, 64, RECTANGLE, 260+7, 2*64+8, 50, 64-8, goomba_physics, 2);

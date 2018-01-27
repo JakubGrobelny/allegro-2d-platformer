@@ -19,19 +19,7 @@ Object get_element_ol(ObjectsList* list, int i)
 }
 
 Object* get_element_pointer_ol(ObjectsList* list, int i)
-{bool collides_in_direction(Object* object, ObjectsList* list, int direction)
 {
-    for (int i = 0; i < list->size; i++)
-    {
-        if (relative_direction(object, get_element_pointer_ol(list, i), direction))
-        {
-            if (collide(object->hitbox, get_element_pointer_ol(list, i)->hitbox))
-                return true;
-        }
-    }
-
-    return false;
-}
     return &(list->objects[(list->first + i) % list->capacity]);
 }
 
@@ -87,21 +75,11 @@ void remove_element_ol(ObjectsList* list, int i)
 
 Object pop_element_ol(ObjectsList* list, int i)
 {
-    Object obj = get_element_ol(list, i);
+    if (i >= list->size)
+        printf("Error! Access violation!\n");
 
-    if (i == 0)
-    {
-        if (list->size <= 1)
-        {
-            list->first = 0;
-        }
-        else
-            list->first++;
-    }
-    else if (i < list->size - 1)
-    {
-        remove_element_ol(list, i);
-    }
+    Object obj = get_element_ol(list, i);
+    remove_element_ol(list, i);
 
     list->size -= 1;
 
