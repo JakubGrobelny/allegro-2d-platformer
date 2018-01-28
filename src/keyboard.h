@@ -17,6 +17,7 @@ typedef enum
     KEY_ENTER,
     KEY_SPACE,
     KEY_SHIFT,
+    KEY_CTRL,
 
     KEYS_AMOUNT // the amount of the keys specified in this enum
 

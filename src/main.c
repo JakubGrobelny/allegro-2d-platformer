@@ -137,15 +137,15 @@ int main()
         {
             if (i != 6)
             {
-                init_object(&temp_brick, NORMAL_BLOCK, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 1);
-                level[5][i] = temp_brick;
+                init_object(&temp_brick, NORMAL_BLOCK, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 1);
+                level[4][i] = temp_brick;
             }
             else
             {
                 bind_bitmap(&temp_brick, secret_brick);
-                init_object(&temp_brick, SECRET_BLOCK_MUSHROOM, i*64, 5*64, 64, 64, RECTANGLE, i*64, 5*64, 64, 64, static_physics, 2);
+                init_object(&temp_brick, SECRET_BLOCK_MUSHROOM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 2);
                 temp_brick.physics.mass = 5.0f;
-                level[5][i] = temp_brick;
+                level[4][i] = temp_brick;
                 bind_bitmap(&temp_brick, brick);
             }
         }

@@ -17,52 +17,83 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         player->counter--;
     }
 
-    if (player->alive)
+    if (!player->alive && player->counter == 0)
     {
-        if (keys_active[KEY_DOWN]) // TODO: or KEY_LCTRL
+        if (lives > 0)
         {
-            crouch(player);
+            terminate_velocity(player);
+            respawn_player(player, START_X, START_Y);
+            player->alive = true;
+            //TODO SCREEN OFFSET = 0
+            //TODO RELOAD LEVEL (from file)
+            //TODO
         }
-        if (keys_active[KEY_RIGHT])
+        else
         {
-            player->physics.speed.x += player->physics.acceleration.x;
-            running = true;
-
-            if (keys_active[KEY_SHIFT] && on_the_ground(player, level) && player->physics.speed.x >= 0.0f)
-                player->physics.speed.x += player->physics.acceleration.x;
-
-            if (player->physics.speed.x > MAX_SPEED)
-                player->physics.speed.x = MAX_SPEED;
-
-        }
-        if (keys_active[KEY_LEFT])
-        {
-            player->physics.speed.x -= player->physics.acceleration.x;
-            running = true;
-
-            if (keys_active[KEY_SHIFT] && on_the_ground(player, level) && player->physics.speed.x <= 0.0f)
-                player->physics.speed.x -= player->physics.acceleration.x;
-
-            if (abs_float(player->physics.speed.x) > MAX_SPEED)
-                player->physics.speed.x = -MAX_SPEED;
-        }
-
-        if (keys_down[KEY_UP] || keys_down[KEY_SPACE]) // TODO: if active && ~pressed then lower the gravity
-        {
-            if (player->physics.speed.y == previous_speed.y) // on_the_ground
-            {
-                jump(player);
-            }
+            //TODO
+            //TODO GAME OVER
+            //TODO
         }
     }
 
     if (player->alive)
+    {
+        if ((keys_active[KEY_DOWN] || keys_active[KEY_CTRL]) && player->type == PLAYER_BIG) // TODO: or KEY_LCTRL
+        {
+            crouch(player);
+        }
+        else
+        {
+            if (player->type == PLAYER_BIG)
+            {
+
+            }
+
+            if (keys_active[KEY_RIGHT])
+            {
+                player->physics.speed.x += player->physics.acceleration.x;
+                running = true;
+
+                if (keys_active[KEY_SHIFT] && on_the_ground(player, level) && player->physics.speed.x >= 0.0f)
+                player->physics.speed.x += player->physics.acceleration.x;
+
+                if (player->physics.speed.x > MAX_SPEED)
+                player->physics.speed.x = MAX_SPEED;
+
+            }
+            if (keys_active[KEY_LEFT])
+            {
+                player->physics.speed.x -= player->physics.acceleration.x;
+                running = true;
+
+                if (keys_active[KEY_SHIFT] && on_the_ground(player, level) && player->physics.speed.x <= 0.0f)
+                player->physics.speed.x -= player->physics.acceleration.x;
+
+                if (abs_float(player->physics.speed.x) > MAX_SPEED)
+                player->physics.speed.x = -MAX_SPEED;
+            }
+
+            if (keys_down[KEY_UP] || keys_down[KEY_SPACE]) // TODO: if active && ~pressed then lower the gravity
+            {
+                if (player->physics.speed.y == previous_speed.y) // on_the_ground
+                {
+                    jump(player);
+                }
+            }
+        }
+    }
+
+    if (player->alive && !(keys_active[KEY_DOWN] && player->type == PLAYER_BIG))
         animate_player(player, level, running, frame);
 
     // temporary friction simulation:
     if (frame % 3 == 0)
     {
-        player->physics.speed.x = (int)(player->physics.speed.x / 1.02f);
+        if (player->animation_frame < 14)
+            player->physics.speed.x /= 1.11f;
+        else
+            player->physics.speed.x /= 1.02f;
+
         if (abs_float(player->physics.speed.x) < 1)
         player->physics.speed.x = 0;
     }
@@ -81,20 +112,23 @@ void jump(Object* player)
 
 void crouch(Object* player)
 {
-    // TODO:
-    // 1. check if mario is big
-    // 2. change height and sprite
-    // 3. ???
-    // 4. profit
+    if (player->physics.speed.x == 0.0f)
+    {
+        if (player->animation_frame == 0)
+            player->animation_frame = 14;
+        else
+            player->animation_frame = 15;
+    }
+    else if (player->physics.speed.x > 0.0f)
+        player->animation_frame = 15;
+    else
+        player->animation_frame = 14;
 }
 
 void respawn_player(Object* player, int x, int y)
 {
     player->pos_x = x;
     player->pos_y = y;
-
-    player->physics.speed.x = 0;
-    player->physics.speed.x = 0;
 }
 
 void change_state(Object* player)
@@ -270,9 +304,9 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
                     {
                         player->animation_frame++;
 
-                        if (player->animation_frame >= 4)
+                        if (player->animation_frame >= 5)
                         {
-                            player->animation_frame = 1;
+                            player->animation_frame = 2;
                         }
                     }
                     else
@@ -326,6 +360,7 @@ void die(Object* player)
         if (player->type == PLAYER_BIG)
         {
             change_state(player);
+            player->counter = 120;
             if (player->hitbox.pos_y + 64 > DISPLAY_HEIGHT)
                 die(player);
         }
@@ -336,6 +371,8 @@ void die(Object* player)
             player->animation_frame = 14;
             terminate_velocity(player);
             player->physics.speed.y = -25.0f;
+            player->counter = 120;
+            lives--;
         }
     }
 }
