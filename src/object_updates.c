@@ -371,7 +371,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                 }
             }
 
-            if (object->pos_y > DISPLAY_HEIGHT)
+            if (object->hitbox.pos_y > DISPLAY_HEIGHT || object->hitbox.pos_x + object->hitbox.width < 0 || object->hitbox.pos_y + object->hitbox.height < 0 || object->hitbox.pos_x + object->hitbox.width > MAP_WIDTH * 64)
                 kill(object, i, objects);
         }
     }
