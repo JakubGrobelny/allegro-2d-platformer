@@ -408,7 +408,17 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                     if (dir_x != STATIC)
                     {
                         if (relative_direction(shell, object, dir_x))
-                            kill(object, i, list);
+                        {
+                            if (object->type == ENEMY_KOOPA)
+                                spawn_shell(object, list);
+
+                            if (object->type != KOOPA_SHELL)
+                                kill(object, i, list);
+                            else
+                            {
+                                object->physics.speed.x = shell->physics.speed.x + (dir_x == RIGHT ? 1.0f : -1.0f);
+                            }
+                        }
                         // break; <- i guess it can only colide with one object at a time so checking every single one of them is not necessary
                     }
                 }
