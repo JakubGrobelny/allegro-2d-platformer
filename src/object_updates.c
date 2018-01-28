@@ -30,20 +30,20 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
     int dir_y = STATIC;
 
     if (object->physics.speed.x > 0)
-    dir_x = RIGHT;
+        dir_x = RIGHT;
     else if (object->physics.speed.x < 0)
-    dir_x = LEFT;
+        dir_x = LEFT;
 
     if (object->physics.speed.y > 0)
-    dir_y = BOTTOM;
+        dir_y = BOTTOM;
     else if (object->physics.speed.y < 0)
-    dir_y = TOP;
+        dir_y = TOP;
 
     if (dir_y == dir_x) // static
-    return;
+        return;
 
-    int grid_height = abs_int((object->physics.speed.y / 64)) + 1;
-    int grid_width = abs_int((object->physics.speed.x / 64)) + 1;
+    int grid_height = abs_int((object->physics.speed.y / 64)) + 2;
+    int grid_width = abs_int((object->physics.speed.x / 64)) + 2;
 
     if (object->alive)
     {
@@ -485,7 +485,7 @@ void kill_enemies_above_block(Object* block, ObjectsList* list)
             kill(temp_obj, i, list);
             i--;
         }
-        else if (temp_obj->type == SIZE_MUSHROOM) // making the mushroom go opposite direction
+        else if (temp_obj->type == SIZE_MUSHROOM && collide(temp_hitbox, temp_obj->hitbox)) // making the mushroom go opposite direction
         {
             temp_obj->physics.speed.y += 2.5f * BUMP_AMOUNT;
             temp_obj->physics.speed.x *= -1;

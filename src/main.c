@@ -81,7 +81,7 @@ int main()
     player_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
     bind_bitmap(&player, player_bitmap);
     player_big_bitmap = al_create_bitmap(64, 128 * 17);
-    player_big_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
+    player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
 
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);

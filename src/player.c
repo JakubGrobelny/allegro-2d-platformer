@@ -13,7 +13,9 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     bool running = false;
 
     if (player->counter > 0)
+    {
         player->counter--;
+    }
 
     if (player->alive)
     {
@@ -102,6 +104,11 @@ void change_state(Object* player)
     {
         player->type = PLAYER_BIG;
         player->counter = 30;
+        bind_bitmap(player, player_big_bitmap);
+        player->height = 128;
+        player->hitbox.height = 127;
+        player->pos_y -= 64;
+        player->hitbox.pos_y -= 64;
         //TODO
         //TODO
         //TODO
@@ -113,7 +120,12 @@ void change_state(Object* player)
     else if (player->type == PLAYER_BIG)
     {
         player->type = PLAYER;
-
+        bind_bitmap(player, player_bitmap);
+        player->height = 64;
+        player->hitbox.height = 64;
+        player->pos_y += 64;
+        player->hitbox.pos_y -= 64;
+        player->counter = 30;
     }
 }
 
