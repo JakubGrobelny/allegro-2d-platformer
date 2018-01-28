@@ -54,7 +54,8 @@ int main()
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     Physics player_physics = create_physics(0.1f, 0.0f, 0.4f, 21, 1.0f);
     Physics goomba_physics = create_physics(3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
-    Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
+    Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 2.0f);
+    Physics flying_koopa_physics = create_physics(-3.0f, 0.0f, 3.0f, 13.0f, 0.5f);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
@@ -117,6 +118,11 @@ int main()
         bind_bitmap(&temp_enemy, enemy2);
         init_object(&temp_enemy, ENEMY_KOOPA, 21*64, 8*64-16, 96, 80, RECTANGLE, 21*64+16, 8*64-16, 64, 80, koopa_physics, 4);
         push_back_ol(&non_static_elements, temp_enemy);
+
+        init_object(&temp_enemy, ENEMY_KOOPA_FLYING, 21*64, 1*64-16, 96, 80, RECTANGLE, 21*64+16, 1*64-16, 64, 80, flying_koopa_physics, 4);
+        temp_enemy.animation_frame = 5;
+        push_back_ol(&non_static_elements, temp_enemy);
+
 
     Object temp_cloud;
         bind_bitmap(&temp_cloud, cloud);

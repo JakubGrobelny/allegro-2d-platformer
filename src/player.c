@@ -192,6 +192,8 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             {
                 if (object->type == ENEMY_KOOPA)
                     spawn_shell(object, list);
+                else if (object->type == ENEMY_KOOPA_FLYING)
+                    spawn_koopa(object, list);
 
                 if (object->type != KOOPA_SHELL)
                 {
@@ -214,7 +216,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             }
             else
             {
-                if (object->type != KOOPA_SHELL)
+                if (object->type != KOOPA_SHELL && !(object->type == ENEMY_KOOPA && object->counter > 0))
                 {
                     die(player);
                     object->physics.speed.x *= -1;

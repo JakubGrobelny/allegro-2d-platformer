@@ -157,7 +157,7 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
         object->physics.speed.y = 0;
 
         // SPECIAL OBJECT TYPES HANDLING
-        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA || object->type == KOOPA_SHELL || object->type == SIZE_MUSHROOM)
+        if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA || object->type == KOOPA_SHELL || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING)
         {
             if (collision_left)
             {
@@ -216,7 +216,7 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
 void kill(Object* object, int i, ObjectsList* list)
 {
-    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM)
+    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING)
         pop_element_ol(list, i);
     else
     {
@@ -248,12 +248,14 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
                     }
                 }
             }
-            else if (temp->type == ENEMY_KOOPA)
+            else if (temp->type == ENEMY_KOOPA || temp->type == ENEMY_KOOPA_FLYING)
             {
-                if (temp->physics.speed.x > 0 && temp->animation_frame < 2)
-                    temp->animation_frame = 2;
-                else if (temp->physics.speed.x < 0 && temp->animation_frame > 1)
-                    temp->animation_frame = 0;
+                int offset = temp->type == ENEMY_KOOPA_FLYING ? 5 : 0;
+
+                if (temp->physics.speed.x > 0 && temp->animation_frame < 2 + offset)
+                    temp->animation_frame = 2 + offset;
+                else if (temp->physics.speed.x < 0 && temp->animation_frame > 1 + offset)
+                    temp->animation_frame = 0 + offset;
 
                 if (frame % 12 == 0 && frame != 0)
                 {
@@ -261,15 +263,18 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
 
                     if (temp->physics.speed.x > 0)
                     {
-                        if (temp->animation_frame > 3)
-                            temp->animation_frame = 2;
+                        if (temp->animation_frame > 3 + offset)
+                            temp->animation_frame = 2 + offset;
                     }
                     else if (temp->physics.speed.x < 0)
                     {
-                        if (temp->animation_frame > 1)
-                            temp->animation_frame = 0;
+                        if (temp->animation_frame > 1 + offset)
+                            temp->animation_frame = 0 + offset;
                     }
                 }
+
+                if (offset)
+                    printf("Frame: %d\n", temp->animation_frame);
             }
         }
     }
@@ -324,7 +329,19 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                     kill(object, i, objects);
             }
 
+            if (object->type == ENEMY_KOOPA)
+            {
+                if (object->counter > 0)
+                    object->counter--;
+            }
+
             apply_vectors(object, level, objects);
+
+            if (object->type == ENEMY_KOOPA_FLYING)
+            {
+                if (object->physics.speed.y >= object->physics.acceleration.y)
+                    object->physics.speed.y = -object->physics.acceleration.y;
+            }
 
             if (object->type == KOOPA_SHELL)
                 check_for_shell_collisions(i, objects);
@@ -401,6 +418,23 @@ void spawn_shell(Object* enemy, ObjectsList* list)
     new_shell.animation_frame = 4;
 
     push_back_ol(list, new_shell);
+}
+
+void spawn_koopa(Object* enemy, ObjectsList* list)
+{
+    Object new_koopa = *enemy;
+    Physics koopa_physics = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 2.0f);
+    new_koopa.physics = koopa_physics;
+    new_koopa.type = ENEMY_KOOPA;
+
+    if (enemy->animation_frame > 6)
+        new_koopa.animation_frame = 2;
+    else
+        new_koopa.animation_frame = 0;
+
+    new_koopa.counter = 46;
+
+    push_back_ol(list, new_koopa);
 }
 
 void bump_block(Object* block, ObjectsList* list)

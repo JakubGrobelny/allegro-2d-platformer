@@ -33,8 +33,11 @@ void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Obje
 // kills an object :( (literally)
 void kill(Object* object, int i, ObjectsList* list);
 
-// spawns a shell after a kooppa enemy die
+// spawns a shell after a koopa enemy die
 void spawn_shell(Object* enemy, ObjectsList* list);
+
+// spawns a koopa enemy when flying one is killed
+void spawn_koopa(Object* enemy, ObjectsList* list);
 
 // goes through the objects list to check whether the shell has collided with something and handles the collision
 void check_for_shell_collisions(int shell_index, ObjectsList* list);
