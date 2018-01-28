@@ -103,19 +103,11 @@ void change_state(Object* player)
     if (player->type == PLAYER)
     {
         player->type = PLAYER_BIG;
-        player->counter = 30;
         bind_bitmap(player, player_big_bitmap);
         player->height = 128;
         player->hitbox.height = 127;
         player->pos_y -= 64;
         player->hitbox.pos_y -= 64;
-        //TODO
-        //TODO
-        //TODO
-        //TODO add animation that makes player flash for 30 frames
-        //TODO
-        //TODO and play sound :v
-        //TODO
     }
     else if (player->type == PLAYER_BIG)
     {
@@ -125,7 +117,6 @@ void change_state(Object* player)
         player->hitbox.height = 64;
         player->pos_y += 64;
         player->hitbox.pos_y -= 64;
-        player->counter = 30;
     }
 }
 
@@ -179,12 +170,10 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             }
             else
             {
-
                 if (object->type != KOOPA_SHELL)
                 {
                     die(player);
                     object->physics.speed.x *= -1;
-
                 }
                 else
                 {
@@ -334,9 +323,11 @@ void die(Object* player)
 
     if (player->alive)
     {
-        if (player->type == PLAYER_BIG && player->hitbox.pos_y <= DISPLAY_HEIGHT)
+        if (player->type == PLAYER_BIG)
         {
             change_state(player);
+            if (player->hitbox.pos_y + 64 > DISPLAY_HEIGHT)
+                die(player);
         }
         else
         {
