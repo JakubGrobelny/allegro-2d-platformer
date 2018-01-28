@@ -41,12 +41,22 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         if ((keys_active[KEY_DOWN] || keys_active[KEY_CTRL]) && player->type == PLAYER_BIG) // TODO: or KEY_LCTRL
         {
             crouch(player);
+
+            if (player->hitbox.height == 128)
+            {
+                player->hitbox.height -= 38;
+                player->hitbox.pos_y += 38;
+            }
         }
         else
         {
             if (player->type == PLAYER_BIG)
             {
-
+                if (player->hitbox.height < 128)
+                {
+                    player->hitbox.height = 128;
+                    player->hitbox.pos_y -= 38;
+                }
             }
 
             if (keys_active[KEY_RIGHT])
