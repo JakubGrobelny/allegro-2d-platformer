@@ -179,13 +179,22 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 kill(object, i, list);
                 size--;
 
-                // TODO growth animation
-                //
                 if (player->type == PLAYER)
                     change_state(player);
                 else
                     lives++;
                 continue;
+            }
+
+            if (object->type == ENEMY_PIRANHA_PLANT)
+            {
+                if (object->animation_frame > 1)
+                {
+                    die(player);
+                    player->physics.speed.y = -15.0f;
+
+                    return;
+                }
             }
 
             if (player->physics.speed.y > 0 && relative_direction(player, object, BOTTOM))
@@ -195,7 +204,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 else if (object->type == ENEMY_KOOPA_FLYING)
                     spawn_koopa(object, list);
 
-                if (object->type != KOOPA_SHELL)
+                if (object->type != KOOPA_SHELL && object->type != ENEMY_PIRANHA_PLANT)
                 {
                     kill(object, i, list);
                     size--;
@@ -211,15 +220,23 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                     }
                 }
 
-                player->physics.speed.y = -15;
+                if (object->type != ENEMY_PIRANHA_PLANT)
+                    player->physics.speed.y = -15;
 
             }
-            else
+            else // touching while going sideways
             {
-                if (object->type != KOOPA_SHELL && !(object->type == ENEMY_KOOPA && object->counter > 0 ))
+                if (object->type != KOOPA_SHELL && !(object->type == ENEMY_KOOPA && object->counter > 0))
                 {
-                    if (!player->counter)
+                    if (!player->counter && !(object->type == ENEMY_PIRANHA_PLANT && object->animation_frame <= 1))
+                    {
                         die(player);
+
+                        if (object->type == ENEMY_PIRANHA_PLANT) // at this point i am unable to say if this condition is even possible
+                            player->physics.speed.y = - 15.0f;
+
+                        return;
+                    }
                     object->physics.speed.x *= -1;
                 }
                 else
@@ -261,23 +278,15 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
         if (player->physics.speed.y < 0)
         {
             if (player->physics.speed.x < 0)
-            {
                 player->animation_frame = 5;
-            }
             else if (player->physics.speed.x > 0)
-            {
                 player->animation_frame = 12;
-            }
             else
             {
                 if (player->animation_frame > 6)
-                {
                     player->animation_frame = 12;
-                }
                 else
-                {
                     player->animation_frame = 5;
-                }
             }
         }
         // on the ground
@@ -287,13 +296,9 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
             if (player->physics.speed.x == 0 || !running)
             {
                 if (player->animation_frame > 6)
-                {
                     player->animation_frame = 7;
-                }
                 else
-                {
                     player->animation_frame = 0;
-                }
             }
             // running
             else
@@ -303,13 +308,9 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
                 {
                     // start running to the left/right
                     if (player->physics.speed.x < 0)
-                    {
                         player->animation_frame = 1;
-                    }
                     else
-                    {
                         player->animation_frame = 8;
-                    }
                 }
                 // if was running
                 else if (running && !(frame % 5) && frame)// && !(frame % ((abs_int((int)(player->physics.speed.x / MAX_SPEED)))))) // frame * player->physics.speed.x / MAX_SPEED
@@ -319,23 +320,17 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
                         player->animation_frame++;
 
                         if (player->animation_frame >= 5)
-                        {
                             player->animation_frame = 2;
-                        }
                     }
                     else
                     {
                         player->animation_frame++;
 
                         if (player->animation_frame < 9)
-                        {
                             player->animation_frame = 9;
-                        }
 
                         if (player->animation_frame >= 11)
-                        {
                             player->animation_frame = 9;
-                        }
                     }
                 }
             }
@@ -344,23 +339,15 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
         else
         {
             if (player->physics.speed.x < 0)
-            {
                 player->animation_frame = 6;
-            }
             else if (player->physics.speed.x > 0)
-            {
                 player->animation_frame = 13;
-            }
             else
             {
                 if (player->animation_frame > 6)
-                {
                     player->animation_frame = 13;
-                }
                 else
-                {
                     player->animation_frame = 6;
-                }
             }
         }
 }
@@ -374,7 +361,7 @@ void die(Object* player)
         if (player->type == PLAYER_BIG)
         {
             change_state(player);
-            player->counter = 45;
+            player->counter = 50;
             if (player->hitbox.pos_y + 64 > DISPLAY_HEIGHT)
                 die(player);
         }

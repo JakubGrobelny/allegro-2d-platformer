@@ -80,9 +80,9 @@ int main()
     // bitmaps
     player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
     player_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
-    bind_bitmap(&player, player_bitmap);
     player_big_bitmap = al_create_bitmap(64, 128 * 17);
     player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
+    bind_bitmap(&player, player_bitmap);
 
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
@@ -211,6 +211,11 @@ int main()
         bind_bitmap(&temp_brick, pipe_right);
         init_object(&temp_brick, UNBREAKABLE_BLOCK, 29*64, 9*64, 64, 64, RECTANGLE, 29*64, 9*64, 64, 64, static_physics, 1);
         level[9][29] = temp_brick;
+
+        bind_bitmap(&temp_enemy, flower);
+        init_object(&temp_enemy, ENEMY_PIRANHA_PLANT, 28*64, 6*64, 128, 128, RECTANGLE, 28*64 + 32, 6*64 + 48, 64, 128-48, static_physics, 4);
+        temp_enemy.animation_frame = 2;
+        push_back_ol(&non_static_elements, temp_enemy);
 
     // screen offset to the right
     int screen_offset = 0;

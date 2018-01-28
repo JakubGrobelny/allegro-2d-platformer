@@ -287,6 +287,27 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
                     }
                 }
             }
+            else if (temp->type == ENEMY_PIRANHA_PLANT)
+            {
+                if (frame % 6 == 1)
+                {
+                    if (temp->counter < 240)
+                    {
+                        temp->animation_frame = 0;
+                    }
+                    else if (temp->counter < 247 || temp->counter > 353)
+                    {
+                        temp->animation_frame = 1;
+                    }
+                    else
+                    {
+                        temp->animation_frame++;
+
+                        if (temp->animation_frame > 3)
+                            temp->animation_frame = 2;
+                    }
+                }
+            }
         }
     }
 }
@@ -339,8 +360,14 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                 else
                     kill(object, i, objects);
             }
-
-            if (object->type == ENEMY_KOOPA)
+            else if (object->type == ENEMY_PIRANHA_PLANT)
+            {
+                object->counter++;
+                // (0; 240) - hidden, (240, 360) - outside
+                if (object->counter == 360)
+                    object->counter = 0;
+            }
+            else if (object->type == ENEMY_KOOPA)
             {
                 if (object->counter > 0)
                     object->counter--;
@@ -368,14 +395,19 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                         {
                             if (collide(object->hitbox, temp->hitbox))
                             {
-                                Hitbox temp_bottom = object->hitbox;
-                                temp_bottom.height -= (object->hitbox.height - 1);
-                                temp_bottom.pos_y += (object->hitbox.height - 1);
+                                if (object->type != ENEMY_PIRANHA_PLANT)
+                                {
+                                    Hitbox temp_bottom = object->hitbox;
+                                    temp_bottom.height -= (object->hitbox.height - 1);
+                                    temp_bottom.pos_y += (object->hitbox.height - 1);
 
-                                if (temp_bottom.pos_y + temp_bottom.height < temp->hitbox.pos_y + (temp->hitbox.height) / 2)
+                                    if (temp_bottom.pos_y + temp_bottom.height < temp->hitbox.pos_y + (temp->hitbox.height) / 2)
                                     object->physics.speed.y = -10.0f;
-                                else
+                                    else
                                     object->physics.speed.x *= -1;
+                                }
+                                else if (object->animation_frame > 1)
+                                    kill(temp, i, objects);
                             }
                         }
                     }
@@ -412,11 +444,11 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                             if (object->type == ENEMY_KOOPA)
                                 spawn_shell(object, list);
 
-                            if (object->type != KOOPA_SHELL)
+                            if (object->type != KOOPA_SHELL && !(object->type == ENEMY_PIRANHA_PLANT && object->animation_frame == 0))
                                 kill(object, i, list);
                             else
                             {
-                                object->physics.speed.x = shell->physics.speed.x + (dir_x == RIGHT ? 1.0f : -1.0f);
+                                object->physics.speed.x = shell->physics.speed.x + (dir_x == RIGHT ? 2.5f : -2.5f);
                             }
                         }
                         // break; <- i guess it can only colide with one object at a time so checking every single one of them is not necessary
