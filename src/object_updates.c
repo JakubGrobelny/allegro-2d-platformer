@@ -173,21 +173,35 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
 
 void handle_being_stuck(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], int previous_pos_x, int previous_pos_y)
 {
-    if (level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
+    int y = object->hitbox.pos_y / 64 + 1;
+    int x = object->hitbox.pos_x / 64;
+
+    if (y < 0 || y > MAP_HEIGHT)
+        return;
+
+    if (x >= 0 && x < MAP_WIDTH)
     {
-        Object* temp = &level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64];
+        if (level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64].type != EMPTY && previous_pos_y == object->pos_y && previous_pos_x == object->pos_x)
+        {
+            Object* temp = &level[object->hitbox.pos_y / 64 + 1][object->hitbox.pos_x / 64];
 
-        if (temp->hitbox.pos_y < object->hitbox.pos_y + object->hitbox.height)
+            if (temp->hitbox.pos_y < object->hitbox.pos_y + object->hitbox.height)
             object->pos_y += (temp->hitbox.pos_y - (object->pos_y + object->height));
+        }
     }
-    if (level[object->hitbox.pos_y / 64 + 1][(object->hitbox.pos_x + object->hitbox.width) / 64].type != EMPTY && previous_pos_y == object->hitbox.pos_y && previous_pos_x == object->pos_x) // TODO: merge it with the if statement above
+
+    x += object->hitbox.width;
+
+    if (x >= 0 && x < MAP_WIDTH)
     {
-        Object* temp = &level[object->hitbox.pos_y / 64 + 1][(object->hitbox.pos_x + object->hitbox.width) / 64];
+        if (level[object->hitbox.pos_y / 64 + 1][(object->hitbox.pos_x + object->hitbox.width) / 64].type != EMPTY && previous_pos_y == object->hitbox.pos_y && previous_pos_x == object->pos_x) // TODO: merge it with the if statement above
+        {
+            Object* temp = &level[object->hitbox.pos_y / 64 + 1][(object->hitbox.pos_x + object->hitbox.width) / 64];
 
-        if (temp->hitbox.pos_y < object->hitbox.pos_y + object->hitbox.height)
+            if (temp->hitbox.pos_y < object->hitbox.pos_y + object->hitbox.height)
             object->pos_y += (temp->hitbox.pos_y - (object->pos_y + object->height));
+        }
     }
-
 }
 
 void apply_gravity(Object* object)
@@ -272,9 +286,6 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
                             temp->animation_frame = 0 + offset;
                     }
                 }
-
-                if (offset)
-                    printf("Frame: %d\n", temp->animation_frame);
             }
         }
     }
@@ -504,8 +515,6 @@ void spawn_coin(Object* block, ObjectsList* list)
         block->frames_number = 1;
         block->type = UNBREAKABLE_BLOCK;
     }
-
-    printf("Coins: %d\n", coins);
 }
 
 void kill_enemies_above_block(Object* block, ObjectsList* list)
