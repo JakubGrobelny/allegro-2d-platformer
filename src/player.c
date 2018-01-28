@@ -216,9 +216,10 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             }
             else
             {
-                if (object->type != KOOPA_SHELL && !(object->type == ENEMY_KOOPA && object->counter > 0))
+                if (object->type != KOOPA_SHELL && !(object->type == ENEMY_KOOPA && object->counter > 0 ))
                 {
-                    die(player);
+                    if (!player->counter)
+                        die(player);
                     object->physics.speed.x *= -1;
                 }
                 else
@@ -231,7 +232,8 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                         {
                             if (relative_direction(object, player, dir_x))
                             {
-                                die(player);
+                                if (!player->counter)
+                                    die(player);
                                 object->physics.speed.x *= -1;
                             }
                             else
@@ -372,7 +374,7 @@ void die(Object* player)
         if (player->type == PLAYER_BIG)
         {
             change_state(player);
-            player->counter = 120;
+            player->counter = 45;
             if (player->hitbox.pos_y + 64 > DISPLAY_HEIGHT)
                 die(player);
         }

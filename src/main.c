@@ -91,6 +91,11 @@ int main()
     ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*3);
     ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*7);
+    ALLEGRO_BITMAP* flower = al_create_bitmap(128, 128 * 4);
+    ALLEGRO_BITMAP* pipe_top_left = al_create_bitmap(64, 64);
+    ALLEGRO_BITMAP* pipe_top_right = al_create_bitmap(64, 64);
+    ALLEGRO_BITMAP* pipe_left = al_create_bitmap(64, 64);
+    ALLEGRO_BITMAP* pipe_right = al_create_bitmap(64, 64);
 
     brick = al_load_bitmap("./resources/textures/brick_orange.png");
     brick2 = al_load_bitmap("./resources/textures/brick_orange_unbreakable.png");
@@ -99,6 +104,12 @@ int main()
     cloud = al_load_bitmap("./resources/textures/cloud.png");
     enemy1 = al_load_bitmap("./resources/textures/enemy_1.png");
     enemy2 = al_load_bitmap("./resources/textures/enemy_2.png");
+    flower = al_load_bitmap("./resources/textures/flower.png");
+    pipe_top_left = al_load_bitmap("./resources/textures/pipe_top_left.png");
+    pipe_top_right = al_load_bitmap("./resources/textures/pipe_top_right.png");
+    pipe_left = al_load_bitmap("./resources/textures/pipe_left.png");
+    pipe_right = al_load_bitmap("./resources/textures/pipe_right.png");
+
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
@@ -157,7 +168,7 @@ int main()
         }
 
         bind_bitmap(&temp_brick, brick3);
-        for (int i = 6; i < 26; i++)
+        for (int i = 6; i < 32; i++)
         {
             if (i != 15 && i != 25)
             {
@@ -185,6 +196,21 @@ int main()
             }
         }
 
+        bind_bitmap(&temp_brick, pipe_top_left);
+        init_object(&temp_brick, UNBREAKABLE_BLOCK, 28*64, 8*64, 64, 64, RECTANGLE, 28*64, 8*64, 64, 64, static_physics, 1);
+        level[8][28] = temp_brick;
+
+        bind_bitmap(&temp_brick, pipe_top_right);
+        init_object(&temp_brick, UNBREAKABLE_BLOCK, 29*64, 8*64, 64, 64, RECTANGLE, 29*64, 8*64, 64, 64, static_physics, 1);
+        level[8][29] = temp_brick;
+
+        bind_bitmap(&temp_brick, pipe_left);
+        init_object(&temp_brick, UNBREAKABLE_BLOCK, 28*64, 9*64, 64, 64, RECTANGLE, 28*64, 9*64, 64, 64, static_physics, 1);
+        level[9][28] = temp_brick;
+
+        bind_bitmap(&temp_brick, pipe_right);
+        init_object(&temp_brick, UNBREAKABLE_BLOCK, 29*64, 9*64, 64, 64, RECTANGLE, 29*64, 9*64, 64, 64, static_physics, 1);
+        level[9][29] = temp_brick;
 
     // screen offset to the right
     int screen_offset = 0;
