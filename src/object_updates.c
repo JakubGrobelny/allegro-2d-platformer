@@ -339,7 +339,16 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                         if (temp->type != PARTICLE_NORMAL && temp->alive)
                         {
                             if (collide(object->hitbox, temp->hitbox))
-                                object->physics.speed.x *= -1;
+                            {
+                                Hitbox temp_bottom = object->hitbox;
+                                temp_bottom.height -= (object->hitbox.height - 1);
+                                temp_bottom.pos_y += (object->hitbox.height - 1);
+
+                                if (temp_bottom.pos_y + temp_bottom.height < temp->hitbox.pos_y + (temp->hitbox.height) / 2)
+                                    object->physics.speed.y = -10.0f;
+                                else
+                                    object->physics.speed.x *= -1;
+                            }
                         }
                     }
                 }
