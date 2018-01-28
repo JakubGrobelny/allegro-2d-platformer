@@ -33,5 +33,6 @@
 #define BUMP_AMOUNT -5.0f
 #define START_X 230 - 64
 #define START_Y 6 * 64
+#define BULLET_FREQUENCY 420
 
 #endif

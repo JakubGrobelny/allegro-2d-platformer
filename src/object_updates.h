@@ -28,7 +28,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 void animate_non_static_objects(ObjectsList* objects, int frame, Object* player);
 
 // updating static objects' animations
-void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Object* player);
+void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Object* player, ObjectsList* list);
 
 // kills an object :( (literally)
 void kill(Object* object, int i, ObjectsList* list);
@@ -44,6 +44,9 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list);
 
 // add some y velocity to the block that was hit by the player
 void bump_block(Object* block, ObjectsList* list);
+
+// launches a bullet from a cannon
+void fire_from_cannon(Object* cannon, ObjectsList* list);
 
 // spawn mushroom from a secret block
 void spawn_mushroom(Object* block, ObjectsList* list);

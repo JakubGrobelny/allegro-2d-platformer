@@ -234,10 +234,20 @@ void kill(Object* object, int i, ObjectsList* list)
         pop_element_ol(list, i);
     else
     {
+        float previous_speed = object->physics.speed.x; // just for bullets
+        int previous_type = object->type;
         Physics dead_enemy_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 1.0f);
         init_object(object, PARTICLE_NORMAL, object->pos_x, object->pos_y, object->width, object->height, RECTANGLE, object->hitbox.pos_x, object->hitbox.pos_y, object->hitbox.width, object->hitbox.height, dead_enemy_physics, object->frames_number);
-        object->animation_frame = object->frames_number;
-        object->counter = 30;
+        if (previous_type != BULLET)
+        {
+            object->animation_frame = object->frames_number;
+            object->counter = 120;
+        }
+        else
+        {
+            object->animation_frame = previous_speed > 0.0f ? 2 : 3;
+            object->counter = 30;
+        }
         object->alive = false;
     }
 }
@@ -312,7 +322,7 @@ void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
     }
 }
 
-void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Object* player)
+void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Object* player, ObjectsList* list)
 {
     for (int height = 0; height < MAP_HEIGHT; height++)
     {
@@ -320,6 +330,12 @@ void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Obje
         {
             if (width >= 0 && width < MAP_WIDTH)
             {
+                if (level[height][width].type == CANNON_LEFT || level[height][width].type == CANNON_RIGHT)
+                {
+                    fire_from_cannon(&level[height][width], list);
+                    continue;
+                }
+
                 if (level[height][width].frames_number > 1 && (frame % 30 == 0) && frame != 0)
                 {
                     level[height][width].animation_frame++;
@@ -358,7 +374,10 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                 if (object->counter > 0)
                     object->counter--;
                 else
+                {
                     kill(object, i, objects);
+                    i--;
+                }
             }
             else if (object->type == ENEMY_PIRANHA_PLANT)
             {
@@ -373,7 +392,13 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                     object->counter--;
             }
 
-            apply_vectors(object, level, objects);
+            if (object->type != BULLET)
+                apply_vectors(object, level, objects);
+            else
+            {
+                object->pos_x += object->physics.speed.x;
+                object->hitbox.pos_x += object->physics.speed.x;
+            }
 
             if (object->type == ENEMY_KOOPA_FLYING)
             {
@@ -395,19 +420,31 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                         {
                             if (collide(object->hitbox, temp->hitbox))
                             {
-                                if (object->type != ENEMY_PIRANHA_PLANT)
+                                if (object->type != ENEMY_PIRANHA_PLANT && object->type != BULLET)
                                 {
                                     Hitbox temp_bottom = object->hitbox;
                                     temp_bottom.height -= (object->hitbox.height - 1);
                                     temp_bottom.pos_y += (object->hitbox.height - 1);
 
                                     if (temp_bottom.pos_y + temp_bottom.height < temp->hitbox.pos_y + (temp->hitbox.height) / 2)
-                                    object->physics.speed.y = -10.0f;
+                                        object->physics.speed.y = -10.0f;
                                     else
-                                    object->physics.speed.x *= -1;
+                                        object->physics.speed.x *= -1;
                                 }
-                                else if (object->animation_frame > 1)
-                                    kill(temp, i, objects);
+                                else if (object->animation_frame > 1 || object->type == BULLET)
+                                {
+                                    if (temp->type == ENEMY_KOOPA_FLYING)
+                                        spawn_koopa(temp, objects);
+                                    else if (temp->type == ENEMY_KOOPA)
+                                        spawn_shell(temp, objects);
+
+                                    kill(temp, e, objects);
+                                    if (e < i)
+                                        i--;
+                                    kill(object, i, objects);
+
+                                    break;
+                                }
                             }
                         }
                     }
@@ -457,6 +494,29 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
             }
         }
     }
+}
+
+void fire_from_cannon(Object* cannon, ObjectsList* list)
+{
+    if (cannon->counter == 0)
+    {
+        Object new_bullet;
+        bind_bitmap(&new_bullet, cannon->bitmap);
+
+        Physics bullet_physics = create_physics(cannon->type == CANNON_LEFT ? -5.0f : 5.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+        if (cannon->type == CANNON_LEFT)
+            init_object(&new_bullet, BULLET, cannon->pos_x - (64 - 16), cannon->pos_y, 64, 64, RECTANGLE, cannon->pos_x - (64 - 16), cannon->pos_y + 11, 48, 42, bullet_physics, 1);
+        else
+            init_object(&new_bullet, BULLET, cannon->pos_x + 64, cannon->pos_y, 64, 64, RECTANGLE, cannon->pos_x + 64 + 16, cannon->pos_y + 11, 48, 42, bullet_physics, 1);
+
+        new_bullet.animation_frame = cannon->type == CANNON_LEFT ? 3 : 2;
+        push_back_ol(list, new_bullet);
+
+        cannon->counter = BULLET_FREQUENCY;
+    }
+    else
+        cannon->counter--;
 }
 
 void spawn_shell(Object* enemy, ObjectsList* list)

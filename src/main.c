@@ -96,6 +96,7 @@ int main()
     ALLEGRO_BITMAP* pipe_top_right = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* pipe_left = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* pipe_right = al_create_bitmap(64, 64);
+    ALLEGRO_BITMAP* cannon = al_create_bitmap(64, 256);
 
     brick = al_load_bitmap("./resources/textures/brick_orange.png");
     brick2 = al_load_bitmap("./resources/textures/brick_orange_unbreakable.png");
@@ -109,7 +110,7 @@ int main()
     pipe_top_right = al_load_bitmap("./resources/textures/pipe_top_right.png");
     pipe_left = al_load_bitmap("./resources/textures/pipe_left.png");
     pipe_right = al_load_bitmap("./resources/textures/pipe_right.png");
-
+    cannon = al_load_bitmap("./resources/textures/cannon.png");
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
@@ -168,7 +169,7 @@ int main()
         }
 
         bind_bitmap(&temp_brick, brick3);
-        for (int i = 6; i < 32; i++)
+        for (int i = 6; i < 41; i++)
         {
             if (i != 15 && i != 25)
             {
@@ -196,6 +197,19 @@ int main()
             }
         }
 
+        bind_bitmap(&temp_brick, brick2);
+        for (int i = 40; i >= 35; i--)
+        {
+            for (int e = 9; e >= 45 - i; e--)
+            {
+                if (e >= 6)
+                {
+                    init_object(&temp_brick, UNBREAKABLE_BLOCK, i*64, e*64, 64, 64, RECTANGLE, i*64, e*64, 64, 64, static_physics, 1);
+                    level[e][i] = temp_brick;
+                }
+            }
+        }
+
         bind_bitmap(&temp_brick, pipe_top_left);
         init_object(&temp_brick, UNBREAKABLE_BLOCK, 28*64, 8*64, 64, 64, RECTANGLE, 28*64, 8*64, 64, 64, static_physics, 1);
         level[8][28] = temp_brick;
@@ -216,6 +230,10 @@ int main()
         init_object(&temp_enemy, ENEMY_PIRANHA_PLANT, 28*64, 6*64, 128, 128, RECTANGLE, 28*64 + 32, 6*64 + 48, 64, 128-48, static_physics, 4);
         temp_enemy.animation_frame = 2;
         push_back_ol(&non_static_elements, temp_enemy);
+
+        bind_bitmap(&temp_brick, cannon);
+        init_object(&temp_brick, CANNON_LEFT, 40*64, 4*64, 64, 128, RECTANGLE, 40*64, 4*64, 64, 128, static_physics, 1);
+        level[4][40] = temp_brick;
 
     // screen offset to the right
     int screen_offset = 0;
@@ -248,7 +266,7 @@ int main()
             animate_non_static_objects(&non_static_elements, frame, &player);
             update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
-            animate_static_objects(level, frame, &player);
+            animate_static_objects(level, frame, &player, &non_static_elements);
 
             if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
             {

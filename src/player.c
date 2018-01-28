@@ -152,6 +152,8 @@ void change_state(Object* player)
         player->hitbox.height = 127;
         player->pos_y -= 64;
         player->hitbox.pos_y -= 64;
+        player->physics.mass = 1.0f;
+        player->physics.acceleration.x = 0.4f;
     }
     else if (player->type == PLAYER_BIG)
     {
@@ -161,6 +163,8 @@ void change_state(Object* player)
         player->hitbox.height = 64;
         player->pos_y += 64;
         player->hitbox.pos_y -= 64;
+        player->physics.mass = 0.9f;
+        player->physics.acceleration.x = 0.47f;
     }
 }
 
