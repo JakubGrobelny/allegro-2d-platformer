@@ -78,8 +78,10 @@ int main()
 
     // bitmaps
     player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
-    player_bitmap = al_load_bitmap("./resources/mario_small.png");
+    player_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
     bind_bitmap(&player, player_bitmap);
+    player_big_bitmap = al_create_bitmap(64, 128 * 17);
+    player_big_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
 
     ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
     ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
@@ -89,13 +91,13 @@ int main()
     ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*3);
     ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*5);
 
-    brick = al_load_bitmap("./resources/brick_orange.png");
-    brick2 = al_load_bitmap("./resources/brick_orange_unbreakable.png");
-    brick3 = al_load_bitmap("./resources/orange_rock.png");
-    secret_brick = al_load_bitmap("./resources/secret_brick.png");
-    cloud = al_load_bitmap("./resources/cloud.png");
-    enemy1 = al_load_bitmap("./resources/enemy_1.png");
-    enemy2 = al_load_bitmap("./resources/enemy_2.png");
+    brick = al_load_bitmap("./resources/textures/brick_orange.png");
+    brick2 = al_load_bitmap("./resources/textures/brick_orange_unbreakable.png");
+    brick3 = al_load_bitmap("./resources/textures/orange_rock.png");
+    secret_brick = al_load_bitmap("./resources/textures/secret_brick.png");
+    cloud = al_load_bitmap("./resources/textures/cloud.png");
+    enemy1 = al_load_bitmap("./resources/textures/enemy_1.png");
+    enemy2 = al_load_bitmap("./resources/textures/enemy_2.png");
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
