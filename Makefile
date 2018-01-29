@@ -1,4 +1,3 @@
-# TODO: pkg-config
 CC = gcc
 LDFLAGS = -L/usr/lib -lallegro -lallegro_image -lallegro_dialog -lallegro_primitives -lallegro_font -lallegro_ttf -g
 INCLUDE = `pkg-config --cflags --libs allegro-5`
@@ -11,7 +10,7 @@ MAIN = game
 
 .PHONY: depend clean
 all:	$(MAIN)
-	@echo Projekt został skompilowany
+	@echo Compilation finished.
 $(MAIN): $(OBJS)
 	$(CC) $(INCLUDE) -o $(MAIN) $(OBJS) $(LDFLAGS) $(LIBS)
 .c.o:
@@ -19,11 +18,3 @@ $(MAIN): $(OBJS)
 clean:
 	$(RM) src/*.o *~ $(MAIN)
 	$(RM) log $(MAIN)
-
-#ciagle myle sie i wpisuje clear wiec niech bedzie tez clear
-clear:
-	$(RM) src/*.o *~ $(MAIN)
-	$(RM) log $(MAIN)
-
-depend: $(SRCS)
-	makedepend $(INCLUDE) $^

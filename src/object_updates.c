@@ -230,7 +230,7 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
 void kill(Object* object, int i, ObjectsList* list)
 {
-    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING)
+    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL)
         pop_element_ol(list, i);
     else
     {
@@ -482,7 +482,15 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                                 spawn_shell(object, list);
 
                             if (object->type != KOOPA_SHELL && !(object->type == ENEMY_PIRANHA_PLANT && object->animation_frame == 0))
+                            {
                                 kill(object, i, list);
+
+                                if (i < shell_index)
+                                {
+                                    shell_index--;
+                                    i--;
+                                }
+                            }
                             else
                             {
                                 object->physics.speed.x = shell->physics.speed.x + (dir_x == RIGHT ? 2.5f : -2.5f);

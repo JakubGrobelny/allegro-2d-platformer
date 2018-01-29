@@ -343,7 +343,7 @@ int main()
             for (int i = 0; i < non_static_elements.size; i++)
             {
                 draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+                draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             // PLAYER
