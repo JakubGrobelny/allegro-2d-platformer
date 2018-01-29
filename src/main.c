@@ -263,6 +263,7 @@ int main()
 
     // game's loop
     int frame = 0;
+    bool menu = false;
 
     while(true)
     {
@@ -272,26 +273,40 @@ int main()
         // if the timer has generated an event it's time to update the game's logics
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
-            frame++;
-            if (frame > 60)
+            if (!menu)
+            {
+                frame++;
+                if (frame > 60)
                 frame = 0;
 
-            update_non_static_objects(&non_static_elements, level, &player);
-            animate_non_static_objects(&non_static_elements, frame, &player);
-            update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
-            reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
-            animate_static_objects(level, frame, &player, &non_static_elements);
+                update_non_static_objects(&non_static_elements, level, &player);
+                animate_non_static_objects(&non_static_elements, frame, &player);
+                update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
+                reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
+                animate_static_objects(level, frame, &player, &non_static_elements);
 
-            if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
+                if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
+                {
+                    screen_offset -= DISPLAY_WIDTH / 2 + screen_offset - player.hitbox.pos_x;
+                }
+            }
+            else
             {
-                screen_offset -= DISPLAY_WIDTH / 2 + screen_offset - player.hitbox.pos_x;
+                
             }
 
             redraw = true;
         }
         // closing the window
-        else if(event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE || event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+        else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             break;
+        else if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ESCAPE)
+        {
+            if (menu)
+                menu = false;
+            else
+                menu = true;
+        }
 
         // updating the keyboard
 

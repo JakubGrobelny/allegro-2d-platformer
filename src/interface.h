@@ -3,6 +3,7 @@
 #include <allegro5/allegro_image.h>
 #include <stdio.h>
 #include <string.h>
+#include <stdbool.h>
 
 #include "string.h"
 #include "defines.h"
@@ -32,6 +33,14 @@ typedef enum
 
 } Alignments;
 
+typedef struct Button
+{
+    int pos_x;
+    int pos_y;
+    int width;
+    
+} Button;
+
 // initializes interface (whatever that means)
 void init_interface();
 
@@ -43,5 +52,11 @@ void load_font(char* path);
 
 // prints text to the screen
 void draw_text(int x, int y, int alignment, String* text); // TODO: add font choice
+
+// draws buttons and stuff
+void draw_menu();
+
+// updates menu based on mouse/keyboard input
+void update_menu(bool* paused);
 
 #endif
