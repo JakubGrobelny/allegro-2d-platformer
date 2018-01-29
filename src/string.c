@@ -8,8 +8,32 @@ void init_string(String* string, int initial_capacity)
     string->str[0] = '\0';
 }
 
+void set_string(String* string, char* text)
+{
+    int length = 0;
+    string->size = 0;
+
+    while(text[length] != '\0')
+        length++;
+
+    if (string->capacity <= length)
+    {
+        string->capacity = length + 1;
+        string->str = realloc(string->str, sizeof(char) * string->capacity);
+    }
+
+    for (int i = 0; i < length; i++)
+        string->str[i] = text[i];
+    string->str[length] = '\0';
+
+    string->size = length;
+    printf("%s\n", string->str);
+}
+
 void int_to_string(String* output, int input)
 {
+    init_string(output, 1);
+
     output->size = 0;
 
     while (input > 0)

@@ -1,7 +1,9 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <stdio.h>
+#include <string.h>
 
+#include "string.h"
 
 #ifndef _INTERFACE
 #define _INTERFACE
@@ -22,6 +24,6 @@ typedef enum
 void load_font(char* path);
 
 // prints text to the screen
-void draw_text(int x, int y, int alignment, char* text);
+void draw_text(int x, int y, int alignment, String* text);
 
 #endif

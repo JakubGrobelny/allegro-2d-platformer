@@ -2,6 +2,7 @@
 #define _STRING
 
 #include <stdlib.h>
+#include <stdio.h>
 
 typedef struct String
 {
@@ -13,6 +14,9 @@ typedef struct String
 
 // initializes new string
 void init_string(String* string, int initial_capacity);
+
+// initializes a string with given char*
+void set_string(String* string, char* text);
 
 // converts an int to a string
 void int_to_string(String* output, int input);

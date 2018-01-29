@@ -67,11 +67,9 @@ int main()
     load_font("./resources/fonts/PressStart2P.ttf");
 
     String lives_string;
-    init_string(&lives_string, 6);
     String lives_text;
-    init_string(&lives_text, 7);
-    lives_text.size = 7;
-    lives_text.str = "lives: ";
+    set_string(&lives_text, "lives: ");
+
     String number_of_lives;
     init_string(&number_of_lives, 1);
 
@@ -343,7 +341,7 @@ int main()
             for (int i = 0; i < non_static_elements.size; i++)
             {
                 draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             // PLAYER
@@ -351,7 +349,7 @@ int main()
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
 
-            draw_text(16, 16, ALIGNMENT_LEFT, lives_string.str);
+            draw_text(16, 16, ALIGNMENT_LEFT, &lives_string);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
