@@ -28,8 +28,8 @@ void init_interface()
     set_string(coins_str_text, " x ");
     init_string(coins_str_number, 1);
 
-    coin_icon = al_create_bitmap(32, 64);
-    coin_icon = al_load_bitmap("./resources/textures/icon_coin.png");
+    coin_icon = al_create_bitmap(64*5, 64);
+    coin_icon = al_load_bitmap("./resources/textures/secret_brick.png");
 
     load_font("./resources/fonts/PressStart2P.ttf");
 }
@@ -44,7 +44,7 @@ void draw_hud(int lives, int coins)
 
     draw_text(24, 24, ALIGNMENT_LEFT, lives_str);
     draw_text(DISPLAY_WIDTH - 64 - 256 + 16, 24, ALIGNMENT_LEFT, coins_str);
-    al_draw_bitmap(coin_icon, DISPLAY_WIDTH - 8 - 64 - 256, 8, 0);
+    al_draw_bitmap_region(coin_icon, 0, 3*64, 64, 64, DISPLAY_WIDTH - 16 - 64 - 256, 8, 0);
 }
 
 void load_font(char* path)

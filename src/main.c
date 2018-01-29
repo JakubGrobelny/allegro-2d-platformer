@@ -176,8 +176,8 @@ int main()
             else
             {
                 bind_bitmap(&temp_brick, secret_brick);
-                init_object(&temp_brick, SECRET_BLOCK_MUSHROOM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 2);
-                temp_brick.physics.mass = 5.0f;
+                init_object(&temp_brick, SECRET_BLOCK, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 2);
+                temp_brick.physics.mass = 100.0f;
                 level[4][i] = temp_brick;
                 bind_bitmap(&temp_brick, brick);
             }
@@ -330,7 +330,7 @@ int main()
             for (int i = 0; i < non_static_elements.size; i++)
             {
                 draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             // PLAYER

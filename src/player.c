@@ -36,6 +36,12 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
     }
 
+    if (coins == 100)
+    {
+        coins = 0;
+        lives++;
+    }
+
     if (player->alive)
     {
         if ((keys_active[KEY_DOWN] || keys_active[KEY_CTRL]) && player->type == PLAYER_BIG) // TODO: or KEY_LCTRL
