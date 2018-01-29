@@ -351,7 +351,7 @@ int main()
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
 
-            draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2, ALIGNMENT_LEFT, lives_string.str);
+            draw_text(16, 16, ALIGNMENT_LEFT, lives_string.str);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
