@@ -48,7 +48,7 @@ Object pop_last_ol(ObjectsList* list)
 
 void push_back_ol(ObjectsList* list, Object obj)
 {
-    if (list->size == list->capacity)
+    if (list->size >= list->capacity)
     {
         list->capacity *= 2;
         list->objects = realloc(list->objects, sizeof(Object) * list->capacity);
@@ -60,7 +60,7 @@ void push_back_ol(ObjectsList* list, Object obj)
     }
 
     set_element_ol(list, list->size, obj);
-    list->size += 1;
+    list->size++;
 }
 
 void remove_element_ol(ObjectsList* list, int i)
@@ -76,10 +76,15 @@ void remove_element_ol(ObjectsList* list, int i)
 Object pop_element_ol(ObjectsList* list, int i)
 {
     if (i >= list->size)
+    {
         printf("Error! Access violation!\n");
+        exit(-1);
+    }
 
     Object obj = get_element_ol(list, i);
-    remove_element_ol(list, i);
+
+    if (i != list->size - 1)
+        remove_element_ol(list, i);        
 
     list->size -= 1;
 

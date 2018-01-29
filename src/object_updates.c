@@ -230,6 +230,9 @@ bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH])
 
 void kill(Object* object, int i, ObjectsList* list)
 {
+    // if (object->pos_y >= MAP_HEIGHT && object->pos_x > 0)
+    // printf("An object of type %d was killed. It's index was %d\n", object->type, i);
+
     if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL)
         pop_element_ol(list, i);
     else
@@ -374,16 +377,17 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
             if (object->type == PARTICLE_NORMAL)
             {
                 if (object->counter > 0)
+                {
                     object->counter--;
+                    apply_vectors(object, level, objects);
+                    continue;
+                }
                 else
                 {
                     kill(object, i, objects);
-
-                    if (is_actually_killed(object))
-                    {
-                        i--;
-                        size--;
-                    }
+                    i--;
+                    size--;
+                    continue;
                 }
             }
             else if (object->type == ENEMY_PIRANHA_PLANT)
@@ -423,7 +427,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                     {
                         Object* temp = get_element_pointer_ol(objects, e);
 
-                        if (temp->type != PARTICLE_NORMAL && temp->alive)
+                        if (temp->alive)
                         {
                             if (collide(object->hitbox, temp->hitbox))
                             {
@@ -440,21 +444,30 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                                 }
                                 else if (object->animation_frame > 1 || object->type == BULLET)
                                 {
+                                    //printf("Killed by a bullet i=%d e=%d type_bullet=%d (%d, %d) type_killed=%d (%d, %d)\n", i, e, object->type, object->pos_x, object->pos_y, temp->type, temp->pos_x, temp->pos_y);
+
                                     if (temp->type == ENEMY_KOOPA_FLYING)
                                         spawn_koopa(temp, objects);
-                                    else if (temp->type == ENEMY_KOOPA)
+                                    else if (temp->type == ENEMY_KOOPA && !temp->counter)
                                         spawn_shell(temp, objects);
-
-                                    kill(temp, e, objects);
-                                    if (e < i)
-                                        if (is_actually_killed(temp))
-                                            i--;
-                                    kill(object, i, objects);
 
                                     if (is_actually_killed(object))
                                         size--;
-                                    if (is_actually_killed(temp))
-                                        size--;
+                                    kill(object, i, objects);
+
+                                    if (temp->type != ENEMY_KOOPA || !temp->counter)
+                                    {
+                                        kill(temp, e, objects);
+
+                                        if (e < i)
+                                            if (is_actually_killed(temp))
+                                                i--;
+                                        if (is_actually_killed(temp))
+                                        {
+                                            e--;
+                                            size--;
+                                        }
+                                    }
 
                                     break;
                                 }
@@ -517,7 +530,7 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                                     size--;
                                 }
 
-                                if (i < shell_index)
+                                if (i < shell_index && is_actually_killed(object))
                                 {
                                     shell_index--;
                                 }
