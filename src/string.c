@@ -16,11 +16,8 @@ void set_string(String* string, char* text)
     while(text[length] != '\0')
         length++;
 
-    if (string->capacity <= length)
-    {
-        string->capacity = length + 1;
-        string->str = realloc(string->str, sizeof(char) * string->capacity);
-    }
+    string->capacity = length + 1;
+    string->str = malloc(sizeof(char) * string->capacity);
 
     for (int i = 0; i < length; i++)
         string->str[i] = text[i];
@@ -31,9 +28,10 @@ void set_string(String* string, char* text)
 
 void int_to_string(String* output, int input)
 {
-    init_string(output, 1);
-
     output->size = 0;
+
+    if (!input)
+        push_back_str(output, '0');
 
     while (input > 0)
     {
@@ -62,7 +60,7 @@ void reverse_string(String* to_be_reversed)
 
 void concatenate(String* output, String* first, String* second)
 {
-    init_string(output, first->size + second->size + 1);
+    //init_string(output, first->size + second->size + 1);
 
     // not using push_back_str() because output will have desired capacity
     for (int i = 0; i < first->size; i++)
@@ -85,4 +83,9 @@ void push_back_str(String* string, char character)
     string->str[string->size] = character;
     string->size++;
     string->str[string->size] = '\0';
+}
+
+void delete_string(String* string)
+{
+    free(string->str);
 }

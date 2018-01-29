@@ -72,7 +72,8 @@ typedef enum
     SIZE_MUSHROOM,
     CANNON_LEFT,
     CANNON_RIGHT,
-    BULLET
+    BULLET,
+    COIN // TODO TODO TODO TODO TODO
 
 } ObjectTypes;
 

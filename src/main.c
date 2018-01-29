@@ -54,6 +54,8 @@ int main()
 
     }
 
+    init_interface();
+
     // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
     al_register_event_source(event_queue, al_get_timer_event_source(timer));
@@ -62,16 +64,6 @@ int main()
     // clearing the screen and starting the timer
     al_clear_to_color(LIGHT_BLUE);
     al_start_timer(timer);
-
-    // fonts
-    load_font("./resources/fonts/PressStart2P.ttf");
-
-    String lives_string;
-    String lives_text;
-    set_string(&lives_text, "lives: ");
-
-    String number_of_lives;
-    init_string(&number_of_lives, 1);
 
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -305,9 +297,6 @@ int main()
 
         update_buttons(&event, keys_down, keys_up, keys_active);
 
-        int_to_string(&number_of_lives, lives);
-        concatenate(&lives_string, &lives_text, &number_of_lives);
-
         // drawing things to the screen
         if (redraw && al_is_event_queue_empty(event_queue))
         {
@@ -341,15 +330,14 @@ int main()
             for (int i = 0; i < non_static_elements.size; i++)
             {
                 draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+                draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             // PLAYER
 
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
-
-            draw_text(16, 16, ALIGNMENT_LEFT, &lives_string);
+            draw_hud(lives, coins);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);

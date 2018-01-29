@@ -30,4 +30,7 @@ void concatenate(String* output, String* first, String* second);
 // adds a character to a string
 void push_back_str(String* string, char character);
 
+// frees the memory
+void delete_string(String* string);
+
 #endif

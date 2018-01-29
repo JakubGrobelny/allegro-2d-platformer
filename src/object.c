@@ -1,6 +1,6 @@
 #include "object.h"
 
-int lives = 10;
+int lives = 3;
 int coins = 0;
 
 void init_object(Object* object, int type, int pos_x, int pos_y, int width, int height, int hitbox_type, int hitbox_pos_x, int hitbox_pos_y, int hitbox_width, int hitbox_height, Physics physics, short frames_number)
