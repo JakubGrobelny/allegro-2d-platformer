@@ -9,6 +9,8 @@
 #include "list.h"
 #include "player.h"
 #include "object_updates.h"
+#include "interface.h"
+#include "string.h"
 
 int main()
 {
@@ -40,6 +42,17 @@ int main()
         al_show_native_message_box(display, "Error", "Error", "al_init_primitives_addon() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
+    if (!al_init_font_addon())
+    {
+        al_show_native_message_box(display, "Error", "Error", "al_init_font_addon() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+    }
+    if (!al_init_ttf_addon())
+    {
+        al_show_native_message_box(display, "Error", "Error", "al_init_ttf_addon() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+        return -1;
+
+    }
 
     // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -49,6 +62,18 @@ int main()
     // clearing the screen and starting the timer
     al_clear_to_color(LIGHT_BLUE);
     al_start_timer(timer);
+
+    // fonts
+    load_font("./resources/fonts/PressStart2P.ttf");
+
+    String lives_string;
+    init_string(&lives_string, 6);
+    String lives_text;
+    init_string(&lives_text, 7);
+    lives_text.size = 7;
+    lives_text.str = "lives: ";
+    String number_of_lives;
+    init_string(&number_of_lives, 1);
 
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
@@ -247,7 +272,6 @@ int main()
     bool keys_up[KEYS_AMOUNT]     = {false};
 
     // game's loop
-
     int frame = 0;
 
     while(true)
@@ -282,6 +306,9 @@ int main()
         // updating the keyboard
 
         update_buttons(&event, keys_down, keys_up, keys_active);
+
+        int_to_string(&number_of_lives, lives);
+        concatenate(&lives_string, &lives_text, &number_of_lives);
 
         // drawing things to the screen
         if (redraw && al_is_event_queue_empty(event_queue))
@@ -322,7 +349,9 @@ int main()
             // PLAYER
 
             draw_object(&player, screen_offset);
-            draw_hitbox(player.hitbox, screen_offset);
+            //draw_hitbox(player.hitbox, screen_offset);
+
+            draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2, ALIGNMENT_LEFT, lives_string.str);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
