@@ -18,6 +18,9 @@ void init_string(String* string, int initial_capacity);
 // initializes a string with given char*
 void set_string(String* string, char* text);
 
+// reverses a string ("aaabb -> bbaaa")
+void reverse_string(String* to_be_reversed);
+
 // converts an int to a string
 void int_to_string(String* output, int input);
 

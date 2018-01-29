@@ -254,7 +254,8 @@ void kill(Object* object, int i, ObjectsList* list)
 
 void animate_non_static_objects(ObjectsList* objects, int frame, Object* player)
 {
-    for (int i = 0; i < objects->size; i++)
+    int size = objects->size;
+    for (int i = 0; i < size; i++)
     {
         Object* temp = get_element_pointer_ol(objects, i);
 
@@ -363,7 +364,8 @@ void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Obje
 
 void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MAP_WIDTH], Object* player)
 {
-    for (int i = 0; i < objects->size; i++)
+    int size = objects->size;
+    for (int i = 0; i < size; i++)
     {
         Object* object = get_element_pointer_ol(objects, i);
 
@@ -377,6 +379,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                 {
                     kill(object, i, objects);
                     i--;
+                    size--;
                 }
             }
             else if (object->type == ENEMY_PIRANHA_PLANT)
@@ -410,7 +413,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                 check_for_shell_collisions(i, objects);
             else
             {
-                for (int e = 0; e < objects->size; e++)
+                for (int e = 0; e < size; e++)
                 {
                     if (e != i)
                     {
@@ -442,7 +445,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                                     if (e < i)
                                         i--;
                                     kill(object, i, objects);
-
+                                    size -= 2;
                                     break;
                                 }
                             }
@@ -452,7 +455,11 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
             }
 
             if (object->hitbox.pos_y > DISPLAY_HEIGHT || object->hitbox.pos_x + object->hitbox.width < 0 || object->hitbox.pos_y + object->hitbox.height < 0 || object->hitbox.pos_x + object->hitbox.width > MAP_WIDTH * 64)
+            {
                 kill(object, i, objects);
+                i--;
+                size--;
+            }
         }
     }
 }
@@ -460,6 +467,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 void check_for_shell_collisions(int shell_index, ObjectsList* list)
 {
     Object* shell = get_element_pointer_ol(list, shell_index);
+
     int size = list->size;
 
     for (int i = 0; i < size; i++)
@@ -484,11 +492,12 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                             if (object->type != KOOPA_SHELL && !(object->type == ENEMY_PIRANHA_PLANT && object->animation_frame == 0))
                             {
                                 kill(object, i, list);
+                                i--;
+                                size--;
 
                                 if (i < shell_index)
                                 {
                                     shell_index--;
-                                    i--;
                                 }
                             }
                             else
@@ -638,7 +647,9 @@ void kill_enemies_above_block(Object* block, ObjectsList* list)
     temp_hitbox.width = block->hitbox.width - 8;
     temp_hitbox.height = block->hitbox.height;
 
-    for (int i = 0; i < list->size; i++)
+    int size = list->size;
+
+    for (int i = 0; i < size; i++)
     {
         Object* temp_obj = get_element_pointer_ol(list, i);
 
@@ -646,6 +657,7 @@ void kill_enemies_above_block(Object* block, ObjectsList* list)
         {
             kill(temp_obj, i, list);
             i--;
+            size--;
         }
         else if (temp_obj->type == SIZE_MUSHROOM && collide(temp_hitbox, temp_obj->hitbox)) // making the mushroom go opposite direction
         {

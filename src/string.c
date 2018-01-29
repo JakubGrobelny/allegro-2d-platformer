@@ -27,7 +27,6 @@ void set_string(String* string, char* text)
     string->str[length] = '\0';
 
     string->size = length;
-    printf("%s\n", string->str);
 }
 
 void int_to_string(String* output, int input)
@@ -38,11 +37,27 @@ void int_to_string(String* output, int input)
 
     while (input > 0)
     {
-        push_back_str(output, (input % 10) + '0');
+        if (input % 10)
+            push_back_str(output, (input % 10) + '0');
+        else
+            push_back_str(output, '0');
+
         input /= 10;
     }
 
+    reverse_string(output);
+
     push_back_str(output, '\0');
+}
+
+void reverse_string(String* to_be_reversed)
+{
+    for (int i = 0; i < to_be_reversed->size / 2; i++)
+    {
+        char temp = to_be_reversed->str[i];
+        to_be_reversed->str[i] = to_be_reversed->str[to_be_reversed->size - i - 1];
+        to_be_reversed->str[to_be_reversed->size - i - 1] = temp;
+    }
 }
 
 void concatenate(String* output, String* first, String* second)

@@ -171,7 +171,6 @@ void change_state(Object* player)
 void non_static_object_interactions(Object* player, ObjectsList* list)
 {
     int size = list->size;
-
     for (int i = 0; i < size; i++)
     {
         Object* object = get_element_pointer_ol(list, i);
@@ -181,6 +180,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             if (object->type == SIZE_MUSHROOM)
             {
                 kill(object, i, list);
+                i--;
                 size--;
 
                 if (player->type == PLAYER)
@@ -211,6 +211,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 if (object->type != KOOPA_SHELL && object->type != ENEMY_PIRANHA_PLANT)
                 {
                     kill(object, i, list);
+                    i--;
                     size--;
                 }
                 else
