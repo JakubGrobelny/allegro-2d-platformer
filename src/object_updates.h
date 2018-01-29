@@ -15,6 +15,9 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
 // checking whether the object is standing on some platform
 bool on_the_ground(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH]);
 
+// checks whether the object is really killed by being deleted from the list or just turned into particle
+bool is_actually_killed(Object* object);
+
 // making things fall
 void apply_gravity(Object* object);
 

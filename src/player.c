@@ -180,8 +180,11 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             if (object->type == SIZE_MUSHROOM)
             {
                 kill(object, i, list);
-                i--;
-                size--;
+                if (is_actually_killed(object))
+                {
+                    i--;
+                    size--;
+                }
 
                 if (player->type == PLAYER)
                     change_state(player);
@@ -211,8 +214,11 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 if (object->type != KOOPA_SHELL && object->type != ENEMY_PIRANHA_PLANT)
                 {
                     kill(object, i, list);
-                    i--;
-                    size--;
+                    if (is_actually_killed(object))
+                    {
+                        i--;
+                        size--;
+                    }
                 }
                 else
                 {

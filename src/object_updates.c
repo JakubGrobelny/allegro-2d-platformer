@@ -378,8 +378,12 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                 else
                 {
                     kill(object, i, objects);
-                    i--;
-                    size--;
+
+                    if (is_actually_killed(object))
+                    {
+                        i--;
+                        size--;
+                    }
                 }
             }
             else if (object->type == ENEMY_PIRANHA_PLANT)
@@ -443,9 +447,15 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
                                     kill(temp, e, objects);
                                     if (e < i)
-                                        i--;
+                                        if (is_actually_killed(temp))
+                                            i--;
                                     kill(object, i, objects);
-                                    size -= 2;
+
+                                    if (is_actually_killed(object))
+                                        size--;
+                                    if (is_actually_killed(temp))
+                                        size--;
+
                                     break;
                                 }
                             }
@@ -457,11 +467,20 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
             if (object->hitbox.pos_y > DISPLAY_HEIGHT || object->hitbox.pos_x + object->hitbox.width < 0 || object->hitbox.pos_y + object->hitbox.height < 0 || object->hitbox.pos_x + object->hitbox.width > MAP_WIDTH * 64)
             {
                 kill(object, i, objects);
-                i--;
-                size--;
+                if (is_actually_killed(object))
+                {
+                    i--;
+                    size--;
+                }
             }
         }
     }
+}
+
+bool is_actually_killed(Object* object)
+{
+    return (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL);
+
 }
 
 void check_for_shell_collisions(int shell_index, ObjectsList* list)
@@ -492,8 +511,11 @@ void check_for_shell_collisions(int shell_index, ObjectsList* list)
                             if (object->type != KOOPA_SHELL && !(object->type == ENEMY_PIRANHA_PLANT && object->animation_frame == 0))
                             {
                                 kill(object, i, list);
-                                i--;
-                                size--;
+                                if (is_actually_killed(object))
+                                {
+                                    i--;
+                                    size--;
+                                }
 
                                 if (i < shell_index)
                                 {
@@ -656,8 +678,12 @@ void kill_enemies_above_block(Object* block, ObjectsList* list)
         if (collide(temp_hitbox, temp_obj->hitbox) && temp_obj->type != PARTICLE_NORMAL && temp_obj->type != SIZE_MUSHROOM)
         {
             kill(temp_obj, i, list);
-            i--;
-            size--;
+
+            if (is_actually_killed(temp_obj))
+            {
+                i--;
+                size--;
+            }
         }
         else if (temp_obj->type == SIZE_MUSHROOM && collide(temp_hitbox, temp_obj->hitbox)) // making the mushroom go opposite direction
         {
