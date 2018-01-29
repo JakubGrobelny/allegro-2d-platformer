@@ -322,7 +322,7 @@ int main()
             // PLAYER
 
             draw_object(&player, screen_offset);
-            //draw_hitbox(player.hitbox, screen_offset);
+            draw_hitbox(player.hitbox, screen_offset);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);

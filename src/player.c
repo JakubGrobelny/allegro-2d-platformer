@@ -85,7 +85,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
             if (keys_down[KEY_UP] || keys_down[KEY_SPACE]) // TODO: if active && ~pressed then lower the gravity
             {
-                if (player->physics.speed.y == previous_speed.y) // on_the_ground
+                if (on_the_ground(player, level)) // on_the_ground
                 {
                     jump(player);
                 }
@@ -93,7 +93,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
     }
 
-    if (player->alive && !(keys_active[KEY_DOWN] && player->type == PLAYER_BIG))
+    if (player->alive && !(keys_active[KEY_DOWN] && !(keys_active[KEY_CTRL]) && player->type == PLAYER_BIG))
         animate_player(player, level, running, frame);
 
     // temporary friction simulation:
@@ -116,8 +116,8 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
 void jump(Object* player)
 {
-    if (player->physics.speed.y == 0)
-        player->physics.speed.y -= player->physics.acceleration.y;
+    //if (player->physics.speed.y == 0)
+    player->physics.speed.y -= player->physics.acceleration.y;
 }
 
 void crouch(Object* player)
