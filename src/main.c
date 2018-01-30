@@ -67,7 +67,7 @@ int main()
 
     // creating structures
     Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Physics player_physics = create_physics(0.1f, 0.0f, 0.4f, 21, 1.0f);
+    Physics player_physics = create_physics(0.1f, 0.0f, 0.47f, 21, 0.9f);
     Physics goomba_physics = create_physics(3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
     Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 2.0f);
     Physics flying_koopa_physics = create_physics(-3.0f, 0.0f, 3.0f, 13.0f, 0.5f);

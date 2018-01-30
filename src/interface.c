@@ -86,20 +86,6 @@ void init_interface()
     pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, &pause_menu_buttons_text[EXIT]);
     active_button = UNPAUSE;
 
-    lives_str = malloc(sizeof(String));
-    lives_str_text = malloc(sizeof(String));
-    lives_str_number = malloc(sizeof(String));
-    coins_str = malloc(sizeof(String));
-    coins_str_text = malloc(sizeof(String));
-    coins_str_number = malloc(sizeof(String));
-
-    init_string(lives_str, 1);
-    set_string(lives_str_text, "MARIO x ");
-    init_string(lives_str_number, 1);
-    init_string(coins_str, 1);
-    set_string(coins_str_text, " x ");
-    init_string(coins_str_number, 1);
-
     coin_icon = al_create_bitmap(64*5, 64);
     coin_icon = al_load_bitmap("./resources/textures/secret_brick.png");
 
@@ -110,14 +96,9 @@ void init_interface()
 
 void draw_hud(int lives, int coins)
 {
-    int_to_string(lives_str_number, lives);
-    int_to_string(coins_str_number, coins);
+    al_draw_textf(font, WHITE, 24, 24, ALLEGRO_ALIGN_LEFT, "MARIO x %d", lives);
+    al_draw_textf(font, WHITE, DISPLAY_WIDTH - 64 - 256 + 16, 24, ALLEGRO_ALIGN_LEFT, " x %d", coins);
 
-    concatenate(lives_str, lives_str_text, lives_str_number);
-    concatenate(coins_str, coins_str_text, coins_str_number);
-
-    draw_text(24, 24, ALIGNMENT_LEFT, lives_str);
-    draw_text(DISPLAY_WIDTH - 64 - 256 + 16, 24, ALIGNMENT_LEFT, coins_str);
     al_draw_bitmap_region(coin_icon, 0, 3*64, 64, 64, DISPLAY_WIDTH - 16 - 64 - 256, 8, 0);
 }
 

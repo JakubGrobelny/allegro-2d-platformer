@@ -17,14 +17,6 @@
 
 extern ALLEGRO_FONT* font;
 
-String* lives_str;
-String* lives_str_text;
-String* lives_str_number;
-
-String* coins_str;
-String* coins_str_text;
-String* coins_str_number;
-
 ALLEGRO_BITMAP* coin_icon;
 
 typedef struct Button
