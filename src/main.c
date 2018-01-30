@@ -10,7 +10,6 @@
 #include "player.h"
 #include "object_updates.h"
 #include "interface.h"
-#include "string.h"
 
 int main()
 {
@@ -288,6 +287,10 @@ int main()
                 if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
                 {
                     screen_offset -= DISPLAY_WIDTH / 2 + screen_offset - player.hitbox.pos_x;
+                }
+                else
+                {
+                    screen_offset = 0;
                 }
             }
             else

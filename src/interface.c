@@ -1,15 +1,6 @@
 #include "interface.h"
 
 ALLEGRO_FONT* font;
-
-String* lives_str;
-String* lives_str_text;
-String* lives_str_number;
-
-String* coins_str;
-String* coins_str_text;
-String* coins_str_number;
-
 ALLEGRO_BITMAP* coin_icon;
 
 Button pause_menu_buttons[2];
@@ -64,7 +55,7 @@ void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_d
     }
 }
 
-Button create_button(int x, int y, int width, int height, String* text)
+Button create_button(int x, int y, int width, int height, char* text)
 {
     Button new;
 
@@ -79,11 +70,8 @@ Button create_button(int x, int y, int width, int height, String* text)
 
 void init_interface()
 {
-    set_string(&pause_menu_buttons_text[UNPAUSE], "CONTINUE");
-    set_string(&pause_menu_buttons_text[EXIT], "EXIT");
-
-    pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, &pause_menu_buttons_text[UNPAUSE]);
-    pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, &pause_menu_buttons_text[EXIT]);
+    pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, "CONITNUE");
+    pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, "EXIT");
     active_button = UNPAUSE;
 
     coin_icon = al_create_bitmap(64*5, 64);
@@ -113,18 +101,18 @@ void load_font(char* path)
     }
 }
 
-void draw_text(int x, int y, int alignment, String* text)
+void draw_text(int x, int y, int alignment, char* text)
 {
     switch (alignment)
     {
         case ALIGNMENT_CENTRE:
-            al_draw_text(font, WHITE, x, y, ALLEGRO_ALIGN_CENTRE, text->str);
+            al_draw_text(font, WHITE, x, y, ALLEGRO_ALIGN_CENTRE, text);
             break;
         case ALIGNMENT_LEFT:
-            al_draw_text(font, WHITE, x, y, ALLEGRO_ALIGN_LEFT, text->str);
+            al_draw_text(font, WHITE, x, y, ALLEGRO_ALIGN_LEFT, text);
             break;
         case ALIGNMENT_RIGHT:
-            al_draw_text(font, WHITE, x, y, ALLEGRO_ALIGN_RIGHT, text->str);
+            al_draw_text(font, WHITE, x, y, ALLEGRO_ALIGN_RIGHT, text);
             break;
     }
 

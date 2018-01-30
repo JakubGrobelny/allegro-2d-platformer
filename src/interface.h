@@ -6,7 +6,6 @@
 #include <string.h>
 #include <stdbool.h>
 
-#include "string.h"
 #include "defines.h"
 #include "keyboard.h"
 
@@ -25,11 +24,10 @@ typedef struct Button
     int pos_y;
     int width;
     int height;
-    String* text;
+    char* text;
 
 } Button;
 
-String pause_menu_buttons_text[2];
 Button pause_menu_buttons[2]; // 0 - unpause, 1 - exit
 int active_button;
 
@@ -50,7 +48,7 @@ typedef enum
 
 
 // creates a new button
-Button create_button(int x, int y, int width, int height, String* text);
+Button create_button(int x, int y, int width, int height, char* text);
 
 // draws a button
 void draw_button(Button* button, bool active);
@@ -65,7 +63,7 @@ void draw_hud(int lives, int coins);
 void load_font(char* path);
 
 // prints text to the screen
-void draw_text(int x, int y, int alignment, String* text); // TODO: add font choice
+void draw_text(int x, int y, int alignment, char* text); // TODO: add font choice
 
 // draws buttons and stuff
 void draw_pause_menu();

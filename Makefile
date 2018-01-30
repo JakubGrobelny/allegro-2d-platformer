@@ -3,7 +3,7 @@ LDFLAGS = -L/usr/lib -lallegro -lallegro_image -lallegro_dialog -lallegro_primit
 INCLUDE = `pkg-config --cflags --libs allegro-5`
 LIBS = -lallegro -lm
 
-SRCS = src/main.c src/object.c src/hitbox.c src/util.c src/physics.c src/list.c src/player.c src/keyboard.c src/object_updates.c src/interface.c src/string.c
+SRCS = src/main.c src/object.c src/hitbox.c src/util.c src/physics.c src/list.c src/player.c src/keyboard.c src/object_updates.c src/interface.c
 OBJS = $(SRCS:.c=.o)
 
 MAIN = game
