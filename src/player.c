@@ -91,7 +91,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
             if (keys_down[KEY_UP] || keys_down[KEY_SPACE]) // TODO: if active && ~pressed then lower the gravity
             {
-                if (on_the_ground(player, level)) // on_the_ground
+                if (can_jump(player, level)) // on_the_ground
                 {
                     jump(player);
                 }
@@ -118,6 +118,27 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     if (player->alive)
         non_static_object_interactions(player, non_static);
+}
+
+bool can_jump(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH])
+{
+    if (on_the_ground(player, level))
+        return true;
+
+    const int error = 3;
+
+    int x1, x2;
+    int y;
+
+    x1 = player->hitbox.pos_x / 64;
+    x2 = (player->hitbox.pos_x + player->hitbox.width) / 64;
+
+    y = (player->hitbox.pos_y + player->hitbox.height + error) / 64;
+
+    if (x1 < 0 || x1 >= MAP_WIDTH || y < 0 || y >= MAP_HEIGHT || x2 < 0 || x2 >= MAP_WIDTH)
+            return false;
+
+    return (player->physics.speed.y >= 0.0f && (level[y][x1].type != EMPTY || level[y][x2].type != EMPTY));
 }
 
 void jump(Object* player)

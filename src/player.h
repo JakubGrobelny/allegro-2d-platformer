@@ -11,6 +11,9 @@
 extern ALLEGRO_BITMAP* player_bitmap;
 extern ALLEGRO_BITMAP* player_big_bitmap;
 
+// like on_the_ground but more forgiving
+bool can_jump(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH]);
+
 // apply keypresses etc. to the player object
 void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static, int frame);
 
