@@ -16,6 +16,7 @@
 
 extern ALLEGRO_FONT* font;
 
+extern ALLEGRO_MOUSE_STATE mouse_state;
 ALLEGRO_BITMAP* coin_icon;
 
 typedef struct Button

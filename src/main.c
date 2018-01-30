@@ -31,6 +31,10 @@ int main()
         al_show_native_message_box(display, "Error", "Error", "al_install_keyboard() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
         return -1;
     }
+    if (!al_install_mouse())
+    {
+        al_show_native_message_box(display, "Error", "Error", "al_install_mouse() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+    }
     if (!al_init_image_addon())
     {
         al_show_native_message_box(display, "Error", "Error", "al_init_image_addon() failed!", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -274,12 +278,13 @@ int main()
     bool exit = false;
     bool mode_editor = false;
 
-    main_menu();
+    //main_menu();
 
     while(!exit)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
+        al_get_mouse_state(&mouse_state);
 
         // if the timer has generated an event it's time to update the game's logics
         if(event.type == ALLEGRO_EVENT_TIMER)

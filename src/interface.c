@@ -6,9 +6,16 @@ ALLEGRO_BITMAP* coin_icon;
 Button pause_menu_buttons[2];
 int active_button;
 
+ALLEGRO_MOUSE_STATE mouse_state;
+
 void main_menu()
 {
-    
+    bool exit = false;
+
+    while (!exit)
+    {
+
+    }
 }
 
 void draw_button(Button* button, bool active)
@@ -46,7 +53,21 @@ void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_d
     else if (active_button > EXIT)
         active_button = EXIT;
 
-    if (keys_active[KEY_ENTER])
+    bool mouse_on_button = false;
+
+    for (int i = 0; i < 2; i++)
+    {
+        if (mouse_state.x >= pause_menu_buttons[i].pos_x && mouse_state.x <= pause_menu_buttons[i].pos_x + pause_menu_buttons[i].width)
+        {
+            if (mouse_state.y >= pause_menu_buttons[i].pos_y && mouse_state.y <= pause_menu_buttons[i].pos_y + pause_menu_buttons[i].height)
+            {
+                active_button = i;
+                mouse_on_button = true;
+            }
+        }
+    }
+
+    if (keys_active[KEY_ENTER] || (mouse_state.buttons & 1 && mouse_on_button))
     {
         switch (active_button)
         {
@@ -75,7 +96,7 @@ Button create_button(int x, int y, int width, int height, char* text)
 
 void init_interface()
 {
-    pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, "CONITNUE");
+    pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, "CONTINUE");
     pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, "EXIT");
     active_button = UNPAUSE;
 
@@ -83,8 +104,6 @@ void init_interface()
     coin_icon = al_load_bitmap("./resources/textures/secret_brick.png");
 
     load_font("./resources/fonts/PressStart2P.ttf");
-
-
 }
 
 void draw_hud(int lives, int coins)
