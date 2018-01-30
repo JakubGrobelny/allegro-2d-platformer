@@ -278,7 +278,7 @@ int main()
     bool exit = false;
     bool mode_editor = false;
 
-    main_menu(&exit, &mode_editor, keys_active, keys_down, keys_up);
+    main_menu(event_queue, &exit, &mode_editor, keys_active, keys_down, keys_up);
     //load_level();
 
     while(!exit)

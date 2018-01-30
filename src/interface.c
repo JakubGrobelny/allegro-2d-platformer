@@ -8,13 +8,18 @@ int active_button;
 
 ALLEGRO_MOUSE_STATE mouse_state;
 
-void main_menu(bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up)
+void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up)
 {
     int pointer_x = 64 + 276 + 16;
     int menu_active_button = MENU_START;
 
     while (!*exit)
     {
+        ALLEGRO_EVENT event;
+        al_wait_for_event(event_queue, &event);
+
+        al_get_mouse_state(&mouse_state);
+        update_buttons(&event, keys_down, keys_up, keys_active);
 
         // it's pretty much update_pause_menu()
         if (keys_down[KEY_UP])
@@ -55,6 +60,7 @@ void main_menu(bool* exit, bool* editor, bool* keys_active, bool* keys_down, boo
                     return;
             }
         }
+        reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
 
         int pointer_y = main_menu_buttons[menu_active_button].pos_y + main_menu_buttons[menu_active_button].height / 2;
 

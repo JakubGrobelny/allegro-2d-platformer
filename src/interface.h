@@ -59,7 +59,7 @@ typedef enum
 } MenuButtonTypes;
 
 // draws and updates the main menu
-void main_menu(bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up);
+void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up);
 
 // creates a new button
 Button create_button(int x, int y, int width, int height, char* text);
