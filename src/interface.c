@@ -6,6 +6,11 @@ ALLEGRO_BITMAP* coin_icon;
 Button pause_menu_buttons[2];
 int active_button;
 
+void main_menu()
+{
+    
+}
+
 void draw_button(Button* button, bool active)
 {
     if (active)

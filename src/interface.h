@@ -46,6 +46,8 @@ typedef enum
 
 } ButtonTypes;
 
+// draws and updates the main menu
+void main_menu();
 
 // creates a new button
 Button create_button(int x, int y, int width, int height, char* text);

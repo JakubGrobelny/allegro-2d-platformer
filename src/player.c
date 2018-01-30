@@ -377,15 +377,15 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
         else
         {
             if (player->physics.speed.x < 0)
-                player->animation_frame = 6;
+                player->animation_frame = 5;
             else if (player->physics.speed.x > 0)
-                player->animation_frame = 13;
+                player->animation_frame = 12;
             else
             {
-                if (player->animation_frame > 6)
-                    player->animation_frame = 13;
+                if (player->animation_frame > 5)
+                    player->animation_frame = 12;
                 else
-                    player->animation_frame = 6;
+                    player->animation_frame = 5;
             }
         }
 }

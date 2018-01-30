@@ -167,16 +167,24 @@ int main()
         bind_bitmap(&temp_brick, brick);
         for (int i = 2; i < 8; i++)
         {
-            if (i != 6)
+            if (i != 6 && i != 4)
             {
                 init_object(&temp_brick, NORMAL_BLOCK, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 1);
                 level[4][i] = temp_brick;
             }
-            else
+            else if (i == 6)
             {
                 bind_bitmap(&temp_brick, secret_brick);
                 init_object(&temp_brick, SECRET_BLOCK, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 2);
-                temp_brick.physics.mass = 100.0f;
+                temp_brick.physics.mass = 5.0f;
+                level[4][i] = temp_brick;
+                bind_bitmap(&temp_brick, brick);
+            }
+            else
+            {
+                bind_bitmap(&temp_brick, secret_brick);
+                init_object(&temp_brick, SECRET_BLOCK_MUSHROOM, i*64, 4*64, 64, 64, RECTANGLE, i*64, 4*64, 64, 64, static_physics, 2);
+                temp_brick.physics.mass = 5.0f;
                 level[4][i] = temp_brick;
                 bind_bitmap(&temp_brick, brick);
             }
@@ -264,6 +272,9 @@ int main()
     int frame = 0;
     bool menu = false;
     bool exit = false;
+    bool mode_editor = false;
+
+    main_menu();
 
     while(!exit)
     {
@@ -285,13 +296,9 @@ int main()
                 animate_static_objects(level, frame, &player, &non_static_elements);
 
                 if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
-                {
                     screen_offset -= DISPLAY_WIDTH / 2 + screen_offset - player.hitbox.pos_x;
-                }
                 else
-                {
                     screen_offset = 0;
-                }
             }
             else
             {
