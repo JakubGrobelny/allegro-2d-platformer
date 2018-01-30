@@ -19,6 +19,9 @@ extern ALLEGRO_FONT* font;
 extern ALLEGRO_MOUSE_STATE mouse_state;
 ALLEGRO_BITMAP* coin_icon;
 
+ALLEGRO_BITMAP* main_menu_bg;
+ALLEGRO_BITMAP* main_menu_pointer;
+
 typedef struct Button
 {
     int pos_x;
@@ -30,6 +33,7 @@ typedef struct Button
 } Button;
 
 Button pause_menu_buttons[2]; // 0 - unpause, 1 - exit
+Button main_menu_buttons[3];
 int active_button;
 
 typedef enum
@@ -45,10 +49,17 @@ typedef enum
     UNPAUSE = 0,
     EXIT = 1
 
-} ButtonTypes;
+} PauseButtonTypes;
+
+typedef enum
+{
+    MENU_START,
+    MENU_EDITOR,
+    MENU_EXIT
+} MenuButtonTypes;
 
 // draws and updates the main menu
-void main_menu();
+void main_menu(bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up);
 
 // creates a new button
 Button create_button(int x, int y, int width, int height, char* text);

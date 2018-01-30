@@ -8,14 +8,63 @@ int active_button;
 
 ALLEGRO_MOUSE_STATE mouse_state;
 
-void main_menu()
+void main_menu(bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up)
 {
-    bool exit = false;
+    int pointer_x = 64 + 276 + 16;
+    int menu_active_button = MENU_START;
 
-    while (!exit)
+    while (!*exit)
     {
 
+        // it's pretty much update_pause_menu()
+        if (keys_down[KEY_UP])
+            menu_active_button--;
+        else if (keys_down[KEY_DOWN])
+            menu_active_button++;
+
+        if (menu_active_button < MENU_START)
+            active_button = MENU_START;
+        else if (menu_active_button > MENU_EXIT)
+            active_button = MENU_EXIT;
+
+        bool mouse_on_button = false;
+
+        for (int i = 0; i < 3; i++)
+        {
+            if (mouse_state.x >= pause_menu_buttons[i].pos_x && mouse_state.x <= pause_menu_buttons[i].pos_x + pause_menu_buttons[i].width)
+            {
+                if (mouse_state.y >= pause_menu_buttons[i].pos_y && mouse_state.y <= pause_menu_buttons[i].pos_y + pause_menu_buttons[i].height)
+                {
+                    menu_active_button = i;
+                    mouse_on_button = true;
+                }
+            }
+        }
+
+        if (keys_active[KEY_ENTER] || (mouse_state.buttons & 1 && mouse_on_button))
+        {
+            switch (menu_active_button)
+            {
+                case MENU_START:
+                    return;
+                case MENU_EXIT:
+                    *exit = true;
+                    return;
+                case MENU_EDITOR:
+                    *editor = true;
+                    return;
+            }
+        }
+
+        int pointer_y = main_menu_buttons[menu_active_button].pos_y + main_menu_buttons[menu_active_button].height / 2;
+
+        al_draw_bitmap(main_menu_bg, 0, 0, 0);
+        al_draw_bitmap(main_menu_pointer, pointer_x, pointer_y, 0);
+        al_flip_display();
     }
+
+    al_destroy_bitmap(main_menu_bg);
+    al_destroy_bitmap(main_menu_pointer);
 }
 
 void draw_button(Button* button, bool active)
@@ -96,12 +145,22 @@ Button create_button(int x, int y, int width, int height, char* text)
 
 void init_interface()
 {
+    active_button = 0;
+
     pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, "CONTINUE");
     pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, "EXIT");
-    active_button = UNPAUSE;
+
+    main_menu_buttons[MENU_START] = create_button(64, 64, 276, 176, "START");
+    main_menu_buttons[MENU_EDITOR] = create_button(64, 64  + 32 + 176, 276, 176, "EDITOR");
+    main_menu_buttons[MENU_EXIT] = create_button(64, 64 + 32 + 176 + 32 + 176, 276, 176, "EXIT");
 
     coin_icon = al_create_bitmap(64*5, 64);
     coin_icon = al_load_bitmap("./resources/textures/secret_brick.png");
+
+    main_menu_bg = al_create_bitmap(DISPLAY_WIDTH, DISPLAY_HEIGHT);
+    main_menu_pointer = al_create_bitmap(64, 64);
+    main_menu_bg = al_load_bitmap("./resources/textures/main_menu_bg.png");
+    main_menu_pointer = al_load_bitmap("./resources/textures/main_menu_pointer.png");
 
     load_font("./resources/fonts/PressStart2P.ttf");
 }
