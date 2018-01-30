@@ -3,27 +3,89 @@
 ALLEGRO_FONT* font;
 
 String* lives_str;
-    String* lives_str_text;
-    String* lives_str_number;
+String* lives_str_text;
+String* lives_str_number;
 
 String* coins_str;
-    String* coins_str_text;
-    String* coins_str_number;
+String* coins_str_text;
+String* coins_str_number;
 
 ALLEGRO_BITMAP* coin_icon;
 
-void draw_menu()
+Button pause_menu_buttons[2];
+int active_button;
+
+void draw_button(Button* button, bool active)
 {
+    if (active)
+        al_draw_filled_rectangle(button->pos_x - 16, button->pos_y - 16, button->pos_x + button->width + 16, button->pos_y + button->height + 16, al_map_rgb(0, 0, 0));
+    al_draw_filled_rectangle(button->pos_x, button->pos_y, button->pos_x + button->width, button->pos_y + button->height, al_map_rgb(174, 78, 0));
+
+    draw_text(button->pos_x + button->width/2, button->pos_y + button->height/2, ALIGNMENT_CENTRE, button->text);
+}
+
+void draw_pause_menu()
+{
+    al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, al_map_rgba(64, 64, 64, 200));
+
+    for (int i = 0; i < 2; i++)
+    {
+        if (i == active_button)
+            draw_button(&pause_menu_buttons[i], true);
+        else
+            draw_button(&pause_menu_buttons[i], false);
+    }
 
 }
 
-void update_menu(bool* paused)
+void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, bool* keys_up)
 {
-    
+    if (keys_down[KEY_UP])
+        active_button--;
+    else if (keys_down[KEY_DOWN])
+        active_button++;
+
+    if (active_button < UNPAUSE)
+        active_button = UNPAUSE;
+    else if (active_button > EXIT)
+        active_button = EXIT;
+
+    if (keys_active[KEY_ENTER])
+    {
+        switch (active_button)
+        {
+            case UNPAUSE:
+                *paused = false;
+                break;
+            case EXIT:
+                *exit = true;
+                break;
+        }
+    }
+}
+
+Button create_button(int x, int y, int width, int height, String* text)
+{
+    Button new;
+
+    new.pos_x = x;
+    new.pos_y = y;
+    new.width = width;
+    new.height = height;
+    new.text = text;
+
+    return new;
 }
 
 void init_interface()
 {
+    set_string(&pause_menu_buttons_text[UNPAUSE], "CONTINUE");
+    set_string(&pause_menu_buttons_text[EXIT], "EXIT");
+
+    pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, &pause_menu_buttons_text[UNPAUSE]);
+    pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, &pause_menu_buttons_text[EXIT]);
+    active_button = UNPAUSE;
+
     lives_str = malloc(sizeof(String));
     lives_str_text = malloc(sizeof(String));
     lives_str_number = malloc(sizeof(String));
@@ -42,6 +104,8 @@ void init_interface()
     coin_icon = al_load_bitmap("./resources/textures/secret_brick.png");
 
     load_font("./resources/fonts/PressStart2P.ttf");
+
+
 }
 
 void draw_hud(int lives, int coins)

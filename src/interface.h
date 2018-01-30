@@ -1,12 +1,14 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_primitives.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdbool.h>
 
 #include "string.h"
 #include "defines.h"
+#include "keyboard.h"
 
 #ifndef _INTERFACE
 #define _INTERFACE
@@ -16,14 +18,28 @@
 extern ALLEGRO_FONT* font;
 
 String* lives_str;
-    String* lives_str_text;
-    String* lives_str_number;
+String* lives_str_text;
+String* lives_str_number;
 
 String* coins_str;
-    String* coins_str_text;
-    String* coins_str_number;
+String* coins_str_text;
+String* coins_str_number;
 
 ALLEGRO_BITMAP* coin_icon;
+
+typedef struct Button
+{
+    int pos_x;
+    int pos_y;
+    int width;
+    int height;
+    String* text;
+
+} Button;
+
+String pause_menu_buttons_text[2];
+Button pause_menu_buttons[2]; // 0 - unpause, 1 - exit
+int active_button;
 
 typedef enum
 {
@@ -33,13 +49,19 @@ typedef enum
 
 } Alignments;
 
-typedef struct Button
+typedef enum
 {
-    int pos_x;
-    int pos_y;
-    int width;
-    
-} Button;
+    UNPAUSE = 0,
+    EXIT = 1
+
+} ButtonTypes;
+
+
+// creates a new button
+Button create_button(int x, int y, int width, int height, String* text);
+
+// draws a button
+void draw_button(Button* button, bool active);
 
 // initializes interface (whatever that means)
 void init_interface();
@@ -54,9 +76,9 @@ void load_font(char* path);
 void draw_text(int x, int y, int alignment, String* text); // TODO: add font choice
 
 // draws buttons and stuff
-void draw_menu();
+void draw_pause_menu();
 
 // updates menu based on mouse/keyboard input
-void update_menu(bool* paused);
+void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, bool* keys_up);
 
 #endif

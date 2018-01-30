@@ -264,8 +264,9 @@ int main()
     // game's loop
     int frame = 0;
     bool menu = false;
+    bool exit = false;
 
-    while(true)
+    while(!exit)
     {
         ALLEGRO_EVENT event;
         al_wait_for_event(event_queue, &event);
@@ -282,7 +283,6 @@ int main()
                 update_non_static_objects(&non_static_elements, level, &player);
                 animate_non_static_objects(&non_static_elements, frame, &player);
                 update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
-                reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
                 animate_static_objects(level, frame, &player, &non_static_elements);
 
                 if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
@@ -292,9 +292,10 @@ int main()
             }
             else
             {
-                
+                update_pause_menu(&menu, &exit, keys_active, keys_down, keys_up);
             }
 
+            reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
             redraw = true;
         }
         // closing the window
@@ -353,6 +354,9 @@ int main()
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
             draw_hud(lives, coins);
+
+            if (menu)
+                draw_pause_menu();
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
