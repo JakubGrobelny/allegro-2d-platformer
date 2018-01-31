@@ -231,15 +231,16 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 }
             }
 
-            if (player->physics.speed.y > 0 && relative_direction(player, object, BOTTOM))
+            if (player->physics.speed.y > 0.0f && relative_direction(player, object, BOTTOM))
             {
-                if (object->type == ENEMY_KOOPA)
+                if (object->type == ENEMY_KOOPA && !object->counter)
                     spawn_shell(object, list);
                 else if (object->type == ENEMY_KOOPA_FLYING)
                     spawn_koopa(object, list);
 
                 if (object->type != KOOPA_SHELL && object->type != ENEMY_PIRANHA_PLANT)
                 {
+                    if (!(object->type == ENEMY_KOOPA && object->counter > 0))
                     kill(object, i, list);
                     if (is_actually_killed(object))
                     {

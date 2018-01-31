@@ -64,8 +64,8 @@ void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool*
 
         int pointer_y = main_menu_buttons[menu_active_button].pos_y + main_menu_buttons[menu_active_button].height / 2;
 
-        al_draw_bitmap(main_menu_bg, 0, 0, 0);
-        al_draw_bitmap(main_menu_pointer, pointer_x, pointer_y, 0);
+        //al_draw_bitmap(main_menu_bg, 0, 0, 0);
+        //al_draw_bitmap(main_menu_pointer, pointer_x, pointer_y, 0);
         al_flip_display();
     }
 
@@ -156,8 +156,8 @@ void init_interface()
     pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, "CONTINUE");
     pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, "EXIT");
 
-    main_menu_buttons[MENU_START] = create_button(64, 64, 276, 176, "START");
-    main_menu_buttons[MENU_EDITOR] = create_button(64, 64  + 32 + 176, 276, 176, "EDITOR");
+    main_menu_buttons[MENU_START] = create_button(64, 64, 276, 176, "START GAME");
+    main_menu_buttons[MENU_EDITOR] = create_button(64, 64  + 32 + 176, 276, 176, "MAP EDITOR");
     main_menu_buttons[MENU_EXIT] = create_button(64, 64 + 32 + 176 + 32 + 176, 276, 176, "EXIT");
 
     coin_icon = al_create_bitmap(64*5, 64);
