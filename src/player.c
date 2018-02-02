@@ -207,6 +207,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
             if (object->type == SIZE_MUSHROOM)
             {
                 kill(object, i, list);
+
                 if (is_actually_killed(object))
                 {
                     i--;
@@ -241,7 +242,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 if (object->type != KOOPA_SHELL && object->type != ENEMY_PIRANHA_PLANT)
                 {
                     if (!(object->type == ENEMY_KOOPA && object->counter > 0))
-                    kill(object, i, list);
+                        kill(object, i, list);
                     if (is_actually_killed(object))
                     {
                         i--;
@@ -280,7 +281,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 }
                 else
                 {
-                    if (abs_float(object->physics.speed.x) > 1.0f) // just some inaccuracy to be safe
+                    if (abs_float(object->physics.speed.x) > 0.1f) // just some inaccuracy to be safe
                     {
                         int dir_x = (object->physics.speed.x > 0) ? RIGHT : (object->physics.speed.x < 0 ? LEFT : STATIC);
 

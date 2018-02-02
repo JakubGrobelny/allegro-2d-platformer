@@ -33,7 +33,6 @@ typedef struct Button
 } Button;
 
 Button pause_menu_buttons[2]; // 0 - unpause, 1 - exit
-Button main_menu_buttons[3];
 int active_button;
 
 typedef enum
