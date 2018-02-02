@@ -24,6 +24,12 @@ void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool*
         al_wait_for_event(event_queue, &event);
         update_buttons(&event, keys_down, keys_up, keys_active);
 
+        if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+        {
+            *exit = true;
+            break;
+        }
+
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
             if (keys_down[KEY_UP])
