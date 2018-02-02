@@ -73,7 +73,7 @@ typedef enum
     CANNON_LEFT,
     CANNON_RIGHT,
     BULLET,
-    COIN // TODO TODO TODO TODO TODO
+    COIN
 
 } ObjectTypes;
 

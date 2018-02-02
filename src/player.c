@@ -221,6 +221,20 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 continue;
             }
 
+            if (object->type == COIN)
+            {
+                kill(object, i, list);
+
+                if (is_actually_killed(object))
+                {
+                    i--;
+                    size--;
+                }
+
+                coins++;
+                continue;
+            }
+
             if (object->type == ENEMY_PIRANHA_PLANT)
             {
                 if (object->animation_frame > 1)

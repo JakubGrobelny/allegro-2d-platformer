@@ -233,7 +233,7 @@ void kill(Object* object, int i, ObjectsList* list)
     // if (object->pos_y >= MAP_HEIGHT && object->pos_x > 0)
     // printf("An object of type %d was killed. It's index was %d\n", object->type, i);
 
-    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL)
+    if (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL || object->type == COIN)
         pop_element_ol(list, i);
     else
     {
@@ -372,7 +372,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
     {
         Object* object = get_element_pointer_ol(objects, i);
 
-        if (distance_x(object, player) <= RENDER_DISTANCE) // only update objects that are close to the player
+        if (distance_x(object, player) <= RENDER_DISTANCE && object->type != COIN) // only update objects that are close to the player
         {
             if (object->type == PARTICLE_NORMAL)
             {
@@ -403,9 +403,9 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
                     object->counter--;
             }
 
-            if (object->type != BULLET)
+            if (object->type != BULLET && object->type != COIN)
                 apply_vectors(object, level, objects);
-            else
+            else if (object->type == BULLET)
             {
                 object->pos_x += object->physics.speed.x;
                 object->hitbox.pos_x += object->physics.speed.x;
@@ -492,7 +492,7 @@ void update_non_static_objects(ObjectsList* objects, Object level[MAP_HEIGHT][MA
 
 bool is_actually_killed(Object* object)
 {
-    return (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL);
+    return (object->type == PARTICLE_NORMAL || object->type == ENEMY_KOOPA || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING || object->type == KOOPA_SHELL || object->type == COIN);
 
 }
 

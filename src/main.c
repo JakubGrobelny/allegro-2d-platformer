@@ -261,6 +261,12 @@ int main()
         init_object(&temp_brick, CANNON_LEFT, 40*64, 4*64, 64, 128, RECTANGLE, 40*64, 4*64, 64, 128, static_physics, 1);
         level[4][40] = temp_brick;
 
+        bind_bitmap(&temp_brick, secret_brick);
+        init_object(&temp_brick, COIN, 30*64, 7*64, 64, 64, RECTANGLE, 30*64, 7*64, 24, 36, static_physics, 1);
+        temp_brick.animation_frame = 3;
+        temp_brick.alive = false;
+        push_back_ol(&non_static_elements, temp_brick);
+
     // screen offset to the right
     int screen_offset = 0;
 
