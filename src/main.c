@@ -1,5 +1,4 @@
 #include <allegro5/allegro.h>
-#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_native_dialog.h>
 #include <stdio.h>
 
@@ -10,6 +9,7 @@
 #include "player.h"
 #include "object_updates.h"
 #include "interface.h"
+#include "bitmap.h"
 
 int main()
 {
@@ -101,34 +101,6 @@ int main()
     player_big_bitmap = al_create_bitmap(64, 128 * 17);
     player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
     bind_bitmap(&player, player_bitmap);
-
-    ALLEGRO_BITMAP* brick = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* brick2 = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* brick3 = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* secret_brick = al_create_bitmap(64, 64*5);
-    ALLEGRO_BITMAP* cloud = al_create_bitmap(256, 256);
-    ALLEGRO_BITMAP* enemy1 = al_create_bitmap(64, 64*3);
-    ALLEGRO_BITMAP* enemy2 = al_create_bitmap(96, 80*7);
-    ALLEGRO_BITMAP* flower = al_create_bitmap(128, 128 * 4);
-    ALLEGRO_BITMAP* pipe_top_left = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* pipe_top_right = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* pipe_left = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* pipe_right = al_create_bitmap(64, 64);
-    ALLEGRO_BITMAP* cannon = al_create_bitmap(64, 256);
-
-    brick = al_load_bitmap("./resources/textures/brick_orange.png");
-    brick2 = al_load_bitmap("./resources/textures/brick_orange_unbreakable.png");
-    brick3 = al_load_bitmap("./resources/textures/orange_rock.png");
-    secret_brick = al_load_bitmap("./resources/textures/secret_brick.png");
-    cloud = al_load_bitmap("./resources/textures/cloud.png");
-    enemy1 = al_load_bitmap("./resources/textures/enemy_1.png");
-    enemy2 = al_load_bitmap("./resources/textures/enemy_2.png");
-    flower = al_load_bitmap("./resources/textures/flower.png");
-    pipe_top_left = al_load_bitmap("./resources/textures/pipe_top_left.png");
-    pipe_top_right = al_load_bitmap("./resources/textures/pipe_top_right.png");
-    pipe_left = al_load_bitmap("./resources/textures/pipe_left.png");
-    pipe_right = al_load_bitmap("./resources/textures/pipe_right.png");
-    cannon = al_load_bitmap("./resources/textures/cannon.png");
 
     Object temp_enemy;
         bind_bitmap(&temp_enemy, enemy1);
@@ -262,7 +234,7 @@ int main()
         level[4][40] = temp_brick;
 
         bind_bitmap(&temp_brick, secret_brick);
-        init_object(&temp_brick, COIN, 30*64, 7*64, 64, 64, RECTANGLE, 30*64, 7*64, 24, 36, static_physics, 1);
+        init_object(&temp_brick, COIN, 30*64, 7*64, 64, 64, RECTANGLE, 30*64 + 21, 7*64, 24, 64, static_physics, 1);
         temp_brick.animation_frame = 3;
         temp_brick.alive = false;
         push_back_ol(&non_static_elements, temp_brick);
@@ -368,7 +340,7 @@ int main()
             for (int i = 0; i < non_static_elements.size; i++)
             {
                 draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+                draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             // PLAYER
