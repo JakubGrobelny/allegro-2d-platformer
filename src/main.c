@@ -69,11 +69,6 @@ int main()
     al_start_timer(timer);
 
     // creating structures
-    Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
-    Physics player_physics = create_physics(0.1f, 0.0f, 0.47f, 21, 0.9f);
-    Physics goomba_physics = create_physics(3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
-    Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 2.0f);
-    Physics flying_koopa_physics = create_physics(-3.0f, 0.0f, 3.0f, 13.0f, 0.5f);
 
     Object level[MAP_HEIGHT][MAP_WIDTH]; // row / column
     // the above array will only hold objects that are STATIC and unable to move so they always stay in their position in the grid
@@ -90,6 +85,7 @@ int main()
     }
 
     Object player;
+    Physics player_physics = create_physics(0.1f, 0.0f, 0.47f, 21, 0.9f);
     init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
 
     ObjectsList non_static_elements;
