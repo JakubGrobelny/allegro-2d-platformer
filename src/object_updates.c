@@ -144,6 +144,21 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
     object->pos_x += object->physics.speed.x;
     object->pos_y += object->physics.speed.y;
 
+    // check if player is not leaving the map
+    if (object->type == PLAYER || object->type == PLAYER_BIG)
+    {
+        if (object->pos_x < 0)
+        {
+            object->pos_x = 0;
+            object->physics.speed.x = 0.0f;
+        }
+        else if (object->pos_x + object->width > MAP_WIDTH * 64)
+        {
+            object->pos_x = (MAP_WIDTH * 64) - object->width;
+            object->physics.speed.x = 0.0f;
+        }
+    }
+
     if (object->alive)
     {
         handle_being_stuck(object, level, previous_pos_x, previous_pos_y);
@@ -152,9 +167,9 @@ void apply_vectors(Object* object, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsL
         object->hitbox.pos_x = object->pos_x + (object->width - object->hitbox.width) / 2;
 
         if (previous_speed_x != object->physics.speed.x)
-        object->physics.speed.x = 0;
+            object->physics.speed.x = 0;
         if (previous_speed_y != object->physics.speed.y)
-        object->physics.speed.y = 0;
+            object->physics.speed.y = 0;
 
         // SPECIAL OBJECT TYPES HANDLING
         if (object->type == ENEMY_GOOMBA || object->type == ENEMY_KOOPA || object->type == KOOPA_SHELL || object->type == SIZE_MUSHROOM || object->type == ENEMY_KOOPA_FLYING)
