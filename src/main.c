@@ -170,7 +170,8 @@ int main()
 
             for (int i = 0; i < clouds.size; i++)
             {
-                draw_object(get_element_pointer_ol(&clouds, i), (int)(screen_offset / 2));
+                if (distance_x(&player, get_element_pointer_ol(&clouds, i)) <= RENDER_DISTANCE + screen_offset / 2)
+                    draw_object(get_element_pointer_ol(&clouds, i), (int)(screen_offset / 2));
             }
 
             // BACKGROUND
@@ -179,8 +180,9 @@ int main()
             {
                 for (int width = 0; width < MAP_WIDTH; width++)
                 {
-                    if (background_elements[height][width].type != EMPTY)
-                        draw_object(&background_elements[height][width], screen_offset);
+                    if (distance_x(&player, &level[height][width]) <= RENDER_DISTANCE)
+                        if (background_elements[height][width].type != EMPTY)
+                            draw_object(&background_elements[height][width], screen_offset);
                 }
             }
 
@@ -192,7 +194,8 @@ int main()
                 {
                     if (level[height][width].type != EMPTY)
                     {
-                        draw_object(&level[height][width], screen_offset);
+                        if (distance_x(&player, &level[height][width]) <= RENDER_DISTANCE)
+                            draw_object(&level[height][width], screen_offset);
                         //draw_hitbox(level[height][width].hitbox, screen_offset);
                     }
                 }
@@ -202,7 +205,8 @@ int main()
 
             for (int i = 0; i < non_static_elements.size; i++)
             {
-                draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
+                if (distance_x(&player, get_element_pointer_ol(&non_static_elements, i)) <= RENDER_DISTANCE)
+                    draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
                 //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
