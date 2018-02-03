@@ -175,15 +175,14 @@ int main()
 
             // BACKGROUND
 
-
-            // for (int height = 0; height < MAP_HEIGHT; height++) // TODO: limit the range to the window's size (also maybe merge background display with map display)
-            // {
-            //     for (int width = 0; width < MAP_WIDTH; width++)
-            //     {
-            //         if (background_elements[height][width].type != EMPTY)
-            //             draw_object(&background_elements[height][width], screen_offset / 2);
-            //     }
-            // }
+            for (int height = 0; height < MAP_HEIGHT; height++) // TODO: limit the range to the window's size (also maybe merge background display with map display)
+            {
+                for (int width = 0; width < MAP_WIDTH; width++)
+                {
+                    if (background_elements[height][width].type != EMPTY)
+                        draw_object(&background_elements[height][width], screen_offset);
+                }
+            }
 
             // MAP
 

@@ -46,7 +46,7 @@ void init_bitmaps()
     bitmap_cloud = al_create_bitmap(128, 128);
     bitmap_cloud_big = al_create_bitmap(192, 128);
     bitmap_bush = al_create_bitmap(128, 64);
-    bitmap_bush_big = al_create_bitmap(192, 64);
+    bitmap_bush_big = al_create_bitmap(192, 68);
     bitmap_fence = al_create_bitmap(64, 64);
     bitmap_hill_top = al_create_bitmap(64, 64);
     bitmap_hill_middle_patterned_right = al_create_bitmap(64, 64);
@@ -77,7 +77,7 @@ void init_bitmaps()
     bitmap_bush = al_load_bitmap("./resources/textures/bush.png");
     bitmap_bush_big = al_load_bitmap("./resources/textures/bush_big.png");
     bitmap_fence = al_load_bitmap("./resources/textures/fence.png");
-    bitmap_hill_top = al_load_bitmap("./resources/textures/hill_top");
+    bitmap_hill_top = al_load_bitmap("./resources/textures/hill_top.png");
     bitmap_hill_middle_patterned_right = al_load_bitmap("./resources/textures/hill_mid_pattern_r.png");
     bitmap_hill_middle_patterned_left = al_load_bitmap("./resources/textures/hill_mid_pattern_l.png");
     bitmap_hill_middle = al_load_bitmap("./resources/textures/hill_mid.png");

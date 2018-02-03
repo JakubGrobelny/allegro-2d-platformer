@@ -143,7 +143,77 @@ void parse_map_line(Object level[MAP_HEIGHT][MAP_WIDTH], int line_number, char* 
 
 void parse_background_line(Object background_elements[MAP_HEIGHT][MAP_WIDTH], int line_number, char* line_str)
 {
-    // TODO
+    Object obj;
+    Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+    for (int x = 0; x < MAP_WIDTH; x++)
+    {
+        if (line_str[x] == '\0')
+        {
+            printf("Error while parsing background information! (%d%s line too short)\nx = %d, line: %s\n", line_number, line_number % 10 == 1 ? "st" : line_number % 10 == 2 ? "nd" : line_number % 10 == 3 ? "rd" : "th", x, line_str);
+            exit(-1);
+        }
+        else
+        {
+            int size_x = 64;
+            int size_y = 64;
+            int type = BACKGROUND;
+
+            switch (line_str[x])
+            {
+                case 'b':
+                    bind_bitmap(&obj, bitmap_bush);
+                    size_x = 128;
+                    size_y = 64;
+                    break;
+                case 'B':
+                    bind_bitmap(&obj, bitmap_bush_big);
+                    size_x = 192;
+                    size_y = 68;
+                    break;
+                case '#':
+                    bind_bitmap(&obj, bitmap_fence);
+                    break;
+                case '^':
+                    bind_bitmap(&obj, bitmap_hill_top);
+                    break;
+                case '>':
+                    bind_bitmap(&obj, bitmap_hill_middle_patterned_right);
+                    break;
+                case '<':
+                    bind_bitmap(&obj, bitmap_hill_middle_patterned_left);
+                    break;
+                case '_':
+                    bind_bitmap(&obj, bitmap_hill_middle);
+                    break;
+                case '\\':
+                    bind_bitmap(&obj, bitmap_hill_slope_right);
+                    break;
+                case '/':
+                    bind_bitmap(&obj, bitmap_hill_slope_left);
+                    break;
+                case '|':
+                    bind_bitmap(&obj, bitmap_tree_bottom);
+                    break;
+                case 'o':
+                    bind_bitmap(&obj, bitmap_tree_small);
+                    break;
+                case 'O':
+                    bind_bitmap(&obj, bitmap_tree);
+                    size_y = 128;
+                    break;
+                case '0':
+                    type = EMPTY;
+                    break;
+                default:
+                    printf("Unexpected object type (%c) in the level file!\n", line_str[x]);
+                    exit(-1);
+            }
+
+            init_object(&obj, type, x*64, line_number*64, size_x, size_y, RECTANGLE, x*64, line_number*64, size_x, size_y, static_physics, 1);
+            background_elements[line_number][x] = obj;
+        }
+    }
 }
 
 void parse_object_line(ObjectsList* list, char* line)
