@@ -21,6 +21,8 @@ extern ALLEGRO_BITMAP* bitmap_plant;
 // BACKGROUND
 extern ALLEGRO_BITMAP* bitmap_cloud;
 extern ALLEGRO_BITMAP* bitmap_cloud_big;
+extern ALLEGRO_BITMAP* bitmap_bush;
+extern ALLEGRO_BITMAP* bitmap_bush_big;
 
 // loads textures
 void init_bitmaps();

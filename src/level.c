@@ -215,7 +215,7 @@ void parse_object_line(ObjectsList* list, char* line)
 void generate_clouds(ObjectsList* clouds)
 {
     const int top_y = 128;
-    const int bottom_y = 6*64;
+    const int bottom_y = 7*64;
 
     Physics cloud_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
     Object cloud;

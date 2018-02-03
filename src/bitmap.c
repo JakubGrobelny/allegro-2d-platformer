@@ -14,6 +14,8 @@ ALLEGRO_BITMAP* bitmap_pipe_top_right;
 ALLEGRO_BITMAP* bitmap_pipe_left;
 ALLEGRO_BITMAP* bitmap_pipe_right;
 ALLEGRO_BITMAP* bitmap_cannon;
+ALLEGRO_BITMAP* bitmap_bush;
+ALLEGRO_BITMAP* bitmap_bush_big;
 
 void init_bitmaps()
 {
@@ -32,6 +34,8 @@ void init_bitmaps()
     bitmap_brick_unbreakable =         al_create_bitmap(64,  64        );
     bitmap_cloud =                     al_create_bitmap(128, 128       );
     bitmap_cloud_big =                 al_create_bitmap(192, 128       );
+    bitmap_bush =                      al_create_bitmap(128, 64        );
+    bitmap_bush_big =                  al_create_bitmap(192, 64        );
 
     bitmap_cloud =                     al_load_bitmap("./resources/textures.cloud.png");
     bitmap_plant =                     al_load_bitmap("./resources/textures/flower.png");
@@ -48,6 +52,8 @@ void init_bitmaps()
     bitmap_brick_unbreakable =         al_load_bitmap("./resources/textures/brick_orange_unbreakable.png");
     bitmap_cloud =                     al_load_bitmap("./resources/textures/cloud.png");
     bitmap_cloud_big =                 al_load_bitmap("./resources/textures/cloud_big.png");
+    bitmap_bush =                      al_load_bitmap("./resources/textures/bush.png");
+    bitmap_bush_big =                  al_load_bitmap("./resources/textures/bush_big.png");
 }
 
 void destroy_bitmaps()
