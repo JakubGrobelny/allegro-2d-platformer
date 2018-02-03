@@ -1,5 +1,19 @@
 #include "bitmap.h"
 
+ALLEGRO_BITMAP* bitmap_brick;
+ALLEGRO_BITMAP* bitmap_brick_unbreakable;
+ALLEGRO_BITMAP* bitmap_brick_floor;
+ALLEGRO_BITMAP* bitmap_secret_brick;
+ALLEGRO_BITMAP* bitmap_cloud;
+ALLEGRO_BITMAP* bitmap_enemy_goomba;
+ALLEGRO_BITMAP* bitmap_enemy_koopa;
+ALLEGRO_BITMAP* bitmap_plant;
+ALLEGRO_BITMAP* bitmap_pipe_top_left;
+ALLEGRO_BITMAP* bitmap_pipe_top_right;
+ALLEGRO_BITMAP* bitmap_pipe_left;
+ALLEGRO_BITMAP* bitmap_pipe_right;
+ALLEGRO_BITMAP* bitmap_cannon;
+
 void init_bitmaps()
 {
     bitmap_cloud =                     al_create_bitmap(256, 256       );
@@ -29,4 +43,9 @@ void init_bitmaps()
     bitmap_pipe_top_left =             al_load_bitmap("./resources/textures/pipe_top_left.png");
     bitmap_pipe_top_right =            al_load_bitmap("./resources/textures/pipe_top_right.png");
     bitmap_brick_unbreakable =         al_load_bitmap("./resources/textures/brick_orange_unbreakable.png");
+}
+
+void destroy_bitmaps()
+{
+
 }

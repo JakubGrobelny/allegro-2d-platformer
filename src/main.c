@@ -10,6 +10,7 @@
 #include "object_updates.h"
 #include "interface.h"
 #include "bitmap.h"
+#include "level.h"
 
 int main()
 {
@@ -58,6 +59,7 @@ int main()
     }
 
     init_interface();
+    init_bitmaps();
 
     // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -75,21 +77,14 @@ int main()
     Object background_elements[MAP_HEIGHT][MAP_WIDTH];
     // array that holds the decorative objects in the background
 
-    for (int i = 0; i < MAP_HEIGHT; i++)
-    {
-        for (int e = 0; e < MAP_WIDTH; e++)
-        {
-            init_object(&level[i][e], EMPTY, e*64, i*64, 64, 64, RECTANGLE, e*64, i*64, 64, 64, static_physics, 0);
-            background_elements[i][e] = level[i][e];
-        }
-    }
-
     Object player;
     Physics player_physics = create_physics(0.1f, 0.0f, 0.47f, 21, 0.9f);
     init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
 
-    ObjectsList non_static_elements;
-    non_static_elements = create_objects_list(1);
+    ObjectsList non_static_elements = create_objects_list(1);
+    ObjectsList clouds = create_objects_list(1);
+
+    load_level("./level/test_level.lvl", level, background_elements, &non_static_elements, &clouds);
 
     // bitmaps
     player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
@@ -98,10 +93,10 @@ int main()
     player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
     bind_bitmap(&player, player_bitmap);
 
-    Object temp_cloud; // TODO change to objectslist clouds
-        bind_bitmap(&temp_cloud, cloud);
-        init_object(&temp_cloud, BACKGROUND, 4*64, 1*64, 256, 256, RECTANGLE, 0, 0, 1, 1, static_physics, 1);
-        background_elements[1][4] = temp_cloud;
+    // Object temp_cloud; // TODO change to objectslist clouds
+    //     bind_bitmap(&temp_cloud, cloud);
+    //     init_object(&temp_cloud, BACKGROUND, 4*64, 1*64, 256, 256, RECTANGLE, 0, 0, 1, 1, static_physics, 1);
+    //     background_elements[1][4] = temp_cloud;
 
     // screen offset to the right
     int screen_offset = 0;
@@ -178,14 +173,14 @@ int main()
 
             // BACKGROUND
 
-            for (int height = 0; height < MAP_HEIGHT; height++) // TODO: limit the range to the window's size (also maybe merge background display with map display)
-            {
-                for (int width = 0; width < MAP_WIDTH; width++)
-                {
-                    if (background_elements[height][width].type != EMPTY)
-                        draw_object(&background_elements[height][width], screen_offset / 2);
-                }
-            }
+            // for (int height = 0; height < MAP_HEIGHT; height++) // TODO: limit the range to the window's size (also maybe merge background display with map display)
+            // {
+            //     for (int width = 0; width < MAP_WIDTH; width++)
+            //     {
+            //         if (background_elements[height][width].type != EMPTY)
+            //             draw_object(&background_elements[height][width], screen_offset / 2);
+            //     }
+            // }
 
             // MAP
 
@@ -204,7 +199,7 @@ int main()
             for (int i = 0; i < non_static_elements.size; i++)
             {
                 draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
-                draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
+                //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
 
             // PLAYER
@@ -225,10 +220,8 @@ int main()
     al_destroy_timer(timer);
     al_destroy_display(display);
     al_destroy_event_queue(event_queue);
-    al_destroy_bitmap(player_bitmap);
-    // TODO: destroy the rest of bitmaps and stuff
-    al_destroy_bitmap(brick);
-    delete_list(&non_static_elements);
+
+    destroy_bitmaps();
 
     return 0;
 }

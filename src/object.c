@@ -27,7 +27,7 @@ void draw_object(Object* object, int screen_offset)
 {
     if (!object->bitmap || !object)
     {
-        printf("Error! Object's %d,%d bitmap is missing!\n", object->pos_x, object->pos_y);
+        printf("Error! Object's (%d,%d type: %d) bitmap is missing!\n", object->pos_x, object->pos_y, object->type);
         exit(0);
     }
     else

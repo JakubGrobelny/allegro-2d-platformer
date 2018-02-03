@@ -1,3 +1,4 @@
+#include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 
 #ifndef _BITMAP
@@ -19,6 +20,10 @@ extern ALLEGRO_BITMAP* bitmap_cannon;
 
 extern ALLEGRO_BITMAP* player_bitmap;
 
+// loads textures
 void init_bitmaps();
+
+// destroys stuff
+void destroy_bitmaps();
 
 #endif

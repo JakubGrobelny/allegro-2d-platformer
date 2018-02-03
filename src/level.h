@@ -1,5 +1,5 @@
 #include "object_updates.h"
-#include "bitmaps.h"
+#include "bitmap.h"
 
 #include <string.h>
 
@@ -17,5 +17,8 @@ void parse_background_line(Object background_elements[MAP_HEIGHT][MAP_WIDTH], in
 
 // adds loaded object to the objects list
 void parse_object_line(ObjectsList* list, char* line);
+
+// randomizes clouds in the background
+void generate_clouds(ObjectsList* clouds);
 
 #endif
