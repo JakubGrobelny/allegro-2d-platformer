@@ -55,24 +55,28 @@ typedef enum
     Enum of possible types of objects
      */
 
-    PLAYER,
-    PLAYER_BIG,
-    EMPTY,
+    //enemies
     ENEMY_GOOMBA,
     ENEMY_KOOPA,
     ENEMY_KOOPA_FLYING,
     ENEMY_PIRANHA_PLANT,
-    KOOPA_SHELL,
+    //player
+    PLAYER,
+    PLAYER_BIG,
+    EMPTY,
+    //blocks
     NORMAL_BLOCK,
     UNBREAKABLE_BLOCK,
     SECRET_BLOCK,
     SECRET_BLOCK_MUSHROOM,
     BACKGROUND,
-    PARTICLE_NORMAL,
-    SIZE_MUSHROOM,
     CANNON_LEFT,
     CANNON_RIGHT,
+    //spawned
     BULLET,
+    KOOPA_SHELL,
+    PARTICLE_NORMAL,
+    SIZE_MUSHROOM,
     COIN
 
 } ObjectTypes;

@@ -1,6 +1,6 @@
 #include "level.h"
 
-void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object background_elements[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_objects, ObjectsList*)
+void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object background_elements[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_objects, ObjectsList* clouds)
 {
     FILE* level_file;
     level_file = fopen(path, "r");;
@@ -130,7 +130,7 @@ void parse_map_line(Object level[MAP_HEIGHT][MAP_WIDTH], int line_number, char* 
 
 void parse_background_line(Object background_elements[MAP_HEIGHT][MAP_WIDTH], int line_number, char* line_str)
 {
-
+    // TODO
 }
 
 void parse_object_line(ObjectsList* list, char* line)
@@ -138,4 +138,70 @@ void parse_object_line(ObjectsList* list, char* line)
     Physics goomba_physics = create_physics(3.0f, 0.0f, 3.0f, 20.0f, 1.0f);
     Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 2.0f);
     Physics flying_koopa_physics = create_physics(-3.0f, 0.0f, 3.0f, 13.0f, 0.5f);
+    Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+
+    char type = line[0];
+    int pos_x;
+    int pos_y;
+
+    int i = 2;
+
+    char str[8] = '\0';
+
+    while(line[i] != ';')
+    {
+        str[i - 2] = line[i];
+        i++;
+    }
+    i++;
+
+    pos_x = atoi(str);
+    str = '\0';
+
+    while(line[i] != '.')
+    {
+        str[i - 2] = line[i];
+        i++;
+    }
+
+    pos_y = atoi(str);
+
+    Object obj;
+
+    switch (type)
+    {
+        case '0': // goomba
+            bind_bitmap(&obj, bitmap_enemy_goomba);
+            init_object(&obj, ENEMY_GOOMBA, pos_x, pos_y, 64, 64, RECTANGLE, pos_x + 7, pos_y + 8, 50, 56, goomba_physics, 2);
+            push_back_ol(non_static_objects, obj);
+            return;
+        case '1': // koopa
+            bind_bitmap(&obj, bitmap_enemy_koopa);
+            init_object(&obj, ENEMY_KOOPA, pos_x, pos_y, 96, 80, RECTANGLE, pos_x + 16, pos_y - 16, 64, 80, koopa_physics, 4);
+            push_back_ol(non_static_objects, obj);
+            return;
+        case '2': // koopa flying
+            bind_bitmap(&obj, bitmap_enemy_koopa);
+            init_object(&obj, ENEMY_KOOPA_FLYING, pos_x, pos_y, 96, 80, RECTANGLE, pos_x + 16, pos_y - 16, 64, 80, flying_koopa_physics, 4);
+            obj.animation_frame = 5;
+            push_back_ol(non_static_objects, obj);
+            return;
+        case '3': // piranha plant
+            bind_bitmap(&obj, bitmap_plant);
+            init_object(&obj, ENEMY_PIRANHA_PLANT, pos_x, pos_y, 128, 128, RECTANGLE, pos_x + 32, pos_y + 48, 64, 80, static_physics, 4);
+            obj.animation_frame = 2;
+            push_back_ol(non_static_objects, obj);
+            return;
+        case '$': // coin
+            bind_bitmap(&obj, bitmap_secret_brick);
+            init_object(&obj, COIN, pos_x, pos_y, 64, 64, RECTANGLE, pos_x + 21, pos_y, 24, 64, static_physics, 1);
+            obj.animation_frame = 3;
+            obj.alive = false;
+            push_back_ol(non_static_objects, obj);
+            return;
+        default:
+            printf("Unexpected non-static object type (%c)!\n", type);
+            exit(-1);
+    }
+
 }
