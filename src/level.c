@@ -57,6 +57,8 @@ void parse_map_line(Object level[MAP_HEIGHT][MAP_WIDTH], int line_number, char* 
             int type = -1;
             float coin_number = 0.0f;
             int frames_number = 1;
+            int size_x = 64;
+            int size_y = 64;
 
             switch (line_str[x])
             {
@@ -88,10 +90,12 @@ void parse_map_line(Object level[MAP_HEIGHT][MAP_WIDTH], int line_number, char* 
                 case '>':
                     bind_bitmap(&obj, bitmap_cannon);
                     type = CANNON_RIGHT;
+                    size_y = 128;
                     break;
                 case '<':
                     bind_bitmap(&obj, bitmap_cannon);
                     type = CANNON_LEFT;
+                    size_y = 128;
                     break;
                 case '!':
                     bind_bitmap(&obj, bitmap_brick_unbreakable);
@@ -122,7 +126,7 @@ void parse_map_line(Object level[MAP_HEIGHT][MAP_WIDTH], int line_number, char* 
                     exit(-1);
             }
 
-            init_object(&obj, type, x*64, line_number*64, 64, 64, RECTANGLE, x*64, line_number*64, 64, 64, static_physics, frames_number);
+            init_object(&obj, type, x*64, line_number*64, size_x, size_y, RECTANGLE, x*64, line_number*64, size_x, size_y, static_physics, frames_number);
             obj.physics.mass = coin_number;
 
             level[line_number][x] = obj;
