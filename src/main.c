@@ -93,11 +93,6 @@ int main()
     player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
     bind_bitmap(&player, player_bitmap);
 
-    // Object temp_cloud; // TODO change to objectslist clouds
-    //     bind_bitmap(&temp_cloud, cloud);
-    //     init_object(&temp_cloud, BACKGROUND, 4*64, 1*64, 256, 256, RECTANGLE, 0, 0, 1, 1, static_physics, 1);
-    //     background_elements[1][4] = temp_cloud;
-
     // screen offset to the right
     int screen_offset = 0;
 
@@ -171,7 +166,15 @@ int main()
         {
             redraw = false;
 
+            // CLOUDS
+
+            for (int i = 0; i < clouds.size; i++)
+            {
+                draw_object(get_element_pointer_ol(&clouds, i), (int)(screen_offset / 2));
+            }
+
             // BACKGROUND
+
 
             // for (int height = 0; height < MAP_HEIGHT; height++) // TODO: limit the range to the window's size (also maybe merge background display with map display)
             // {

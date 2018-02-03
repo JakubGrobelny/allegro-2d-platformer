@@ -2,6 +2,7 @@
 #include "bitmap.h"
 
 #include <string.h>
+#include <time.h>   
 
 #ifndef _LEVEL
 #define _LEVEL

@@ -214,5 +214,33 @@ void parse_object_line(ObjectsList* list, char* line)
 
 void generate_clouds(ObjectsList* clouds)
 {
+    const int top_y = 128;
+    const int bottom_y = 6*64;
 
+    Physics cloud_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    Object cloud;
+
+    int seed;
+    time_t t;
+    seed = time(&t);
+    srand(seed);
+
+    for (int x = 128; x < (MAP_WIDTH-1) * 64; x += 512)
+    {
+        int width = 128;
+
+        if (rand() % 3)
+            bind_bitmap(&cloud, bitmap_cloud);
+        else
+        {
+            bind_bitmap(&cloud, bitmap_cloud_big);
+            width = 192;
+        }
+
+        int y = rand() % (bottom_y - top_y);
+        int x_rand = rand() % 64;
+
+        init_object(&cloud, BACKGROUND, x - x_rand, y, width, 128, RECTANGLE, 0, 0, 1, 1, cloud_physics, 1);
+        push_back_ol(clouds, cloud);
+    }
 }
