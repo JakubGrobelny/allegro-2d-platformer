@@ -12,7 +12,6 @@ enum types
      */
 
     RECTANGLE,
-    CIRCLE
 };
 
 typedef struct
