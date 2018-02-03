@@ -77,7 +77,8 @@ typedef enum
     KOOPA_SHELL,
     PARTICLE_NORMAL,
     SIZE_MUSHROOM,
-    COIN
+    COIN,
+    FINISH_LINE
 
 } ObjectTypes;
 

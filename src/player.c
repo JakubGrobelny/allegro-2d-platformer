@@ -9,6 +9,10 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
         die(player);
+    if (player->pos_x + player->width >= END_LINE)
+    {
+        //TODO: win
+    }
 
     bool running = false;
 

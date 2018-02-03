@@ -192,8 +192,10 @@ int main()
                 for (int width = 0; width < MAP_WIDTH; width++)
                 {
                     if (level[height][width].type != EMPTY)
+                    {
                         draw_object(&level[height][width], screen_offset);
                         //draw_hitbox(level[height][width].hitbox, screen_offset);
+                    }
                 }
             }
 

@@ -23,6 +23,20 @@ extern ALLEGRO_BITMAP* bitmap_cloud;
 extern ALLEGRO_BITMAP* bitmap_cloud_big;
 extern ALLEGRO_BITMAP* bitmap_bush;
 extern ALLEGRO_BITMAP* bitmap_bush_big;
+extern ALLEGRO_BITMAP* bitmap_fence;
+    // HILL
+    extern ALLEGRO_BITMAP* bitmap_hill_top;
+    extern ALLEGRO_BITMAP* bitmap_hill_middle_patterned_right;
+    extern ALLEGRO_BITMAP* bitmap_hill_middle_patterned_left;
+    extern ALLEGRO_BITMAP* bitmap_hill_middle;
+    extern ALLEGRO_BITMAP* bitmap_hill_slope_right;
+    extern ALLEGRO_BITMAP* bitmap_hill_slope_left;
+    // TREE
+    extern ALLEGRO_BITMAP* bitmap_tree_bottom;
+    extern ALLEGRO_BITMAP* bitmap_tree_small;
+    extern ALLEGRO_BITMAP* bitmap_tree;
+// END
+extern ALLEGRO_BITMAP* bitmap_finish_flag;
 
 // loads textures
 void init_bitmaps();

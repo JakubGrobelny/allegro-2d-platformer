@@ -37,6 +37,13 @@ void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object backgrou
 
     generate_clouds(clouds);
 
+    // // creating finish flag at the end of the level
+    Object finish_flag;
+    bind_bitmap(&finish_flag, bitmap_finish_flag);
+    Physics flag_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    init_object(&finish_flag, FINISH_LINE, (MAP_WIDTH - 9) * 64, (MAP_HEIGHT - 5) * 64, 64, 128, RECTANGLE, (MAP_WIDTH - 10) * 64, 0, 128, MAP_HEIGHT * 64, flag_physics, 1);
+    level[MAP_HEIGHT - 4][MAP_WIDTH - 6] = finish_flag;
+
     fclose(level_file);
 }
 

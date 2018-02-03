@@ -7,8 +7,8 @@
 #define FPS 60
 
 // Map properties
-#define MAP_WIDTH   256
-#define MAP_HEIGHT  16
+#define MAP_WIDTH 160
+#define MAP_HEIGHT 13
 #define RENDER_DISTANCE 64*32
 
 // Colors
@@ -34,5 +34,6 @@
 #define START_X 230 - 64
 #define START_Y 6 * 64
 #define BULLET_FREQUENCY 420
+#define END_LINE (MAP_WIDTH-10)*64
 
 #endif
