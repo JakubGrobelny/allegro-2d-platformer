@@ -71,6 +71,9 @@ void draw_game_over_screen();
 // draws information about the next level to the screen
 void draw_next_level_screen(char* path);
 
+// draws a screen after the player finishes the game
+void draw_congratulations_screen();
+
 // draws a button
 void draw_button(Button* button, bool active);
 

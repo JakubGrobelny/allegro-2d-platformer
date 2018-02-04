@@ -104,7 +104,7 @@ int main()
     bool menu = false;
     bool exit = false;
     bool mode_editor = false;
-    int level_status = 0; // 1 - reload, 2 - next level, 3 - game over
+    int level_status = 0; // 1 - reload, 2 - next level, 3 - game over, -1 - finished the game
 
     main_menu(event_queue, &exit, &mode_editor, keys_active, keys_down, keys_up);
 
@@ -127,8 +127,9 @@ int main()
             if (!menu)
             {
                 frame++;
+
                 if (frame > 60)
-                frame = 0;
+                    frame = 0;
 
                 update_non_static_objects(&non_static_elements, level, &player);
                 animate_non_static_objects(&non_static_elements, frame, &player);
@@ -160,8 +161,7 @@ int main()
                     }
                     else
                     {
-                        // TUTUTUTUUUUUUUUUU
-                        // TODO VICTORY SCREEN TODO
+                        level_status = -1;
                     }
                 }
                 else if (level_status == 3)
@@ -195,6 +195,9 @@ int main()
             else
                 menu = true;
         }
+        else if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER && level_status == -1)
+            exit = true;
+
 
         // updating the keyboard
 
@@ -259,6 +262,8 @@ int main()
                 draw_game_over_screen();
             else if (player.alive && level_status == 2)
                 draw_next_level_screen(current_level->path);
+            else if (level_status == -1)
+                draw_congratulations_screen();
 
             if (menu)
                 draw_pause_menu();

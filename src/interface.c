@@ -93,6 +93,13 @@ void draw_game_over_screen()
     draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2, ALIGNMENT_CENTRE, "GAME OVER");
 }
 
+void draw_congratulations_screen()
+{
+    al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK);
+    draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2, ALIGNMENT_CENTRE, "CONGRATULATIONS!");
+    draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2 + 64, ALIGNMENT_CENTRE, "You finished the game!");
+}
+
 void draw_next_level_screen(char* path)
 {
     al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK);
