@@ -47,6 +47,7 @@ typedef enum
     KEY_CTRL,
     KEY_BACKSPACE,
     KEY_RSHIFT,
+    KEY_DOT,
 
     KEYS_AMOUNT // the amount of the keys specified in this enum
 

@@ -159,6 +159,10 @@ void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* 
                 keys_active[KEY_RSHIFT] = true;
                 keys_down[KEY_RSHIFT] = true;
                 break;
+            case ALLEGRO_KEY_FULLSTOP:
+                keys_active[KEY_DOT] = true;
+                keys_down[KEY_DOT] = true;
+                break;
         }
     }
     else if (event->type == ALLEGRO_EVENT_KEY_UP)
@@ -308,6 +312,10 @@ void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* 
             case ALLEGRO_KEY_RSHIFT:
                 keys_active[KEY_RSHIFT] = false;
                 keys_up[KEY_RSHIFT] = true;
+                break;
+            case ALLEGRO_KEY_FULLSTOP:
+                keys_active[KEY_DOT] = false;
+                keys_up[KEY_DOT] = true;
                 break;
         }
     }

@@ -109,10 +109,10 @@ int main()
 
     main_menu(event_queue, &exit, &mode_editor, keys_active, keys_down, keys_up);
 
-    if (!mode_editor)
-        load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
-    else
+    if (mode_editor)
         current_level = select_level(level_list, event_queue, keys_active, keys_down, keys_up);
+
+    load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
 
     while(!exit)
     {
