@@ -246,7 +246,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 }
             }
 
-            if (player->physics.speed.y > 0.9f) // && relative_direction(player, object, BOTTOM))
+            if (player->physics.speed.y > 0.9f && relative_direction(player, object, BOTTOM))
             {
                 if (object->type == ENEMY_KOOPA && !object->counter)
                     spawn_shell(object, list);
