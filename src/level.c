@@ -10,12 +10,21 @@ LevelList* init_level_list()
     LevelList* list = malloc(sizeof(LevelList));
     list->next = NULL;
     list->previous = NULL;
-    fgets(list->path, 256, level_index);
+    fgets(temp_path, 256, level_index);
+
+    int len = strlen(temp_path);
+    if (len > 0 && temp_path[len-1] == '\n')
+        temp_path[len-1] = '\0';
+    strncpy(list->path, temp_path, 256);
 
     LevelList* pointer = list;
 
     while(fgets(temp_path, 256, level_index))
     {
+        len = strlen(temp_path);
+        if (len > 0 && temp_path[len-1] == '\n')
+            temp_path[len-1] = '\0';
+
         pointer->next = create_list_element(temp_path, pointer);
         pointer = pointer->next;
     }

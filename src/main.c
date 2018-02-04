@@ -85,7 +85,7 @@ int main()
     ObjectsList non_static_elements = create_objects_list(1);
     ObjectsList clouds = create_objects_list(1);
 
-    load_level("./level/test_level.lvl", level, background_elements, &non_static_elements, &clouds);
+    load_level(level_list->path, level, background_elements, &non_static_elements, &clouds);
 
     // bitmaps
     player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
