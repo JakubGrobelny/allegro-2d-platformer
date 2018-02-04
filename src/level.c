@@ -1,5 +1,50 @@
 #include "level.h"
 
+LevelList* init_level_list()
+{
+    FILE* level_index;
+    level_index = fopen("./level/level_index", "r");
+
+    char temp_path[256];
+
+    LevelList* list = malloc(sizeof(LevelList));
+    list->next = NULL;
+    list->previous = NULL;
+    fgets(list->path, 256, level_index);
+
+    LevelList* pointer = list;
+
+    while(fgets(temp_path, 256, level_index))
+    {
+        pointer->next = create_list_element(temp_path, pointer);
+        pointer = pointer->next;
+    }
+
+    fclose(level_index);
+
+    return list;
+}
+
+LevelList* create_list_element(char path[], LevelList* previous)
+{
+    LevelList* element = malloc(sizeof(LevelList));
+    element->previous = previous;
+    element->next = NULL;
+    strncpy(element->path, path, 256);
+    return element;
+}
+
+void delete_level_list(LevelList* list)
+{
+    while (list->next != NULL)
+    {
+        list = list->next;
+        free(list->previous);
+    }
+
+    free(list);
+}
+
 void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object background_elements[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_objects, ObjectsList* clouds)
 {
     FILE* level_file;

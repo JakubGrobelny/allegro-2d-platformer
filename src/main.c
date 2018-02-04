@@ -60,6 +60,7 @@ int main()
 
     init_interface();
     init_bitmaps();
+    LevelList* level_list = init_level_list();
 
     // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -230,6 +231,7 @@ int main()
     al_destroy_event_queue(event_queue);
 
     destroy_bitmaps();
+    delete_level_list(level_list);
 
     return 0;
 }
