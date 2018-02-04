@@ -37,6 +37,9 @@ extern ALLEGRO_BITMAP* bitmap_fence;
     extern ALLEGRO_BITMAP* bitmap_tree;
 // END
 extern ALLEGRO_BITMAP* bitmap_finish_flag;
+// PLAYER
+extern ALLEGRO_BITMAP* player_bitmap;
+extern ALLEGRO_BITMAP* player_big_bitmap;
 
 // loads textures
 void init_bitmaps();

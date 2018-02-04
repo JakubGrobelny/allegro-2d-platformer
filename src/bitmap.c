@@ -27,6 +27,8 @@ ALLEGRO_BITMAP* bitmap_tree_bottom;
 ALLEGRO_BITMAP* bitmap_tree_small;
 ALLEGRO_BITMAP* bitmap_tree;
 ALLEGRO_BITMAP* bitmap_finish_flag;
+ALLEGRO_BITMAP* player_bitmap;
+ALLEGRO_BITMAP* player_big_bitmap;
 
 void init_bitmaps()
 {
@@ -58,6 +60,8 @@ void init_bitmaps()
     bitmap_tree_small = al_create_bitmap(64, 64);
     bitmap_tree = al_create_bitmap(64, 128);
     bitmap_finish_flag = al_create_bitmap(64, 128);
+    player_bitmap = al_create_bitmap(64, 64 * 15);
+    player_big_bitmap = al_create_bitmap(64, 128 * 17);
 
     bitmap_cloud = al_load_bitmap("./resources/textures.cloud.png");
     bitmap_plant = al_load_bitmap("./resources/textures/flower.png");
@@ -87,6 +91,8 @@ void init_bitmaps()
     bitmap_tree_small = al_load_bitmap("./resources/textures/tree_small.png");
     bitmap_tree = al_load_bitmap("./resources/textures/tree.png");
     bitmap_finish_flag = al_load_bitmap("./resources/textures/end_flag.png");
+    player_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
+    player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
 }
 
 void destroy_bitmaps()

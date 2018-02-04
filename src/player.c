@@ -9,9 +9,9 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     if (player->hitbox.pos_y >= DISPLAY_HEIGHT && player->alive)
         die(player);
-    if (player->pos_x + player->width >= END_LINE)
+    if (player->pos_x + player->width >= END_LINE && *level_status != 2)
     {
-        //TODO: win
+        player->counter = 180;
         *level_status = 2;
     }
 
@@ -31,7 +31,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
         else
         {
-            player->counter = 200;
+            player->counter = 120;
             *level_status = 3;
         }
     }

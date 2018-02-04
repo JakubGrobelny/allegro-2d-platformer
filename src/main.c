@@ -82,16 +82,11 @@ int main()
     Object player;
     Physics player_physics = create_physics(0.1f, 0.0f, 0.47f, 21, 0.9f);
     init_object(&player, PLAYER, START_X, START_Y, 64, 64, RECTANGLE, 0, 0, 56, 64, player_physics, 15);
+    bind_bitmap(&player, player_bitmap);
 
     ObjectsList non_static_elements = create_objects_list(1);
     ObjectsList clouds = create_objects_list(1);
 
-    // bitmaps
-    player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
-    player_bitmap = al_load_bitmap("./resources/textures/mario_small.png");
-    player_big_bitmap = al_create_bitmap(64, 128 * 17);
-    player_big_bitmap = al_load_bitmap("./resources/textures/mario_big.png");
-    bind_bitmap(&player, player_bitmap);
 
     // screen offset to the right
     int screen_offset = 0;
@@ -155,9 +150,13 @@ int main()
                 {
                     if (current_level->next != NULL)
                     {
-                        current_level = current_level->next;
-                        load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
-                        level_status = 0;
+                        if (player.counter == 1)
+                        {
+                            current_level = current_level->next;
+                            respawn_player(&player, START_X, START_Y);
+                            load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
+                            level_status = 0;
+                        }
                     }
                     else
                     {
@@ -257,9 +256,9 @@ int main()
             draw_hud(lives, coins);
 
             if (!player.alive && level_status == 3)
-            {
                 draw_game_over_screen();
-            }
+            else if (player.alive && level_status == 2)
+                draw_next_level_screen(current_level->path);
 
             if (menu)
                 draw_pause_menu();

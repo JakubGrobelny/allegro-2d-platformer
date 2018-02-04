@@ -7,6 +7,8 @@
 #include <stdbool.h>
 
 #include "defines.h"
+#include "bitmap.h"
+#include "object.h"
 #include "keyboard.h"
 
 #ifndef _INTERFACE
@@ -65,6 +67,9 @@ Button create_button(int x, int y, int width, int height, char* text);
 
 // draws a game over screen when you don't have any lives remaining
 void draw_game_over_screen();
+
+// draws information about the next level to the screen
+void draw_next_level_screen(char* path);
 
 // draws a button
 void draw_button(Button* button, bool active);

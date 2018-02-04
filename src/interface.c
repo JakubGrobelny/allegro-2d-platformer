@@ -93,6 +93,30 @@ void draw_game_over_screen()
     draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2, ALIGNMENT_CENTRE, "GAME OVER");
 }
 
+void draw_next_level_screen(char* path)
+{
+    al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK);
+    char shortened_path[256];
+
+    int i = 8;
+
+    do
+    {
+        shortened_path[i - 8] = path[i];
+        i++;
+    }
+    while (path[i] != '\0');
+
+    i-=8;
+
+    shortened_path[i-4] = '\0';
+
+    draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2 - 128, ALIGNMENT_CENTRE, shortened_path);
+
+    al_draw_bitmap_region(player_bitmap, 0, 0, 64, 64, DISPLAY_WIDTH / 2 - 128, DISPLAY_HEIGHT / 2 - 64, 0);
+    al_draw_textf(font, WHITE, DISPLAY_WIDTH /2 - 64, DISPLAY_HEIGHT / 2 - 64, ALLEGRO_ALIGN_LEFT, " x %d", lives);
+}
+
 void draw_pause_menu()
 {
     al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, al_map_rgba(64, 64, 64, 200));
