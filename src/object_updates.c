@@ -351,7 +351,7 @@ void animate_static_objects(Object level[MAP_HEIGHT][MAP_WIDTH], int frame, Obje
             {
                 if (level[height][width].type == CANNON_LEFT || level[height][width].type == CANNON_RIGHT)
                 {
-                    if (distance_x(player, &level[height][width]))
+                    if (distance_x(player, &level[height][width]) <= RENDER_DISTANCE)
                         fire_from_cannon(&level[height][width], list);
                     continue;
                 }
