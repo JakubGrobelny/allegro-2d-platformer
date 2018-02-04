@@ -56,7 +56,132 @@ void delete_level_list(LevelList* list)
 
 void save_level(LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_elements)
 {
-    // TODO TODO TODO
+    FILE* level_file;
+    level_file = fopen(current_level->path, "w");
+
+    // saving map
+
+    for (int y = 0; y < MAP_HEIGHT; y++)
+    {
+        for (int x = 0; x < MAP_WIDTH; x++)
+        {
+            Object* obj = &level[y][x];
+
+            char output = '0';
+
+            switch (obj->type)
+            {
+                case NORMAL_BLOCK:
+                {
+                    if (obj->bitmap == bitmap_brick)
+                        output = '#';
+                    else if (obj->bitmap == bitmap_brick_floor)
+                        output = '@';
+                    break;
+                }
+                case SECRET_BLOCK:
+                {
+                    if (obj->physics.mass >= 5.0f)
+                        output = '5';
+                    else
+                        output = '$';
+                    break;
+                }
+                case SECRET_BLOCK_MUSHROOM:
+                    output = '&';
+                    break;
+                case CANNON_LEFT:
+                    output = '<';
+                    break;
+                case CANNON_RIGHT:
+                    output = '>';
+                    break;
+                case UNBREAKABLE_BLOCK:
+                {
+                    if (obj->bitmap == bitmap_brick_unbreakable)
+                        output = '!';
+                    else if (obj->bitmap == bitmap_pipe_top_left)
+                        output = 'L';
+                    else if (obj->bitmap == bitmap_pipe_left)
+                        output = 'l';
+                    else if (obj->bitmap == bitmap_pipe_right)
+                        output = 'r';
+                    else if (obj->bitmap == bitmap_pipe_top_right)
+                        output = 'R';
+                    break;
+                }
+                default:
+                    break;
+            }
+
+            fprintf(level_file, "%c", output);
+        }
+        fprintf(level_file, "\n");
+    }
+
+    // saving background
+
+    for (int y = 0; y < MAP_HEIGHT; y++)
+    {
+        for (int x = 0; x < MAP_WIDTH; x++)
+        {
+            char output;
+
+            Object* obj = &background[y][x];
+
+            if (obj->type != EMPTY)
+            {
+                if (obj->bitmap == bitmap_bush)
+                    output = 'b';
+                else if (obj->bitmap == bitmap_bush_big)
+                    output = 'B';
+                else if (obj->bitmap == bitmap_hill_top)
+                    output = '^';
+                else if (obj->bitmap == bitmap_hill_middle_patterned_left)
+                    output = '<';
+                else if (obj->bitmap == bitmap_hill_middle_patterned_right)
+                    output = '>';
+                else if (obj->bitmap == bitmap_hill_middle)
+                    output = '_';
+                else if (obj->bitmap == bitmap_hill_slope_right)
+                    output = '\\';
+                else if (obj->bitmap == bitmap_hill_slope_left)
+                    output = '/';
+                else if (obj->bitmap == bitmap_tree_bottom)
+                    output = '|';
+                else if (obj->bitmap == bitmap_tree_small)
+                    output = 'o';
+                else if (obj->bitmap == bitmap_tree)
+                    output = 'O';
+            }
+            else
+                output = '0';
+
+            fprintf(level_file, "%c", output);
+            }
+        fprintf(level_file, "\n");
+    }
+    // saving objects
+
+    for (int i = 0; i < non_static_elements->size; i++)
+    {
+        Object* obj = get_element_pointer_ol(non_static_elements, i);
+
+        int pos_x;
+        int pos_y;
+        int type;
+
+        if (obj->type <= 3)
+        {
+            type = obj->type;
+            pos_x = obj->pos_x;
+            pos_y = obj->pos_y;
+        }
+
+        fprintf(level_file, "%d-%d;%d.\n", type, pos_x, pos_y);
+    }
+
+    fclose(level_file);
 }
 
 void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object background_elements[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_objects, ObjectsList* clouds)

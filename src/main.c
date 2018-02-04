@@ -269,7 +269,7 @@ int main()
             if (!player.alive && level_status == 3)
                 draw_game_over_screen();
             else if (player.alive && level_status == 2)
-                draw_next_level_screen(current_level->path);
+                draw_next_level_screen(current_level->next->path);
             else if (level_status == -1)
                 draw_congratulations_screen();
 
