@@ -74,6 +74,9 @@ void draw_next_level_screen(char* path);
 // draws a screen after the player finishes the game
 void draw_congratulations_screen();
 
+// draws 64x64 grid
+void draw_grid(int screen_offset);
+
 // draws a button
 void draw_button(Button* button, bool active);
 

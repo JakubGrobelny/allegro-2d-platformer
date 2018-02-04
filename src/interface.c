@@ -100,6 +100,14 @@ void draw_congratulations_screen()
     draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2 + 64, ALIGNMENT_CENTRE, "You finished the game!");
 }
 
+void draw_grid(int screen_offset)
+{
+    for (int x = 0; x <= MAP_WIDTH; x++)
+        al_draw_line(x*64 - screen_offset, 16, x*64 - screen_offset, MAP_HEIGHT*64 + 16, BLACK, 0.0f);
+    for (int y = 0; y <= MAP_HEIGHT; y++)
+        al_draw_line(0 - screen_offset, y*64 + 16, MAP_WIDTH*64 - screen_offset, y*64 + 16, BLACK, 0.0f);
+}
+
 void draw_next_level_screen(char* path)
 {
     al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK);

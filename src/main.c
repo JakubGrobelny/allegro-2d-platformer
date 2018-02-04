@@ -11,6 +11,7 @@
 #include "interface.h"
 #include "bitmap.h"
 #include "level.h"
+#include "editor.h"
 
 int main()
 {
@@ -111,9 +112,7 @@ int main()
     if (!mode_editor)
         load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
     else
-    {
-        // level choosing
-    }
+        current_level = select_level(level_list, event_queue, keys_active, keys_down, keys_up);
 
     while(!exit)
     {
@@ -267,6 +266,9 @@ int main()
 
             if (menu)
                 draw_pause_menu();
+
+            if (mode_editor && !menu)
+                draw_grid(screen_offset);
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
