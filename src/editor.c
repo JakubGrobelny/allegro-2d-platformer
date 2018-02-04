@@ -114,3 +114,12 @@ LevelList* select_level(LevelList* level_list, ALLEGRO_EVENT_QUEUE* event_queue,
     else
         return pointer;
 }
+
+int move_screen(bool* keys_down, bool* keys_up, bool* keys_active)
+{
+    if (keys_active[KEY_LEFT])
+        return -16;
+    else if (keys_active[KEY_RIGHT])
+        return 16;
+    return 0;
+}

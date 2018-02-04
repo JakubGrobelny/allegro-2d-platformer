@@ -10,6 +10,7 @@
 #include "bitmap.h"
 #include "object.h"
 #include "keyboard.h"
+#include "level.h"
 
 #ifndef _INTERFACE
 #define _INTERFACE
@@ -37,6 +38,9 @@ typedef struct Button
 Button pause_menu_buttons[2]; // 0 - unpause, 1 - exit
 int active_button;
 
+Button editor_pause_menu_buttons[3]; // 0 - unpause, 1 - save, 2 - exit
+int editor_pause_menu_active_button;
+
 typedef enum
 {
     ALIGNMENT_CENTRE,
@@ -59,6 +63,13 @@ typedef enum
     MENU_EXIT
 } MenuButtonTypes;
 
+typedef enum
+{
+    EDITOR_UNPAUSE,
+    EDITOR_SAVE,
+    EDITOR_EXIT
+} EditorPauseButtonTypes;
+
 // draws and updates the main menu
 void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up);
 
@@ -73,6 +84,9 @@ void draw_next_level_screen(char* path);
 
 // draws a screen after the player finishes the game
 void draw_congratulations_screen();
+
+// draws pause menu but for editor mode
+void draw_editor_pause_menu();
 
 // draws 64x64 grid
 void draw_grid(int screen_offset);
@@ -97,5 +111,8 @@ void draw_pause_menu();
 
 // updates menu based on mouse/keyboard input
 void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, bool* keys_up);
+
+// updates menu based on mouse/keyboard input
+void update_editor_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_elements);
 
 #endif

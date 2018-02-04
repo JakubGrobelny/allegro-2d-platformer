@@ -35,6 +35,6 @@
 #define END_LINE (MAP_WIDTH-11)*64
 
 #define START_X 2*64
-#define START_Y 6*64
+#define START_Y 9*64
 
 #endif

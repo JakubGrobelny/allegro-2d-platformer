@@ -38,4 +38,7 @@ void parse_object_line(ObjectsList* list, char* line);
 // randomizes clouds in the background
 void generate_clouds(ObjectsList* clouds);
 
+// saves the level to the file
+void save_level(LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_elements);
+
 #endif

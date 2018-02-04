@@ -123,7 +123,7 @@ int main()
         // if the timer has generated an event it's time to update the game's logics
         if(event.type == ALLEGRO_EVENT_TIMER)
         {
-            if (!menu)
+            if (!menu && !mode_editor)
             {
                 frame++;
 
@@ -176,14 +176,24 @@ int main()
                     }
                 }
             }
-            else
-            {
+            else if (menu && !mode_editor)
                 update_pause_menu(&menu, &exit, keys_active, keys_down, keys_up);
+            else if (menu && mode_editor)
+                update_editor_pause_menu(&menu, &exit, keys_active, keys_down, current_level, level, background_elements, &non_static_elements);
+            else if (mode_editor)
+            {
+                screen_offset += move_screen(keys_down, keys_up, keys_active);
+
+                if (screen_offset < 0)
+                    screen_offset = 0;
+                if (screen_offset > (MAP_WIDTH-1) * 64)
+                    screen_offset = (MAP_WIDTH-1) * 64;
             }
 
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
             redraw = true;
         }
+
         // closing the window
         else if(event.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
             break;
@@ -197,9 +207,7 @@ int main()
         else if (event.type == ALLEGRO_EVENT_KEY_DOWN && event.keyboard.keycode == ALLEGRO_KEY_ENTER && level_status == -1)
             exit = true;
 
-
         // updating the keyboard
-
         update_buttons(&event, keys_down, keys_up, keys_active);
 
         // drawing things to the screen
@@ -211,7 +219,7 @@ int main()
 
             for (int i = 0; i < clouds.size; i++)
             {
-                if (distance_x(&player, get_element_pointer_ol(&clouds, i)) <= RENDER_DISTANCE + screen_offset / 2)
+                if (distance_x(&player, get_element_pointer_ol(&clouds, i)) <= RENDER_DISTANCE + screen_offset / 2 || mode_editor)
                     draw_object(get_element_pointer_ol(&clouds, i), (int)(screen_offset / 2));
             }
 
@@ -221,7 +229,7 @@ int main()
             {
                 for (int width = 0; width < MAP_WIDTH; width++)
                 {
-                    if (distance_x(&player, &level[height][width]) <= RENDER_DISTANCE)
+                    if (distance_x(&player, &level[height][width]) <= RENDER_DISTANCE || mode_editor)
                         if (background_elements[height][width].type != EMPTY)
                             draw_object(&background_elements[height][width], screen_offset);
                 }
@@ -235,7 +243,7 @@ int main()
                 {
                     if (level[height][width].type != EMPTY)
                     {
-                        if (distance_x(&player, &level[height][width]) <= RENDER_DISTANCE)
+                        if (distance_x(&player, &level[height][width]) <= RENDER_DISTANCE || mode_editor)
                             draw_object(&level[height][width], screen_offset);
                         //draw_hitbox(level[height][width].hitbox, screen_offset);
                     }
@@ -246,7 +254,7 @@ int main()
 
             for (int i = 0; i < non_static_elements.size; i++)
             {
-                if (distance_x(&player, get_element_pointer_ol(&non_static_elements, i)) <= RENDER_DISTANCE)
+                if (distance_x(&player, get_element_pointer_ol(&non_static_elements, i)) <= RENDER_DISTANCE || mode_editor)
                     draw_object(get_element_pointer_ol(&non_static_elements, i), screen_offset);
                 //draw_hitbox(get_element_pointer_ol(&non_static_elements, i)->hitbox, screen_offset);
             }
@@ -255,7 +263,8 @@ int main()
 
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
-            draw_hud(lives, coins);
+            if (!mode_editor)
+                draw_hud(lives, coins);
 
             if (!player.alive && level_status == 3)
                 draw_game_over_screen();
@@ -264,8 +273,10 @@ int main()
             else if (level_status == -1)
                 draw_congratulations_screen();
 
-            if (menu)
+            if (menu && !mode_editor)
                 draw_pause_menu();
+            else if (menu)
+                draw_editor_pause_menu();
 
             if (mode_editor && !menu)
                 draw_grid(screen_offset);

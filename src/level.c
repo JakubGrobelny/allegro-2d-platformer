@@ -54,6 +54,11 @@ void delete_level_list(LevelList* list)
     free(list);
 }
 
+void save_level(LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_elements)
+{
+    // TODO TODO TODO
+}
+
 void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object background_elements[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_objects, ObjectsList* clouds)
 {
     FILE* level_file;

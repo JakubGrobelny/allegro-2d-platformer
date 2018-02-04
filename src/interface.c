@@ -6,6 +6,9 @@ ALLEGRO_BITMAP* coin_icon;
 Button pause_menu_buttons[2];
 int active_button;
 
+Button editor_pause_menu_buttons[3];
+int editor_pause_menu_active_button;
+
 ALLEGRO_MOUSE_STATE mouse_state;
 
 void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool* keys_active, bool* keys_down, bool* keys_up)
@@ -146,6 +149,19 @@ void draw_pause_menu()
 
 }
 
+void draw_editor_pause_menu()
+{
+    al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, al_map_rgba(64, 64, 64, 200));
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (i == editor_pause_menu_active_button)
+            draw_button(&editor_pause_menu_buttons[i], true);
+        else
+            draw_button(&editor_pause_menu_buttons[i], false);
+    }
+}
+
 void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, bool* keys_up)
 {
     if (keys_down[KEY_UP])
@@ -186,6 +202,50 @@ void update_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_d
     }
 }
 
+void update_editor_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_elements)
+{
+    if (keys_down[KEY_UP])
+        editor_pause_menu_active_button--;
+    else if (keys_down[KEY_DOWN])
+        editor_pause_menu_active_button++;
+
+    if (editor_pause_menu_active_button < EDITOR_UNPAUSE)
+        editor_pause_menu_active_button = EDITOR_UNPAUSE;
+    else if (editor_pause_menu_active_button > EDITOR_EXIT)
+        editor_pause_menu_active_button = EDITOR_EXIT;
+
+    bool mouse_on_button = false;
+
+    for (int i = 0; i < 3; i++)
+    {
+        if (mouse_state.x >= editor_pause_menu_buttons[i].pos_x && mouse_state.x <= editor_pause_menu_buttons[i].pos_x + editor_pause_menu_buttons[i].width)
+        {
+            if (mouse_state.y >= editor_pause_menu_buttons[i].pos_y && mouse_state.y <= editor_pause_menu_buttons[i].pos_y + editor_pause_menu_buttons[i].height)
+            {
+                editor_pause_menu_active_button = i;
+                mouse_on_button = true;
+            }
+        }
+    }
+
+    if (keys_active[KEY_ENTER] || (mouse_state.buttons & 1 && mouse_on_button))
+    {
+        switch (editor_pause_menu_active_button)
+        {
+            case EDITOR_UNPAUSE:
+                *paused = false;
+                break;
+            case EDITOR_SAVE:
+                save_level(current_level, level, background, non_static_elements);
+                *paused = false;
+                break;
+            case EDITOR_EXIT:
+                *exit = true;
+                break;
+        }
+    }
+}
+
 Button create_button(int x, int y, int width, int height, char* text)
 {
     Button new;
@@ -202,9 +262,14 @@ Button create_button(int x, int y, int width, int height, char* text)
 void init_interface()
 {
     active_button = 0;
+    editor_pause_menu_active_button = 0;
 
     pause_menu_buttons[UNPAUSE] = create_button(DISPLAY_WIDTH/2 - 256, 152, 512, 192, "CONTINUE");
     pause_menu_buttons[EXIT] = create_button(DISPLAY_WIDTH/2 - 256, 152 + 192 + 32, 512, 192, "EXIT");
+
+    editor_pause_menu_buttons[EDITOR_UNPAUSE] = create_button(DISPLAY_WIDTH / 2 - 256, 128, 512, 148, "CONTINUE");
+    editor_pause_menu_buttons[EDITOR_SAVE] = create_button(DISPLAY_WIDTH / 2 - 256, 128 + 148 + 32, 512, 148, "SAVE");
+    editor_pause_menu_buttons[EDITOR_EXIT] = create_button(DISPLAY_WIDTH / 2 - 256, 128 + 2*148 + 64, 512, 148, "EXIT");
 
     coin_icon = al_create_bitmap(64*5, 64);
     coin_icon = al_load_bitmap("./resources/textures/secret_brick.png");
