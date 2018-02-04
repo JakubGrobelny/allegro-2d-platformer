@@ -3,7 +3,7 @@
 ALLEGRO_BITMAP* player_bitmap = NULL;
 ALLEGRO_BITMAP* player_big_bitmap = NULL;
 
-void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static, int frame)
+void update_player(Object* player, bool* keys_active, bool* keys_down, bool* keys_up, Object level[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static, int frame, int* level_status)
 {
     Vector previous_speed = player->physics.speed;
 
@@ -12,14 +12,13 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
     if (player->pos_x + player->width >= END_LINE)
     {
         //TODO: win
+        *level_status = 2;
     }
 
     bool running = false;
 
     if (player->counter > 0)
-    {
         player->counter--;
-    }
 
     if (!player->alive && player->counter == 0)
     {
@@ -28,15 +27,12 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
             terminate_velocity(player);
             respawn_player(player, START_X, START_Y);
             player->alive = true;
-            //TODO SCREEN OFFSET = 0
-            //TODO RELOAD LEVEL (from file)
-            //TODO
+            *level_status = 1;
         }
         else
         {
-            //TODO
-            //TODO GAME OVER
-            //TODO
+            player->counter = 200;
+            *level_status = 3;
         }
     }
 
@@ -250,7 +246,7 @@ void non_static_object_interactions(Object* player, ObjectsList* list)
                 }
             }
 
-            if (player->physics.speed.y > 0.0f && relative_direction(player, object, BOTTOM))
+            if (player->physics.speed.y > 0.9f) // && relative_direction(player, object, BOTTOM))
             {
                 if (object->type == ENEMY_KOOPA && !object->counter)
                     spawn_shell(object, list);

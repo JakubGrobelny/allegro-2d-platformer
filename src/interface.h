@@ -63,6 +63,9 @@ void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool*
 // creates a new button
 Button create_button(int x, int y, int width, int height, char* text);
 
+// draws a game over screen when you don't have any lives remaining
+void draw_game_over_screen();
+
 // draws a button
 void draw_button(Button* button, bool active);
 

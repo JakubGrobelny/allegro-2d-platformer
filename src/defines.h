@@ -31,9 +31,10 @@
 
 // Other
 #define BUMP_AMOUNT -5.0f
-#define START_X 230 - 64
-#define START_Y 6 * 64
 #define BULLET_FREQUENCY 420
 #define END_LINE (MAP_WIDTH-11)*64
+
+#define START_X 2*64
+#define START_Y 6*64
 
 #endif

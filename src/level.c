@@ -57,7 +57,12 @@ void delete_level_list(LevelList* list)
 void load_level(char* path, Object level[MAP_HEIGHT][MAP_WIDTH], Object background_elements[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_objects, ObjectsList* clouds)
 {
     FILE* level_file;
-    level_file = fopen(path, "r");;
+    level_file = fopen(path, "r");
+
+    non_static_objects->size = 0;
+    non_static_objects->first = 0;
+    clouds->size = 0;
+    clouds->first = 0;
 
     if (!level_file)
     {

@@ -61,6 +61,7 @@ int main()
     init_interface();
     init_bitmaps();
     LevelList* level_list = init_level_list();
+    LevelList* current_level = level_list;
 
     // registering event sources
     al_register_event_source(event_queue, al_get_display_event_source(display));
@@ -80,12 +81,10 @@ int main()
 
     Object player;
     Physics player_physics = create_physics(0.1f, 0.0f, 0.47f, 21, 0.9f);
-    init_object(&player, PLAYER, 230 - 64, 6*64, 64, 64, RECTANGLE, 246, 6*64, 56, 64, player_physics, 15);
+    init_object(&player, PLAYER, START_X, START_Y, 64, 64, RECTANGLE, 0, 0, 56, 64, player_physics, 15);
 
     ObjectsList non_static_elements = create_objects_list(1);
     ObjectsList clouds = create_objects_list(1);
-
-    load_level(level_list->path, level, background_elements, &non_static_elements, &clouds);
 
     // bitmaps
     player_bitmap = al_create_bitmap(player.width, player.height * player.frames_number);
@@ -110,9 +109,16 @@ int main()
     bool menu = false;
     bool exit = false;
     bool mode_editor = false;
+    int level_status = 0; // 1 - reload, 2 - next level, 3 - game over
 
     main_menu(event_queue, &exit, &mode_editor, keys_active, keys_down, keys_up);
-    //load_level();
+
+    if (!mode_editor)
+        load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
+    else
+    {
+        // level choosing
+    }
 
     while(!exit)
     {
@@ -131,13 +137,46 @@ int main()
 
                 update_non_static_objects(&non_static_elements, level, &player);
                 animate_non_static_objects(&non_static_elements, frame, &player);
-                update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame);
+                update_player(&player, keys_active, keys_down, keys_up, level, &non_static_elements, frame, &level_status);
                 animate_static_objects(level, frame, &player, &non_static_elements);
 
                 if (player.hitbox.pos_x >= DISPLAY_WIDTH / 2)
                     screen_offset -= DISPLAY_WIDTH / 2 + screen_offset - player.hitbox.pos_x;
                 else
                     screen_offset = 0;
+
+                // restart/next level/game over
+                if (level_status == 1)
+                {
+                    load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
+                    level_status = 0;
+                }
+                else if (level_status == 2)
+                {
+                    if (current_level->next != NULL)
+                    {
+                        current_level = current_level->next;
+                        load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
+                        level_status = 0;
+                    }
+                    else
+                    {
+                        // TUTUTUTUUUUUUUUUU
+                        // TODO VICTORY SCREEN TODO
+                    }
+                }
+                else if (level_status == 3)
+                {
+                    if (player.counter == 1)
+                    {
+                        player.alive = true;
+                        current_level = level_list;
+                        load_level(current_level->path, level, background_elements, &non_static_elements, &clouds);
+                        level_status = 0;
+                        respawn_player(&player, START_X, START_Y);
+                        lives = 3;
+                    }
+                }
             }
             else
             {
@@ -216,6 +255,11 @@ int main()
             draw_object(&player, screen_offset);
             //draw_hitbox(player.hitbox, screen_offset);
             draw_hud(lives, coins);
+
+            if (!player.alive && level_status == 3)
+            {
+                draw_game_over_screen();
+            }
 
             if (menu)
                 draw_pause_menu();

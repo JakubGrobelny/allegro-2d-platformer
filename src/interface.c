@@ -47,13 +47,13 @@ void main_menu(ALLEGRO_EVENT_QUEUE* event_queue, bool* exit, bool* editor, bool*
                 switch (menu_active_button)
                 {
                     case MENU_START:
-                    return;
+                        return;
                     case MENU_EXIT:
-                    *exit = true;
-                    return;
+                        *exit = true;
+                        return;
                     case MENU_EDITOR:
-                    *editor = true;
-                    return;
+                        *editor = true;
+                        return;
                 }
             }
 
@@ -85,6 +85,12 @@ void draw_button(Button* button, bool active)
     al_draw_filled_rectangle(button->pos_x, button->pos_y, button->pos_x + button->width, button->pos_y + button->height, al_map_rgb(174, 78, 0));
 
     draw_text(button->pos_x + button->width/2, button->pos_y + button->height/2, ALIGNMENT_CENTRE, button->text);
+}
+
+void draw_game_over_screen()
+{
+    al_draw_filled_rectangle(0, 0, DISPLAY_WIDTH, DISPLAY_HEIGHT, BLACK);
+    draw_text(DISPLAY_WIDTH/2, DISPLAY_HEIGHT/2, ALIGNMENT_CENTRE, "GAME OVER");
 }
 
 void draw_pause_menu()
