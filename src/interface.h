@@ -89,7 +89,7 @@ void draw_congratulations_screen();
 void draw_editor_pause_menu();
 
 // draws editor information
-void draw_editor_hud(int selected_layer, int x, int y);
+void draw_editor_hud(int selected_layer, int selected_object, int x, int y);
 
 // draws 64x64 grid
 void draw_grid(int screen_offset);

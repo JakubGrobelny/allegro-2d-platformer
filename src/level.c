@@ -426,14 +426,15 @@ void parse_object_line(ObjectsList* list, char* line)
         str[i - 2] = line[i];
         i++;
     }
-    i++;
 
     pos_x = atoi(str);
-    memset(str, '\0', sizeof(str));
+    int len = (int)strlen(str);
 
+    memset(str, '\0', sizeof(str));
+    i++;
     while(line[i] != '.')
     {
-        str[i - 2] = line[i];
+        str[i - 2 - len - 1] = line[i];
         i++;
     }
 

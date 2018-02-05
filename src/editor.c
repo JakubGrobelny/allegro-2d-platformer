@@ -164,7 +164,7 @@ void update_editor(Object* editor_obj, bool* keys_down, bool* keys_up, bool* key
                     level[editor_obj->pos_y / 64][editor_obj->pos_x / 64] = *editor_obj;
                     break;
                 case BACKGROUND_LAYER:
-                    level[editor_obj->pos_y / 64][editor_obj->pos_x / 64] = *editor_obj;
+                    background[editor_obj->pos_y / 64][editor_obj->pos_x / 64] = *editor_obj;
                     break;
                 case OBJECT_LAYER:
                     push_back_ol(objects, *editor_obj);
@@ -380,8 +380,10 @@ void delete_colliding(int pos_x, int pos_y, Object level[MAP_HEIGHT][MAP_WIDTH],
     {
         case MAP_LAYER:
             level[pos_y][pos_x] = empty;
+            break;
         case BACKGROUND_LAYER:
             background[pos_y][pos_x] = empty;
+            break;
         case OBJECT_LAYER:
         {
             for (int i = 0; i < objects->size; i++)

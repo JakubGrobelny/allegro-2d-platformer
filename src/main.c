@@ -288,7 +288,7 @@ int main()
                 draw_grid(screen_offset);
                 if (editor_obj.type != EMPTY)
                     draw_object(&editor_obj, screen_offset);
-                draw_editor_hud(selected_layer, editor_obj.pos_x / 64, editor_obj.pos_y / 64);           
+                draw_editor_hud(selected_layer, selected_object, editor_obj.pos_x / 64, editor_obj.pos_y / 64);
             }
 
             al_flip_display();

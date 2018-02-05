@@ -94,9 +94,6 @@ void draw_object(Object* object, int screen_offset);
 // checking whether the object is in the given direction relatively to the observer
 bool relative_direction(Object* observer, Object* object, int direction);
 
-// checking if the object is standing on top of other object
-bool stands_on(Object* object, Object* platform);
-
 // making the given object stationary
 void terminate_velocity(Object* object);
 

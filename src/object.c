@@ -62,8 +62,3 @@ void terminate_velocity(Object* object)
     object->physics.speed.x = 0.0f;
     object->physics.speed.y = 0.0f;
 }
-
-bool stands_on(Object* object, Object* platform)
-{
-        // TODO
-}
