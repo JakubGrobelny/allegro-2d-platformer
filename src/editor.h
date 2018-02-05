@@ -28,4 +28,10 @@ void update_editor(Object* editor_obj, bool* keys_down, bool* keys_up, bool* key
 // assings proper texture and position to the temporary object
 Object* select_object(Object* editor_obj, int pos_x, int pos_y);
 
+// checks whether you can place something
+bool is_place_empty(Object* obj, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* objects);
+
+// deletes things in the given position
+void delete_colliding(int pos_x, int pos_y, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* objects);
+
 #endif

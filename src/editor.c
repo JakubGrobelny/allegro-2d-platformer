@@ -154,7 +154,30 @@ void update_editor(Object* editor_obj, bool* keys_down, bool* keys_up, bool* key
     select_object(editor_obj, (mouse_state.x + screen_offset) / 64, (mouse_state.y) / 64);
 
     // mouse click:
+    if (mouse_state.buttons & 1)
+    {
+        if (is_place_empty(editor_obj, level, background, objects))
+        {
+            switch (selected_layer)
+            {
+                case MAP_LAYER:
+                    level[editor_obj->pos_y / 64][editor_obj->pos_x / 64] = *editor_obj;
+                    break;
+                case BACKGROUND_LAYER:
+                    level[editor_obj->pos_y / 64][editor_obj->pos_x / 64] = *editor_obj;
+                    break;
+                case OBJECT_LAYER:
+                    push_back_ol(objects, *editor_obj);
+                    break;
+            }
+        }
+    }
+    else if (mouse_state.buttons & 2)
+    {
+        delete_colliding((mouse_state.x + screen_offset) / 64, mouse_state.y / 64, level, background, objects);
+    }
 }
+
 
 Object* select_object(Object* editor_obj, int pos_x, int pos_y)
 {
@@ -322,6 +345,54 @@ Object* select_object(Object* editor_obj, int pos_x, int pos_y)
                     break;
             }
             break;
+        }
+    }
+}
+
+bool is_place_empty(Object* obj, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* objects)
+{
+    switch (selected_layer)
+    {
+        case MAP_LAYER:
+            return (level[obj->pos_y /64][obj->pos_x / 64].type == EMPTY);
+        case BACKGROUND_LAYER:
+            return (background[obj->pos_y /64][obj->pos_x / 64].type == EMPTY);
+        case OBJECT_LAYER:
+        {
+            for (int i = 0; i < objects->size; i++)
+            {
+                Object* temp = get_element_pointer_ol(objects, i);
+                if (temp->pos_x / 64 == obj->pos_x / 64 && temp->pos_y / 64 == obj->pos_y / 64)
+                    return false;
+            }
+            return true;
+        }
+    }
+}
+
+void delete_colliding(int pos_x, int pos_y, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* objects)
+{
+    Object empty;
+    Physics static_physics = create_physics(0.0f, 0.0f, 0.0f, 0.0f, 0.0f);
+    init_object(&empty, EMPTY, pos_x * 64, pos_y * 64, 64, 64, RECTANGLE, pos_x * 64, pos_y * 64, 64, 64, static_physics, 0);
+
+    switch (selected_layer)
+    {
+        case MAP_LAYER:
+            level[pos_y][pos_x] = empty;
+        case BACKGROUND_LAYER:
+            background[pos_y][pos_x] = empty;
+        case OBJECT_LAYER:
+        {
+            for (int i = 0; i < objects->size; i++)
+            {
+                Object* temp = get_element_pointer_ol(objects, i);
+                if (temp->pos_x / 64 == pos_x && temp->pos_y / 64 == pos_y)
+                {
+                    pop_element_ol(objects, i);
+                    return;
+                }
+            }
         }
     }
 }
