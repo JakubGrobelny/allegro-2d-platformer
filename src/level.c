@@ -176,9 +176,9 @@ void save_level(LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], O
             type = obj->type;
             pos_x = obj->pos_x;
             pos_y = obj->pos_y;
-        }
 
-        fprintf(level_file, "%d-%d;%d.\n", type, pos_x, pos_y);
+            fprintf(level_file, "%d-%d;%d.\n", type, pos_x, pos_y);
+        }
     }
 
     fclose(level_file);

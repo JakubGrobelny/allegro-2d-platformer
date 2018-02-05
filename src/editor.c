@@ -322,13 +322,13 @@ Object* select_object(Object* editor_obj, int pos_x, int pos_y)
                     bind_bitmap(editor_obj, bitmap_enemy_koopa);
                     Physics koopa_physics  = create_physics(-3.0f, 0.0f, 3.0f, 20.0f, 2.0f);
                     init_object(editor_obj, ENEMY_KOOPA, pos_x, pos_y, 96, 80, RECTANGLE, pos_x + 16, pos_y - 16, 64, 80, koopa_physics, 4);
-                    editor_obj->animation_frame = 5;
+                    editor_obj->animation_frame = 2;
                     break;
                 case 2: // flying koopa
                     bind_bitmap(editor_obj, bitmap_enemy_koopa);
                     Physics flying_koopa_physics = create_physics(-3.0f, 0.0f, 3.0f, 13.0f, 0.5f);
                     init_object(editor_obj, ENEMY_KOOPA_FLYING, pos_x, pos_y, 96, 80, RECTANGLE, pos_x + 16, pos_y - 16, 64, 80, flying_koopa_physics, 4);
-                    editor_obj->animation_frame = 2;
+                    editor_obj->animation_frame = 5;
                     break;
                 case 3: // piranha plant
                     bind_bitmap(editor_obj, bitmap_plant);
