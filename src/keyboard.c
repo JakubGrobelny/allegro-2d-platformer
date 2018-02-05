@@ -11,6 +11,7 @@ void reset_buttons(bool* down, bool* up, unsigned int size)
 
 void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* keys_active)
 {
+    // it's ugly but it works fine
     if(event->type == ALLEGRO_EVENT_KEY_DOWN)
     {
         switch(event->keyboard.keycode)
@@ -163,6 +164,19 @@ void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* 
                 keys_active[KEY_DOT] = true;
                 keys_down[KEY_DOT] = true;
                 break;
+            case ALLEGRO_KEY_1:
+                keys_active[KEY_1] = true;
+                keys_down[KEY_1] = true;
+                break;
+            case ALLEGRO_KEY_2:
+                keys_active[KEY_2] = true;
+                keys_down[KEY_2] = true;
+                break;
+            case ALLEGRO_KEY_3:
+                keys_active[KEY_3] = true;
+                keys_down[KEY_3] = true;
+                break;
+
         }
     }
     else if (event->type == ALLEGRO_EVENT_KEY_UP)
@@ -316,6 +330,18 @@ void update_buttons(ALLEGRO_EVENT* event, bool* keys_down, bool* keys_up, bool* 
             case ALLEGRO_KEY_FULLSTOP:
                 keys_active[KEY_DOT] = false;
                 keys_up[KEY_DOT] = true;
+                break;
+            case ALLEGRO_KEY_1:
+                keys_active[KEY_1] = false;
+                keys_up[KEY_1] = true;
+                break;
+            case ALLEGRO_KEY_2:
+                keys_active[KEY_2] = false;
+                break;
+                keys_up[KEY_2] = true;
+            case ALLEGRO_KEY_3:
+                keys_active[KEY_3] = false;
+                keys_up[KEY_3] = true;
                 break;
         }
     }

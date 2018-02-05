@@ -36,7 +36,10 @@ typedef enum
     KEY_X,
     KEY_Y,
     KEY_Z,
-
+    KEY_1,
+    KEY_2,
+    KEY_3,
+    
     KEY_DOWN,
     KEY_UP,
     KEY_LEFT,

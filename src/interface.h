@@ -88,6 +88,9 @@ void draw_congratulations_screen();
 // draws pause menu but for editor mode
 void draw_editor_pause_menu();
 
+// draws editor information
+void draw_editor_hud(int selected_layer, int x, int y);
+
 // draws 64x64 grid
 void draw_grid(int screen_offset);
 

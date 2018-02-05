@@ -109,6 +109,9 @@ int main()
 
     main_menu(event_queue, &exit, &mode_editor, keys_active, keys_down, keys_up);
 
+    Object editor_obj;
+    editor_obj.type = EMPTY;
+
     if (mode_editor)
         current_level = select_level(level_list, event_queue, keys_active, keys_down, keys_up);
 
@@ -188,6 +191,8 @@ int main()
                     screen_offset = 0;
                 if (screen_offset > (MAP_WIDTH-1) * 64)
                     screen_offset = (MAP_WIDTH-1) * 64;
+
+                update_editor(&editor_obj, keys_down, keys_up, keys_active, level, background_elements, &non_static_elements, screen_offset);
             }
 
             reset_buttons(keys_down, keys_up, KEYS_AMOUNT);
@@ -279,7 +284,12 @@ int main()
                 draw_editor_pause_menu();
 
             if (mode_editor && !menu)
+            {
                 draw_grid(screen_offset);
+                if (editor_obj.type != EMPTY)
+                    draw_object(&editor_obj, screen_offset);
+                draw_editor_hud(selected_layer, editor_obj.pos_x / 64, editor_obj.pos_y / 64);           
+            }
 
             al_flip_display();
             al_clear_to_color(LIGHT_BLUE);
