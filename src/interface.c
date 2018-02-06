@@ -206,17 +206,19 @@ void draw_editor_hud(int selected_layer, int selected_object, int x, int y)
 {
     al_draw_textf(font, WHITE, 16, 16, ALLEGRO_ALIGN_LEFT, "LAYER: %s  X: %d  Y: %d", selected_layer == 0 ? "MAP" : selected_layer == 1 ? "BACKGROUND" : "OBJECTS" , x, y);
 
-    if (selected_object == 3)
+    if (selected_layer == 0)
+    {
+        if (selected_object == 3)
         al_draw_textf(font, WHITE, 16, 48, ALLEGRO_ALIGN_LEFT, "1 COIN BLOCK");
-    else if (selected_object == 4)
+        else if (selected_object == 4)
         al_draw_textf(font, WHITE, 16, 48, ALLEGRO_ALIGN_LEFT, "MUSHROOM BLOCK");
-    else if (selected_object == 5)
+        else if (selected_object == 5)
         al_draw_textf(font, WHITE, 16, 48, ALLEGRO_ALIGN_LEFT, "5 COINS BLOCK");
-    else if (selected_object == 6)
+        else if (selected_object == 6)
         al_draw_textf(font, WHITE, 16, 48, ALLEGRO_ALIGN_LEFT, "CANNON RIGHT");
-    else if (selected_object == 7)
+        else if (selected_object == 7)
         al_draw_textf(font, WHITE, 16, 48, ALLEGRO_ALIGN_LEFT, "CANNON LEFT");
-
+    }
 }
 
 void update_editor_pause_menu(bool* paused, bool* exit, bool* keys_active, bool* keys_down, LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], Object background[MAP_HEIGHT][MAP_WIDTH], ObjectsList* non_static_elements)

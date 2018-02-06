@@ -169,15 +169,15 @@ void save_level(LevelList* current_level, Object level[MAP_HEIGHT][MAP_WIDTH], O
 
         int pos_x;
         int pos_y;
-        int type;
+        char type;
 
-        if (obj->type <= 3)
+        if (obj->type <= 3 || obj->type == COIN)
         {
-            type = obj->type;
+            type = obj->type == COIN ? '$' : obj->type + '0';
             pos_x = obj->pos_x;
             pos_y = obj->pos_y;
 
-            fprintf(level_file, "%d-%d;%d.\n", type, pos_x, pos_y);
+            fprintf(level_file, "%c-%d;%d.\n", type, pos_x, pos_y);
         }
     }
 

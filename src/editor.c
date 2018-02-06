@@ -282,7 +282,7 @@ Object* select_object(Object* editor_obj, int pos_x, int pos_y)
                     bind_bitmap(editor_obj, bitmap_hill_top);
                     break;
                 case 4: // hill middle pattern right
-                    bind_bitmap(editor_obj, bitmap_hill_middle_patterned_left);
+                    bind_bitmap(editor_obj, bitmap_hill_middle_patterned_right);
                     break;
                 case 5: // hill middle patern left
                     bind_bitmap(editor_obj, bitmap_hill_middle_patterned_left);

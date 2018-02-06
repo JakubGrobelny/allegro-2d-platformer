@@ -9,7 +9,7 @@
 // Map properties
 #define MAP_WIDTH 160
 #define MAP_HEIGHT 13
-#define RENDER_DISTANCE 64*32
+#define RENDER_DISTANCE DISPLAY_WIDTH
 
 // Colors
 #define BLACK       al_map_rgba(0  , 0  , 0  , 255)

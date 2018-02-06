@@ -60,6 +60,7 @@ typedef enum
     ENEMY_KOOPA,
     ENEMY_KOOPA_FLYING,
     ENEMY_PIRANHA_PLANT,
+    COIN,
     //player
     PLAYER,
     PLAYER_BIG,
@@ -77,7 +78,6 @@ typedef enum
     KOOPA_SHELL,
     PARTICLE_NORMAL,
     SIZE_MUSHROOM,
-    COIN,
     FINISH_LINE
 
 } ObjectTypes;
