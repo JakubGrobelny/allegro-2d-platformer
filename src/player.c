@@ -44,7 +44,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
 
     if (player->alive)
     {
-        if ((keys_active[KEY_DOWN] || keys_active[KEY_CTRL]) && player->type == PLAYER_BIG) // TODO: or KEY_LCTRL
+        if ((keys_active[KEY_DOWN] || keys_active[KEY_CTRL]) && player->type == PLAYER_BIG)
         {
             crouch(player);
 
@@ -99,7 +99,7 @@ void update_player(Object* player, bool* keys_active, bool* keys_down, bool* key
         }
     }
 
-    if (player->alive && !(keys_active[KEY_DOWN] && !(keys_active[KEY_CTRL]) && player->type == PLAYER_BIG))
+    if (player->alive && !((keys_active[KEY_DOWN] || keys_active[KEY_CTRL]) && player->type == PLAYER_BIG))
         animate_player(player, level, running, frame);
 
     // temporary friction simulation:
@@ -408,8 +408,6 @@ void animate_player(Object* player, Object level[MAP_HEIGHT][MAP_WIDTH], bool ru
 
 void die(Object* player)
 {
-    // TODO: do stuff
-
     if (player->alive)
     {
         if (player->type == PLAYER_BIG)
